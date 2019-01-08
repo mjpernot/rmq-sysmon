@@ -1,0 +1,43 @@
+{
+    "Asof": "2018-08-29 08:01:02", 
+    "Update_Packages": [
+        {
+            "Repo": "dia-updates", 
+            "Arch": "x86_64", 
+            "Ver": "2.6.32", 
+            "Package": "kernel-headers"
+        }, 
+        {
+            "Repo": "dia-updates", 
+            "Arch": "noarch", 
+            "Ver": "1.1.30", 
+            "Package": "yum-utils"
+        }, 
+        {
+            "Repo": "dia-updates", 
+            "Arch": "x86_64", 
+            "Ver": "1.7.0.191", 
+            "Package": "java-1.7.0-openjdk"
+        }, 
+        {
+            "Repo": "dia-updates", 
+            "Arch": "noarch", 
+            "Ver": "1.1.30", 
+            "Package": "yum-plugin-fastestmirror"
+        }, 
+        {
+            "Repo": "dia-updates", 
+            "Arch": "x86_64", 
+            "Ver": "2.6.32", 
+            "Package": "kernel"
+        }, 
+        {
+            "Repo": "dia-updates", 
+            "Arch": "noarch", 
+            "Ver": "2.6.32", 
+            "Package": "kernel-firmware"
+        }
+    ], 
+    "OS_Release": "CentOS 6.10", 
+    "Server": "SERVER_NAME.dodiis.ic.gov"
+}
