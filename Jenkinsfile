@@ -20,6 +20,13 @@ pipeline {
                 virtualenv test_env
                 source test_env/bin/activate
                 pip2 install mock --user
+                ./test/unit/rmq_2_sysmon/help_message.py
+                ./test/unit/rmq_2_sysmon/process_msg.py
+                ./test/unit/rmq_2_sysmon/non_proc_msg.py
+                ./test/unit/rmq_2_sysmon/monitor_queue.py
+                ./test/unit/rmq_2_sysmon/validate_create_settings.py
+                ./test/unit/rmq_2_sysmon/run_program.py
+                ./test/unit/rmq_2_sysmon/main.py
                 deactivate
                 rm -rf test_env
                 """
