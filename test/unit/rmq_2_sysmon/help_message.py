@@ -1,19 +1,6 @@
 #!/usr/bin/python
 # Classification (U)
 
-###############################################################################
-#
-# Program:      help_message.py
-#
-# Class Dependencies:
-#               None
-#
-# Library Dependenices:
-#               rmq_2_sysmon    => 0.0.1 or higher
-#               gen_libs        => 2.4.0 or higher
-#
-###############################################################################
-
 """Program:  help_message.py
 
     Description:  Unit testing of help_message in rmq_2_sysmon.py.

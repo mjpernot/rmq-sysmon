@@ -1,18 +1,6 @@
 #!/usr/bin/python
 # Classification (U)
 
-###############################################################################
-#
-# Program:      non_proc_msg.py
-#
-# Class Dependencies:
-#               None
-#
-# Library Dependenices:
-#               rmq_2_sysmon      => 0.0.1 or higher
-#
-###############################################################################
-
 """Program:  non_proc_msg.py
 
     Description:  Unit testing of non_proc_msg in rmq_2_sysmon.py.
