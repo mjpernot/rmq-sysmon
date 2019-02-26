@@ -1,19 +1,6 @@
 #!/usr/bin/python
 # Classification (U)
 
-###############################################################################
-#
-# Program:      validate_create_settings.py
-#
-# Class Dependencies:
-#               None
-#
-# Library Dependenices:
-#               rmq_2_sysmon    => 0.0.1 or higher
-#               lib/gen_libs    => 2.4.0 or higher
-#
-###############################################################################
-
 """Program:  validate_create_settings.py
 
     Description:  Unit testing of validate_create_settings in rmq_2_sysmon.py.
@@ -81,10 +68,54 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.base_dir = "test/unit/rmq_2_sysmon"
-        self.test_path = os.path.join(os.getcwd(), self.base_dir)
-        self.config_path = os.path.join(self.test_path, "config")
-        self.cfg = gen_libs.load_module("rabbitmq", self.config_path)
+        class CfgTest(object):
+
+            """Class:  CfgTest
+
+            Description:  Class which is a representation of a cfg module.
+
+            Super-Class:  object
+
+            Sub-Classes:  None
+
+            Methods:
+                __init__ -> Initialize configuration environment.
+
+            """
+
+            def __init__(self):
+
+                """Method:  __init__
+
+                Description:  Initialization instance of the CfgTest class.
+
+                Arguments:
+                        None
+
+                """
+
+                self.host = "HOSTNAME"
+                self.sysmon_dir = "/SYSMON_DIR_PATH"
+                self.exchange_name = "rmq_2_isse_unit_test"
+                self.queue_name = "rmq_2_isse_unit_test"
+                self.to_line = None
+                self.transfer_dir = "/TRANSFER_DIR_PATH"
+                self.isse_dir = "/ISSE_DIR_PATH"
+                self.delta_month = 6
+                self.port = 5672
+                self.exchange_type = "direct"
+                self.x_durable = True
+                self.q_durable = True
+                self.auto_delete = False
+                self.message_dir = "message_dir"
+                self.log_dir = "logs"
+                self.log_file = "rmq_2_isse.log"
+                self.proc_file = "files_processed"
+                self.ignore_ext = ["_kmz.64.txt", "_pptx.64.txt"]
+
+        self.cfg = CfgTest()
+
+        self.base_dir = "/BASE_DIR_PATH"
         self.err_msg1 = "Missing Message Dir "
         self.err_msg2 = "Missing Log Dir "
         self.err_msg3 = "Missing Sysmon Dir "
@@ -273,7 +304,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        del sys.modules["rabbitmq"]
+        pass
 
 
 if __name__ == "__main__":
