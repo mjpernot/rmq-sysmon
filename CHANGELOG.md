@@ -6,7 +6,6 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 ## [0.2.8] - 2019-03-05
 ### Changed
-- monitor_queue:  Removed unused local variable (tag_name -> _).
 - main:  Refactored code to bring into standard convention.
 - non_proc_msg:  Refactored code to bring into standard convention.
 - process_msg:  Refactored code to bring into standard convention.

@@ -289,7 +289,7 @@ def monitor_queue(cfg, log, **kwargs):
         log.log_info("Connected to RabbitMQ node")
 
         # Setup the RabbitMQ Consume callback and start monitoring.
-        _ = rq.consume(callback)
+        tag_name = rq.consume(callback)
         rq.start_loop()
 
     else:
