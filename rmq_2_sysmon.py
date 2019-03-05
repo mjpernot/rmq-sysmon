@@ -239,7 +239,7 @@ def process_msg(rq, log, cfg, method, body, **kwargs):
         non_proc_msg(rq, log, cfg, body, "Non-dictionary format")
 
 
-def monitor_queue(cfg, LOG, **kwargs):
+def monitor_queue(cfg, log, **kwargs):
 
     """Function:  monitor_queue
 
@@ -247,7 +247,7 @@ def monitor_queue(cfg, LOG, **kwargs):
 
     Arguments:
         (input) cfg -> Configuration settings module for the program.
-        (input) LOG -> Log class instance.
+        (input) log -> Log class instance.
         (input) **kwargs:
             None
 
@@ -267,33 +267,33 @@ def monitor_queue(cfg, LOG, **kwargs):
 
         """
 
-        LOG.log_info("callback:  Processing message...")
-        process_msg(RQ, LOG, cfg, method, body)
+        log.log_info("callback:  Processing message...")
+        process_msg(rq, log, cfg, method, body)
 
-        LOG.log_info("Deleting message from RabbitMQ")
-        RQ.ack(method.delivery_tag)
+        log.log_info("Deleting message from RabbitMQ")
+        rq.ack(method.delivery_tag)
 
-    LOG.log_info("monitor_queue:  Start monitoring queue...")
+    log.log_info("monitor_queue:  Start monitoring queue...")
 
-    RQ = rabbitmq_class.RabbitMQCon(cfg.user, cfg.passwd, cfg.host, cfg.port,
+    rq = rabbitmq_class.RabbitMQCon(cfg.user, cfg.passwd, cfg.host, cfg.port,
                                     cfg.exchange_name, cfg.exchange_type,
                                     cfg.queue_name, cfg.queue_name,
                                     cfg.x_durable, cfg.q_durable,
                                     cfg.auto_delete)
 
-    LOG.log_info("Connection info: %s->%s" % (cfg.host, cfg.exchange_name))
+    log.log_info("Connection info: %s->%s" % (cfg.host, cfg.exchange_name))
 
-    connect_status, err_msg = RQ.create_connection()
+    connect_status, err_msg = rq.create_connection()
 
-    if connect_status and RQ.channel.is_open:
-        LOG.log_info("Connected to RabbitMQ node")
+    if connect_status and rq.channel.is_open:
+        log.log_info("Connected to RabbitMQ node")
 
         # Setup the RabbitMQ Consume callback and start monitoring.
-        tag_name = RQ.consume(callback)
-        RQ.start_loop()
+        tag_name = rq.consume(callback)
+        rq.start_loop()
 
     else:
-        LOG.log_err("Failed to connnect to RabbuitMQ -> Msg: %s" % (err_msg))
+        log.log_err("Failed to connnect to RabbuitMQ -> Msg: %s" % (err_msg))
 
 
 def run_program(args_array, func_dict, **kwargs):
