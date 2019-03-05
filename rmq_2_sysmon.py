@@ -367,7 +367,7 @@ def main(**kwargs):
 
     """
 
-    sys.argv = kwargs.get("argv_list", sys.argv)
+    sys.argv = list(kwargs.get("argv_list", sys.argv))
 
     dir_chk_list = ["-d"]
     func_dict = {"-M": monitor_queue}

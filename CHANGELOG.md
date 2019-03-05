@@ -6,6 +6,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 ## [0.2.8] - 2019-03-05
 ### Changed
+- main:  Added list() to prevent modifying mutable default argument.
 - main:  Refactored code to bring into standard convention.
 - non_proc_msg:  Refactored code to bring into standard convention.
 - process_msg:  Refactored code to bring into standard convention.
