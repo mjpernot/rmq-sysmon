@@ -198,15 +198,15 @@ def non_proc_msg(rq, log, cfg, data, subj, **kwargs):
     gen_libs.write_file(f_path, data=data)
 
 
-def process_msg(RQ, LOG, cfg, method, body, **kwargs):
+def process_msg(rq, log, cfg, method, body, **kwargs):
 
     """Function:  process_msg
 
     Description:  Process message from RabbitMQ queue.
 
     Arguments:
-        (input) RQ -> RabbitMQ class instance.
-        (input) LOG -> Log class instance.
+        (input) rq -> RabbitMQ class instance.
+        (input) log -> Log class instance.
         (input) cfg -> Configuration settings module for the program.
         (input) method -> Delivery properties.
         (input) body -> Message body.
@@ -215,7 +215,7 @@ def process_msg(RQ, LOG, cfg, method, body, **kwargs):
 
     """
 
-    LOG.log_info("process_msg:  Processing body of message...")
+    log.log_info("process_msg:  Processing body of message...")
 
     data = json.loads(body)
 
@@ -230,13 +230,13 @@ def process_msg(RQ, LOG, cfg, method, body, **kwargs):
                                                     no_std=True, ofile=f_name)
 
             if err_flag:
-                non_proc_msg(RQ, LOG, cfg, data, "Unable to convert to JSON")
+                non_proc_msg(rq, log, cfg, data, "Unable to convert to JSON")
 
         else:
-            non_proc_msg(RQ, LOG, cfg, data, "Dictionary does not contain key")
+            non_proc_msg(rq, log, cfg, data, "Dictionary does not contain key")
 
     else:
-        non_proc_msg(RQ, LOG, cfg, body, "Non-dictionary format")
+        non_proc_msg(rq, log, cfg, body, "Non-dictionary format")
 
 
 def monitor_queue(cfg, LOG, **kwargs):
