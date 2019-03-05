@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [0.2.8] - 2019-03-05
+### Changed
+- main:  Refactored code to bring into standard convention.
+
+
 ## [0.2.7] - 2018-11-05
 ### Changed
 - non_proc_msg:  Removed the Email class method create_body as this is incorporated into the class already.
