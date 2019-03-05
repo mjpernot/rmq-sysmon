@@ -1,0 +1,6 @@
+*.pyc
+.coverage
+*.swp
+coverage.xml
+lib
+rabbit_lib

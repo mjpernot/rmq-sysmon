@@ -158,15 +158,15 @@ def validate_create_settings(cfg, **kwargs):
     return cfg, status_flag, err_msg
 
 
-def non_proc_msg(RQ, LOG, cfg, data, subj, **kwargs):
+def non_proc_msg(rq, log, cfg, data, subj, **kwargs):
 
     """Function:  non_proc_msg
 
     Description:  Process non-processed messages.
 
     Arguments:
-        (input) RQ -> RabbitMQ class instance.
-        (input) LOG -> Log class instance.
+        (input) rq -> RabbitMQ class instance.
+        (input) log -> Log class instance.
         (input) cfg -> Configuration settings module for the program.
         (input) data -> Body of message that was not processed.
         (input) **kwargs:
@@ -174,39 +174,39 @@ def non_proc_msg(RQ, LOG, cfg, data, subj, **kwargs):
 
     """
 
-    LOG.log_info("non_proc_msg:  Processing non-processed message...")
+    log.log_info("non_proc_msg:  Processing non-processed message...")
     frm_line = getpass.getuser() + "@" + socket.gethostname()
-    f_name = RQ.exchange + "_" + RQ.queue_name + "_" + gen_libs.get_date() \
+    f_name = rq.exchange + "_" + rq.queue_name + "_" + gen_libs.get_date() \
         + "_" + gen_libs.get_time() + ".txt"
     f_path = os.path.join(cfg.message_dir, f_name)
     subj = "rmq_2_sysmon: " + subj
 
     if cfg.to_line:
-        LOG.log_info("Sending email to: %s..." % (cfg.to_line))
+        log.log_info("Sending email to: %s..." % (cfg.to_line))
         EMAIL = gen_class.Mail(cfg.to_line, subj, frm_line)
         EMAIL.add_2_msg(data)
         EMAIL.send_mail()
 
     else:
-        LOG.log_warn("No email being sent as TO line is empty.")
+        log.log_warn("No email being sent as TO line is empty.")
 
-    LOG.log_err("Message was not processed due to: %s" % (subj))
-    LOG.log_info("Saving message to: %s" % (f_path))
+    log.log_err("Message was not processed due to: %s" % (subj))
+    log.log_info("Saving message to: %s" % (f_path))
 
     gen_libs.write_file(f_path, data="Exchange: %s, Queue: %s"
-                        % (RQ.exchange, RQ.queue_name))
+                        % (rq.exchange, rq.queue_name))
     gen_libs.write_file(f_path, data=data)
 
 
-def process_msg(RQ, LOG, cfg, method, body, **kwargs):
+def process_msg(rq, log, cfg, method, body, **kwargs):
 
     """Function:  process_msg
 
     Description:  Process message from RabbitMQ queue.
 
     Arguments:
-        (input) RQ -> RabbitMQ class instance.
-        (input) LOG -> Log class instance.
+        (input) rq -> RabbitMQ class instance.
+        (input) log -> Log class instance.
         (input) cfg -> Configuration settings module for the program.
         (input) method -> Delivery properties.
         (input) body -> Message body.
@@ -215,7 +215,7 @@ def process_msg(RQ, LOG, cfg, method, body, **kwargs):
 
     """
 
-    LOG.log_info("process_msg:  Processing body of message...")
+    log.log_info("process_msg:  Processing body of message...")
 
     data = json.loads(body)
 
@@ -230,16 +230,16 @@ def process_msg(RQ, LOG, cfg, method, body, **kwargs):
                                                     no_std=True, ofile=f_name)
 
             if err_flag:
-                non_proc_msg(RQ, LOG, cfg, data, "Unable to convert to JSON")
+                non_proc_msg(rq, log, cfg, data, "Unable to convert to JSON")
 
         else:
-            non_proc_msg(RQ, LOG, cfg, data, "Dictionary does not contain key")
+            non_proc_msg(rq, log, cfg, data, "Dictionary does not contain key")
 
     else:
-        non_proc_msg(RQ, LOG, cfg, body, "Non-dictionary format")
+        non_proc_msg(rq, log, cfg, body, "Non-dictionary format")
 
 
-def monitor_queue(cfg, LOG, **kwargs):
+def monitor_queue(cfg, log, **kwargs):
 
     """Function:  monitor_queue
 
@@ -247,7 +247,7 @@ def monitor_queue(cfg, LOG, **kwargs):
 
     Arguments:
         (input) cfg -> Configuration settings module for the program.
-        (input) LOG -> Log class instance.
+        (input) log -> Log class instance.
         (input) **kwargs:
             None
 
@@ -267,33 +267,33 @@ def monitor_queue(cfg, LOG, **kwargs):
 
         """
 
-        LOG.log_info("callback:  Processing message...")
-        process_msg(RQ, LOG, cfg, method, body)
+        log.log_info("callback:  Processing message...")
+        process_msg(rq, log, cfg, method, body)
 
-        LOG.log_info("Deleting message from RabbitMQ")
-        RQ.ack(method.delivery_tag)
+        log.log_info("Deleting message from RabbitMQ")
+        rq.ack(method.delivery_tag)
 
-    LOG.log_info("monitor_queue:  Start monitoring queue...")
+    log.log_info("monitor_queue:  Start monitoring queue...")
 
-    RQ = rabbitmq_class.RabbitMQCon(cfg.user, cfg.passwd, cfg.host, cfg.port,
+    rq = rabbitmq_class.RabbitMQCon(cfg.user, cfg.passwd, cfg.host, cfg.port,
                                     cfg.exchange_name, cfg.exchange_type,
                                     cfg.queue_name, cfg.queue_name,
                                     cfg.x_durable, cfg.q_durable,
                                     cfg.auto_delete)
 
-    LOG.log_info("Connection info: %s->%s" % (cfg.host, cfg.exchange_name))
+    log.log_info("Connection info: %s->%s" % (cfg.host, cfg.exchange_name))
 
-    connect_status, err_msg = RQ.create_connection()
+    connect_status, err_msg = rq.create_connection()
 
-    if connect_status and RQ.channel.is_open:
-        LOG.log_info("Connected to RabbitMQ node")
+    if connect_status and rq.channel.is_open:
+        log.log_info("Connected to RabbitMQ node")
 
         # Setup the RabbitMQ Consume callback and start monitoring.
-        tag_name = RQ.consume(callback)
-        RQ.start_loop()
+        tag_name = rq.consume(callback)
+        rq.start_loop()
 
     else:
-        LOG.log_err("Failed to connnect to RabbuitMQ -> Msg: %s" % (err_msg))
+        log.log_err("Failed to connnect to RabbuitMQ -> Msg: %s" % (err_msg))
 
 
 def run_program(args_array, func_dict, **kwargs):
@@ -315,32 +315,32 @@ def run_program(args_array, func_dict, **kwargs):
     cfg, status_flag, err_msg = validate_create_settings(cfg)
 
     if status_flag:
-        LOG = gen_class.Logger(cfg.log_file, cfg.log_file, "INFO",
+        log = gen_class.Logger(cfg.log_file, cfg.log_file, "INFO",
                                "%(asctime)s %(levelname)s %(message)s",
                                "%Y-%m-%dT%H:%M:%SZ")
         str_val = "=" * 80
-        LOG.log_info("%s:%s Initialized" % (cfg.host, cfg.exchange_name))
-        LOG.log_info("%s" % (str_val))
-        LOG.log_info("Exchange Name:  %s" % (cfg.exchange_name))
-        LOG.log_info("Queue Name:  %s" % (cfg.queue_name))
-        LOG.log_info("To Email:  %s" % (cfg.to_line))
-        LOG.log_info("%s" % (str_val))
+        log.log_info("%s:%s Initialized" % (cfg.host, cfg.exchange_name))
+        log.log_info("%s" % (str_val))
+        log.log_info("Exchange Name:  %s" % (cfg.exchange_name))
+        log.log_info("Queue Name:  %s" % (cfg.queue_name))
+        log.log_info("To Email:  %s" % (cfg.to_line))
+        log.log_info("%s" % (str_val))
 
         try:
             flavor_id = cfg.exchange_name + cfg.queue_name
-            PROG_LOCK = gen_class.ProgramLock(sys.argv, flavor_id)
+            prog_lock = gen_class.ProgramLock(sys.argv, flavor_id)
 
             # Intersect args_array & func_dict to find which functions to call.
             for opt in set(args_array.keys()) & set(func_dict.keys()):
 
-                    func_dict[opt](cfg, LOG, **kwargs)
+                    func_dict[opt](cfg, log, **kwargs)
 
-            del PROG_LOCK
+            del prog_lock
 
         except gen_class.SingleInstanceException:
-            LOG.log_warn("rmq_2_sysmon lock in place for: %s" % (flavor_id))
+            log.log_warn("rmq_2_sysmon lock in place for: %s" % (flavor_id))
 
-        LOG.log_close()
+        log.log_close()
 
     else:
         print("Error:  Problem in configuration file or directory setup.")
@@ -367,7 +367,7 @@ def main(**kwargs):
 
     """
 
-    sys.argv = kwargs.get("argv_list", sys.argv)
+    sys.argv = list(kwargs.get("argv_list", sys.argv))
 
     dir_chk_list = ["-d"]
     func_dict = {"-M": monitor_queue}
@@ -377,12 +377,11 @@ def main(**kwargs):
     # Process argument list from command line.
     args_array = arg_parser.arg_parse2(sys.argv, opt_val_list)
 
-    if not gen_libs.help_func(args_array, __version__, help_message):
+    if not gen_libs.help_func(args_array, __version__, help_message) \
+       and not arg_parser.arg_require(args_array, opt_req_list) \
+       and not arg_parser.arg_dir_chk_crt(args_array, dir_chk_list):
 
-        if not arg_parser.arg_require(args_array, opt_req_list) \
-                and not arg_parser.arg_dir_chk_crt(args_array, dir_chk_list):
-
-            run_program(args_array, func_dict)
+        run_program(args_array, func_dict)
 
 
 if __name__ == "__main__":

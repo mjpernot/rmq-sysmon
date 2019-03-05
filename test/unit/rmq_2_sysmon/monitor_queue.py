@@ -1,18 +1,6 @@
 #!/usr/bin/python
 # Classification (U)
 
-###############################################################################
-#
-# Program:      monitor_queue.py
-#
-# Class Dependencies:
-#               None
-#
-# Library Dependenices:
-#               rmq_2_sysmon    => 0.0.1 or higher
-#
-###############################################################################
-
 """Program:  monitor_queue.py
 
     Description:  Unit testing of monitor_queue in rmq_2_sysmon.py.
