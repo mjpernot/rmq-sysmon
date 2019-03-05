@@ -1,18 +1,6 @@
 #!/usr/bin/python
 # Classification (U)
 
-###############################################################################
-#
-# Program:      main.py
-#
-# Class Dependencies:
-#               None
-#
-# Library Dependenices:
-#               rmq_2_sysmon    => 0.0.1 or higher
-#
-###############################################################################
-
 """Program:  main.py
 
     Description:  Unit testing of main in rmq_2_sysmon.py.

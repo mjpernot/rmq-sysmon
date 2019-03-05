@@ -19,18 +19,18 @@ USER_ACCOUNT="USER_NAME"
 
 case $1 in
    start)
-      su - ${USER_ACCOUNT} -c "${BASE_PATH}/daemon_rmq_2_isse.py -a start -c ${MOD_LIBRARY} -d ${BASE_PATH}/config -M"
+      su - ${USER_ACCOUNT} -c "${BASE_PATH}/daemon_rmq_2_sysmon.py -a start -c ${MOD_LIBRARY} -d ${BASE_PATH}/config -M"
       touch /var/lock/subsys/$MOD_LIBRARY
       ;;
 
    stop)
-      su - ${USER_ACCOUNT} -c "${BASE_PATH}/daemon_rmq_2_isse.py -a stop -c ${MOD_LIBRARY} -d ${BASE_PATH}/config -M"
+      su - ${USER_ACCOUNT} -c "${BASE_PATH}/daemon_rmq_2_sysmon.py -a stop -c ${MOD_LIBRARY} -d ${BASE_PATH}/config -M"
       rm -f /var/lock/subsys/$MOD_LIBRARY
       ;;
 
    restart)
       rm -f /var/lock/subsys/$MOD_LIBRARY
-      su - ${USER_ACCOUNT} -c "${BASE_PATH}/daemon_rmq_2_isse.py -a restart -c ${MOD_LIBRARY} -d ${BASE_PATH}/config -M"
+      su - ${USER_ACCOUNT} -c "${BASE_PATH}/daemon_rmq_2_sysmon.py -a restart -c ${MOD_LIBRARY} -d ${BASE_PATH}/config -M"
       touch /var/lock/subsys/$MOD_LIBRARY
       ;;
 

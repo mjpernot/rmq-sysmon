@@ -1,18 +1,6 @@
 #!/usr/bin/python
 # Classification (U)
 
-###############################################################################
-#
-# Program:      run_program.py
-#
-# Class Dependencies:
-#               None
-#
-# Library Dependenices:
-#               rmq_2_sysmon    => 0.0.1 or higher
-#
-###############################################################################
-
 """Program:  run_program.py
 
     Description:  Unit testing of run_program in rmq_2_sysmon.py.
