@@ -407,8 +407,9 @@ Create RabbitMQ configuration file.
 
 ```
 chmod 777 tmp
-cd test/integration/rmq_2_sysmon/config
+cd test/integration/rmq_2_sysmon
 chmod 777 logs message_dir sysmon
+cd config
 cp ../../../../config/rabbitmq.py.TEMPLATE rabbitmq.py
 ```
 
@@ -430,37 +431,14 @@ chmod 600 rabbitmq.py
 # Integration test runs for rmq_2_sysmon.py:
   * Replace **{Python_Project}** with the baseline path of the python program.
 
+### Integration tests
 ```
 cd {Python_Project}/rmq-sysmon
-```
-
-### Integration:  process_msg
-```
 test/integration/rmq_2_sysmon/process_msg.py
-```
-
-### Integration:  validate_create_settings
-```
 test/integration/rmq_2_sysmon/validate_create_settings.py
-```
-
-### Integration:  non_proc_msg
-```
 test/integration/rmq_2_sysmon/non_proc_msg.py
-```
-
-### Integration:  monitor_queue
-```
 test/integration/rmq_2_sysmon/monitor_queue.py
-```
-
-### Integration:  run_program
-```
 test/integration/rmq_2_sysmon/run_program.py
-```
-
-### Integration:  main
-```
 test/integration/rmq_2_sysmon/main.py
 ```
 

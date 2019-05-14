@@ -1,19 +1,6 @@
 #!/usr/bin/python
 # Classification (U)
 
-###############################################################################
-#
-# Program:      blackbox_test2.py
-#
-# Class Dependencies:
-#               None
-#
-# Library Dependenices:
-#               lib.gen_libs            => v2.4.0 or higher
-#               blackbox_libs           => v0.2.0 or higher
-#
-###############################################################################
-
 """Program:  blackbox_test2.py
 
     Description:  Blackbox testing of rmq_2_sysmon.py program.
@@ -61,7 +48,6 @@ def test_1(sysmon_dir, **kwargs):
 
     print("\tTest 1:  Process message already in queue")
     f_name = "SERVER_NAME"
-
     time.sleep(1)
     status, err_msg = \
         blackbox_libs.file_test(os.path.join(sysmon_dir,
@@ -97,7 +83,6 @@ def main():
     test_path = os.path.join(os.getcwd(), base_dir)
     config_path = os.path.join(test_path, "config")
     cfg = gen_libs.load_module("rabbitmq", config_path)
-
     test_1(cfg.sysmon_dir)
 
 
