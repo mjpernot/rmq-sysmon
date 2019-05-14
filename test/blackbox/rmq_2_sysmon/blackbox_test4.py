@@ -56,11 +56,9 @@ def test_1(rq, file_path, message_dir, log_dir, **kwargs):
     f_name = "SERVER_NAME3"
     msg = "Dictionary does not contain key"
     f_filter2 = "rmq_2_sysmon*.log"
-
     status, err_msg = blackbox_libs.publish_msg(rq,
                                                 os.path.join(file_path,
                                                              f_name + ".txt"))
-
     time.sleep(1)
 
     if status:
@@ -102,7 +100,6 @@ def main():
     config_path = os.path.join(test_path, "config")
     file_path = os.path.join(test_path, "testfiles")
     cfg = gen_libs.load_module("rabbitmq", config_path)
-
     rq = blackbox_libs.create_rq_pub(cfg)
 
     if rq:
