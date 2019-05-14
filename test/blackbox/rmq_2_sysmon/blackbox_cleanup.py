@@ -1,18 +1,6 @@
 #!/usr/bin/python
 # Classification (U)
 
-###############################################################################
-#
-# Program:      blackbox_cleanup.py
-#
-# Class Dependencies:
-#               None
-#
-# Library Dependenices:
-#               None
-#
-###############################################################################
-
 """Program:  blackbox_cleanup.py
 
     Description:  Clean up of log and message files in test environment for
@@ -24,7 +12,6 @@
 
 """
 
-###############################################################################
 # Libraries and Global Variables
 
 # Standard
@@ -79,7 +66,6 @@ def main():
     sysmon_dir = os.path.join(test_path, "sysmon")
     message_dir = os.path.join(test_path, "message_dir")
     logs_dir = os.path.join(test_path, "logs")
-
     delete_files(logs_dir, "rmq_2_sysmon*.log")
     delete_files(message_dir, "blackbox-test_blackbox-test_*.txt")
     delete_files(sysmon_dir, "*.json")

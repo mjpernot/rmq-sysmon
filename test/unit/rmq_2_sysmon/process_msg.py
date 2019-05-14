@@ -111,7 +111,6 @@ class UnitTest(unittest.TestCase):
                 self.ignore_ext = ["_kmz.64.txt", "_pptx.64.txt"]
 
         self.cfg = CfgTest()
-
         self.base_dir = "/BASE_DIR_PATH"
         self.method = "Method Properties"
         self.body = {"Server": "SERVER_NAME.domain.name"}

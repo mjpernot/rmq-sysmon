@@ -33,7 +33,7 @@ import version
 __version__ = version.__version__
 
 
-def monitor_queue(cfg, LOG, **kwargs):
+def monitor_queue(cfg, log, **kwargs):
 
     """Function Stub:  monitor_queue
 
@@ -41,7 +41,7 @@ def monitor_queue(cfg, LOG, **kwargs):
 
     Arguments:
         cfg -> Stub argument holder.
-        LOG -> Stub argument holder.
+        log -> Stub argument holder.
 
     """
 
@@ -111,8 +111,7 @@ class UnitTest(unittest.TestCase):
                 self.log_file = "LOG_FILE"
                 self.to_line = "TO_LINE"
 
-        self.CT = CfgTest()
-
+        self.ct = CfgTest()
         self.args = {"-c": "config_file", "-d": "config_dir", "-M": True}
         self.func_dict = {"-M": monitor_queue}
 
@@ -126,16 +125,13 @@ class UnitTest(unittest.TestCase):
         Description:  Test run_program function with status is False.
 
         Arguments:
-            mock_log -> Mock Ref:  rmq_2_sysmon.gen_class.Logger
-            mock_load -> Mock Ref:  rmq_2_sysmon.gen_libs.load_module
-            mock_valid -> Mock Ref:  rmq_2_sysmon.validate_create_settings
+            None
 
         """
 
-        # Set mock value for all returns.
         mock_log.return_value = True
-        mock_load = self.CT
-        mock_valid.return_value = (self.CT, False, "Failed to load cfg")
+        mock_load.return_value = self.ct
+        mock_valid.return_value = (self.ct, False, "Failed to load cfg")
 
         with gen_libs.no_std_out():
             self.assertFalse(rmq_2_sysmon.run_program(self.args,
@@ -151,16 +147,13 @@ class UnitTest(unittest.TestCase):
         Description:  Test run_program function with status is True.
 
         Arguments:
-            mock_log -> Mock Ref:  rmq_2_sysmon.gen_class.Logger
-            mock_load -> Mock Ref:  rmq_2_sysmon.gen_libs.load_module
-            mock_valid -> Mock Ref:  rmq_2_sysmon.validate_create_settings
+            None
 
         """
 
-        # Set mock value for all returns.
         mock_log.return_value = rmq_2_sysmon.gen_class.Logger
-        mock_load = self.CT
-        mock_valid.return_value = (self.CT, True, "")
+        mock_load.return_value = self.ct
+        mock_valid.return_value = (self.ct, True, "")
         mock_log.log_close.return_value = True
 
         # Remove to skip "for" loop.
@@ -179,47 +172,40 @@ class UnitTest(unittest.TestCase):
         Description:  Test run_program function with call to function.
 
         Arguments:
-            mock_class -> Mock Ref:  rmq_2_sysmon.gen_class
-            mock_load -> Mock Ref:  rmq_2_sysmon.gen_libs.load_module
-            mock_valid -> Mock Ref:  rmq_2_sysmon.validate_create_settings
-            mock_func -> Mock Ref:  rmq_2_sysmon.monitor_queue
+            None
 
         """
 
-        # Set mock value for all returns.
         mock_class.Logger.return_value = rmq_2_sysmon.gen_class.Logger
-        mock_load = self.CT
-        mock_valid.return_value = (self.CT, True, "")
+        mock_load.return_value = self.ct
+        mock_valid.return_value = (self.ct, True, "")
         mock_class.Logger.log_close.return_value = True
         mock_class.ProgramLock = rmq_2_sysmon.gen_class.ProgramLock
         mock_func.return_value = True
 
         self.assertFalse(rmq_2_sysmon.run_program(self.args, self.func_dict))
 
+    @mock.patch("rmq_2_sysmon.gen_class.Logger")
     @mock.patch("rmq_2_sysmon.validate_create_settings")
     @mock.patch("rmq_2_sysmon.gen_libs.load_module")
-    @mock.patch("rmq_2_sysmon.gen_class")
-    def test_raise_exception(self, mock_class, mock_load, mock_valid):
+    @mock.patch("rmq_2_sysmon.gen_class.ProgramLock")
+    def test_raise_exception(self, mock_lock, mock_load, mock_valid, mock_log):
 
         """Function:  test_raise_exception
 
         Description:  Test run_program function with raising the exception.
 
         Arguments:
-            mock_class -> Mock Ref:  rmq_2_sysmon.gen_class
-            mock_load -> Mock Ref:  rmq_2_sysmon.gen_libs.load_module
-            mock_valid -> Mock Ref:  rmq_2_sysmon.validate_create_settings
+            None
 
         """
 
-        # Set mock value for all returns.
-        mock_class.Logger.return_value = rmq_2_sysmon.gen_class.Logger
-        mock_load = self.CT
-        mock_valid.return_value = (self.CT, True, "")
-        mock_class.Logger.log_close.return_value = True
-        mock_class.ProgramLock = rmq_2_sysmon.gen_class.ProgramLock
-        mock_class.ProgramLock.side_effect = \
-            rmq_2_sysmon.gen_class.SingleInstanceException()
+        mock_lock.side_effect = rmq_2_sysmon.gen_class.SingleInstanceException
+        mock_log.return_value = rmq_2_sysmon.gen_class.Logger
+        mock_log.log_info.return_value = True
+        mock_log.log_close.return_value = True
+        mock_load.return_value = self.ct
+        mock_valid.return_value = (self.ct, True, "")
 
         self.assertFalse(rmq_2_sysmon.run_program(self.args, self.func_dict))
 
@@ -234,7 +220,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.CT = None
+        self.ct = None
 
 
 if __name__ == "__main__":

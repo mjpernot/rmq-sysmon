@@ -1,20 +1,6 @@
 #!/usr/bin/python
 # Classification (U)
 
-###############################################################################
-#
-# Program:      monitor_queue.py
-#
-# Class Dependencies:
-#               lib.gen_class   => v2.4.0 or higher
-#
-# Library Dependenices:
-#               rmq_2_sysmon    => v0.1.0 or higher
-#               rmq_cleanup     => v0.1.0 or higher
-#               lib.gen_libs    => v2.4.0 or higher
-#
-###############################################################################
-
 """Program:  monitor_queue.py
 
     Description:  Integration testing of monitor_queue in rmq_2_sysmon.py.
@@ -80,20 +66,15 @@ class UnitTest(unittest.TestCase):
         self.base_dir = "test/integration/rmq_2_sysmon"
         self.test_path = os.path.join(os.getcwd(), self.base_dir)
         self.config_path = os.path.join(self.test_path, "config")
-
         self.cfg = gen_libs.load_module("rabbitmq", self.config_path)
-
         log_path = os.path.join(self.test_path, self.cfg.log_dir)
         self.cfg.log_file = os.path.join(log_path, self.cfg.log_file)
-
         self.cfg.message_dir = os.path.join(self.test_path,
                                             self.cfg.message_dir)
-
         self.LOG = gen_class.Logger(self.cfg.log_file, self.cfg.log_file,
                                     "INFO",
                                     "%(asctime)s %(levelname)s %(message)s",
                                     "%Y-%m-%dT%H:%M:%SZ")
-
         self.connect_true = "Connected to RabbitMQ node"
 
     @mock.patch("rmq_2_sysmon.rabbitmq_class.RabbitMQCon.consume")
@@ -109,9 +90,7 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_consume.return_value = "RabbitMQ_Tag"
-
         rmq_2_sysmon.monitor_queue(self.cfg, self.LOG)
-
         self.LOG.log_close()
 
         if self.connect_true in open(self.cfg.log_file).read():
@@ -134,7 +113,6 @@ class UnitTest(unittest.TestCase):
         """
 
         os.remove(self.cfg.log_file)
-
         rmq_cleanup.rmq_cleanup(self.cfg, self.cfg.queue_name, True)
 
 
