@@ -149,9 +149,7 @@ def main():
     base_dir = "test/integration/rmq_2_sysmon"
     test_path = os.path.join(os.getcwd(), base_dir)
     config_path = os.path.join(test_path, "config")
-
     cfg = gen_libs.load_module("rabbitmq", config_path)
-
     print("\nRabbitMQ cleanup...")
     rmq_cleanup(cfg, cfg.queue_name, True)
 
