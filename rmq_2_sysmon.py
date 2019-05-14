@@ -305,12 +305,14 @@ def run_program(args_array, func_dict, **kwargs):
 
     Arguments:
         (input) args_array -> Dict of command line options and values.
-        (input) func_dict -> Dictionary list of functions and options.
+        (input) func_dict -> Dict of function calls and associated options.
         (input) **kwargs:
             None
 
     """
 
+    args_array = dict(args_array)
+    func_dict = dict(func_dict)
     cfg = gen_libs.load_module(args_array["-c"], args_array["-d"])
     cfg, status_flag, err_msg = validate_create_settings(cfg)
 
