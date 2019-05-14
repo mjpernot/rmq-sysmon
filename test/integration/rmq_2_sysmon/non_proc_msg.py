@@ -1,20 +1,6 @@
 #!/usr/bin/python
 # Classification (U)
 
-###############################################################################
-#
-# Program:      non_proc_msg.py
-#
-# Class Dependencies:
-#               class.rabbitmq_class    => v0.3.0 or higher
-#               lib.gen_class           => v2.4.0 or higher
-#
-# Library Dependenices:
-#               rmq_2_sysmon            => v0.1.0 or higher
-#               lib.gen_libs            => v2.4.0 or higher
-#
-###############################################################################
-
 """Program:  non_proc_msg.py
 
     Description:  Integration testing of non_proc_msg in rmq_2_sysmon.py.
@@ -80,15 +66,11 @@ class UnitTest(unittest.TestCase):
         self.base_dir = "test/integration/rmq_2_sysmon"
         self.test_path = os.path.join(os.getcwd(), self.base_dir)
         self.config_path = os.path.join(self.test_path, "config")
-
         self.cfg = gen_libs.load_module("rabbitmq", self.config_path)
-
         log_path = os.path.join(self.test_path, self.cfg.log_dir)
         self.cfg.log_file = os.path.join(log_path, self.cfg.log_file)
-
         self.cfg.message_dir = os.path.join(self.test_path,
                                             self.cfg.message_dir)
-
         self.LOG = gen_class.Logger(self.cfg.log_file, self.cfg.log_file,
                                     "INFO",
                                     "%(asctime)s %(levelname)s %(message)s",
@@ -102,12 +84,10 @@ class UnitTest(unittest.TestCase):
                                              self.cfg.x_durable,
                                              self.cfg.q_durable,
                                              self.cfg.auto_delete)
-
         self.line = "Test_Me_File"
         self.subj = "Test_Me"
         self.test_date = "2018-01-01"
         self.test_time = "10:00:00"
-
         self.test_file = self.RQ.exchange + "_" + self.RQ.queue_name + "_" \
             + self.test_date + "_" + self.test_time + ".txt"
 
@@ -130,10 +110,8 @@ class UnitTest(unittest.TestCase):
         mock_date.return_value = self.test_date
         mock_time.return_value = self.test_time
         mock_mail.send_mail.return_value = True
-
         rmq_2_sysmon.non_proc_msg(self.RQ, self.LOG, self.cfg, self.line,
                                   self.subj)
-
         self.LOG.log_close()
 
         if self.line in open(os.path.join(self.cfg.message_dir,

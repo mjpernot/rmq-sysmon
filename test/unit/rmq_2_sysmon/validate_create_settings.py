@@ -114,12 +114,10 @@ class UnitTest(unittest.TestCase):
                 self.ignore_ext = ["_kmz.64.txt", "_pptx.64.txt"]
 
         self.cfg = CfgTest()
-
         self.base_dir = "/BASE_DIR_PATH"
         self.err_msg1 = "Missing Message Dir "
         self.err_msg2 = "Missing Log Dir "
         self.err_msg3 = "Missing Sysmon Dir "
-
         base_name, ext_name = os.path.splitext(self.cfg.log_file)
         self.log_name = base_name + "_" + self.cfg.exchange_name + "_" \
             + self.cfg.queue_name + ext_name
@@ -139,7 +137,6 @@ class UnitTest(unittest.TestCase):
         mock_lib.chk_crt_dir.side_effect = [(False, self.err_msg1),
                                             (False, self.err_msg2),
                                             (False, self.err_msg3)]
-
         cfg_mod, status_flag, err_msg = \
             rmq_2_sysmon.validate_create_settings(self.cfg)
 
@@ -162,7 +159,6 @@ class UnitTest(unittest.TestCase):
         mock_lib.chk_crt_dir.side_effect = [(False, self.err_msg1),
                                             (False, self.err_msg2),
                                             (True, None)]
-
         cfg_mod, status_flag, err_msg = \
             rmq_2_sysmon.validate_create_settings(self.cfg)
 
@@ -184,7 +180,6 @@ class UnitTest(unittest.TestCase):
         mock_lib.chk_crt_dir.side_effect = [(True, None),
                                             (False, self.err_msg3),
                                             (True, None)]
-
         cfg_mod, status_flag, err_msg = \
             rmq_2_sysmon.validate_create_settings(self.cfg)
 
@@ -204,7 +199,6 @@ class UnitTest(unittest.TestCase):
 
         mock_lib.chk_crt_dir.side_effect = [(True, None), (True, None),
                                             (True, None)]
-
         cfg_mod, status_flag, err_msg = \
             rmq_2_sysmon.validate_create_settings(self.cfg)
 
@@ -225,7 +219,6 @@ class UnitTest(unittest.TestCase):
         mock_lib.chk_crt_dir.side_effect = [(True, None),
                                             (False, self.err_msg2),
                                             (True, None)]
-
         cfg_mod, status_flag, err_msg = \
             rmq_2_sysmon.validate_create_settings(self.cfg)
 
@@ -245,7 +238,6 @@ class UnitTest(unittest.TestCase):
 
         mock_lib.chk_crt_dir.side_effect = [(True, None), (True, None),
                                             (True, None)]
-
         cfg_mod, status_flag, err_msg = \
             rmq_2_sysmon.validate_create_settings(self.cfg)
 
@@ -267,7 +259,6 @@ class UnitTest(unittest.TestCase):
 
         mock_lib.chk_crt_dir.side_effect = [(False, self.err_msg1),
                                             (True, None), (True, None)]
-
         cfg_mod, status_flag, err_msg = \
             rmq_2_sysmon.validate_create_settings(self.cfg)
 
@@ -287,7 +278,6 @@ class UnitTest(unittest.TestCase):
 
         mock_lib.chk_crt_dir.side_effect = [(True, None), (True, None),
                                             (True, None)]
-
         cfg_mod, status_flag, err_msg = \
             rmq_2_sysmon.validate_create_settings(self.cfg)
 
