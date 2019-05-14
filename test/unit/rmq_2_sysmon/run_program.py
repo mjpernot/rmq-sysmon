@@ -112,7 +112,6 @@ class UnitTest(unittest.TestCase):
                 self.to_line = "TO_LINE"
 
         self.ct = CfgTest()
-
         self.args = {"-c": "config_file", "-d": "config_dir", "-M": True}
         self.func_dict = {"-M": monitor_queue}
 
