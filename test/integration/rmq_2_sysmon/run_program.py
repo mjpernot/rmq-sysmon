@@ -1,20 +1,6 @@
 #!/usr/bin/python
 # Classification (U)
 
-###############################################################################
-#
-# Program:      run_program.py
-#
-# Class Dependencies:
-#               None
-#
-# Library Dependenices:
-#               rmq_2_sysmon    => v0.1.0 or higher
-#               rmq_cleanup     => v0.1.0 or higher
-#               lib.gen_libs    => v2.4.0 or higher
-#
-###############################################################################
-
 """Program:  run_program.py
 
     Description:  Integration testing of run_program in rmq_2_sysmon.py.
@@ -79,17 +65,12 @@ class UnitTest(unittest.TestCase):
         self.base_dir = "test/integration/rmq_2_sysmon"
         self.test_path = os.path.join(os.getcwd(), self.base_dir)
         self.config_path = os.path.join(self.test_path, "config")
-
         self.cfg = gen_libs.load_module("rabbitmq", self.config_path)
-
         log_path = os.path.join(self.test_path, self.cfg.log_dir)
         self.cfg.log_file = os.path.join(log_path, self.cfg.log_file)
-
         self.cfg.message_dir = os.path.join(self.test_path,
                                             self.cfg.message_dir)
-
         self.cfg.sysmon_dir = os.path.join(self.test_path, self.cfg.sysmon_dir)
-
         self.connect_true = "Connected to RabbitMQ node"
         self.args_array = {"-M": True, "-c": "rabbitmq", "-d": "config"}
         self.func_dict = {"-M": rmq_2_sysmon.monitor_queue}
@@ -113,7 +94,6 @@ class UnitTest(unittest.TestCase):
         mock_consume.return_value = "RabbitMQ_Tag"
         mock_cfg.return_value = self.cfg
         mock_base.return_value = self.test_path
-
         rmq_2_sysmon.run_program(self.args_array, self.func_dict)
 
         if self.connect_true in open(self.cfg.log_file).read():
@@ -136,7 +116,6 @@ class UnitTest(unittest.TestCase):
         """
 
         os.remove(self.cfg.log_file)
-
         rmq_cleanup.rmq_cleanup(self.cfg, self.cfg.queue_name, True)
 
 
