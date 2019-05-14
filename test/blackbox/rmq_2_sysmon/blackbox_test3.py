@@ -61,7 +61,6 @@ def test_1(rq, file_path, message_dir, log_dir, **kwargs):
     status, err_msg = blackbox_libs.publish_msg(rq,
                                                 os.path.join(file_path,
                                                              f_name + ".txt"))
-
     time.sleep(1)
 
     if status:
