@@ -205,7 +205,7 @@ class UnitTest(unittest.TestCase):
         mock_log.return_value = rmq_2_sysmon.gen_class.Logger
         mock_log.log_info.return_value = True
         mock_log.log_close.return_value = True
-        mock_load = self.CT
+        mock_load.return_value = self.CT
         mock_valid.return_value = (self.CT, True, "")
 
         self.assertFalse(rmq_2_sysmon.run_program(self.args, self.func_dict))
