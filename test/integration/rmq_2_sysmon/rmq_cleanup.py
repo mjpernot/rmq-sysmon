@@ -66,19 +66,8 @@ def rmq_cleanup(cfg, queue_name, drop_exch=False):
                 try:
                     rq.channel.exchange_declare(exchange=rq.exchange,
                                                 passive=True)
-
                     rq.create_queue()
-
-                    try:
-                        rq.channel.queue_declare(queue=rq.queue_name,
-                                                 passive=True)
-                        rq.clear_queue()
-                        rq.drop_queue()
-                        _cleanup(rq, connect_status, drop_exch)
-
-                    except pika.exceptions.ChannelClosed as msg:
-                        print("\tWarning:  Unable to locate queue")
-                        print("Error Msg: %s" % msg)
+                    _cleanup(rq, connect_status, drop_exch)
 
                 except pika.exceptions.ChannelClosed as msg:
                     print("\tWarning:  Unable to find an exchange")
@@ -111,27 +100,36 @@ def _cleanup(rq, connect_status, drop_exch):
 
     """
 
-    if drop_exch:
-        rq.drop_exchange()
+    try:
+        rq.channel.queue_declare(queue=rq.queue_name, passive=True)
+        rq.clear_queue()
+        rq.drop_queue()
 
-    rq.close_channel()
+        if drop_exch:
+            rq.drop_exchange()
 
-    if rq.channel.is_closed:
-        if connect_status and rq.connection._impl.connection_state > 0:
-            rq.close()
+        rq.close_channel()
 
-            if rq.connection._impl.connection_state != 0:
-                print("\tFailed to close connection")
-                print("\tConnection: %s" % rq.connection)
-                print("\tConnection State: %s" %
-                      rq.connection._impl.connection_state)
+        if rq.channel.is_closed:
+            if connect_status and rq.connection._impl.connection_state > 0:
+                rq.close()
+
+                if rq.connection._impl.connection_state != 0:
+                    print("\tFailed to close connection")
+                    print("\tConnection: %s" % rq.connection)
+                    print("\tConnection State: %s" %
+                          rq.connection._impl.connection_state)
+
+            else:
+                print("\tConnection not opened")
 
         else:
-            print("\tConnection not opened")
+            print("\tFailure:  Channel did not close")
+            print("\tChannel: %s" % rq.channel)
 
-    else:
-        print("\tFailure:  Channel did not close")
-        print("\tChannel: %s" % rq.channel)
+    except pika.exceptions.ChannelClosed as msg:
+        print("\tWarning:  Unable to locate queue")
+        print("Error Msg: %s" % msg)
 
 
 def main():
