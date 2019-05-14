@@ -1,18 +1,6 @@
 #!/usr/bin/python
 # Classification (U)
 
-###############################################################################
-#
-# Program:      rmq_cleanup.py
-#
-# Class Dependencies:
-#               class.rabbitmq_class    => v0.3.0 or higher
-#
-# Library Dependenices:
-#               lib.gen_libs            => v2.4.0 or higher
-#
-###############################################################################
-
 """Program:  rmq_cleanup.py
 
     Description:  Cleanup of RabbitMQ exchange and queues.
@@ -101,10 +89,7 @@ def rmq_cleanup(cfg, queue_name, drop_exch=False):
 
                                 RQ.close()
 
-                                if RQ.connection._impl.connection_state == 0:
-                                    pass
-
-                                else:
+                                if RQ.connection._impl.connection_state != 0:
                                     print("\tFailed to close connection")
                                     print("\tConnection: %s" % RQ.connection)
                                     print("\tConnection State: %s" %
