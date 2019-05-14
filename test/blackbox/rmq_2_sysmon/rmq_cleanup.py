@@ -102,7 +102,6 @@ def _cleanup(rq, connect_status, drop_exch):
 
     try:
         rq.channel.queue_declare(queue=rq.queue_name, passive=True)
-
         rq.clear_queue()
         rq.drop_queue()
 
