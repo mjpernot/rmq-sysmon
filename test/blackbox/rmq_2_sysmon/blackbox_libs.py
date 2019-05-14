@@ -52,7 +52,6 @@ def create_rq_pub(cfg, **kwargs):
                                     cfg.queue_name, cfg.queue_name,
                                     cfg.x_durable, cfg.q_durable,
                                     cfg.auto_delete)
-
     connect_status, err_msg = rq.create_connection()
 
     if connect_status and rq.channel.is_open:
