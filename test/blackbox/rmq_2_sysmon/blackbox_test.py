@@ -1,19 +1,6 @@
 #!/usr/bin/python
 # Classification (U)
 
-###############################################################################
-#
-# Program:      blackbox_test.py
-#
-# Class Dependencies:
-#               class.rabbitmq_class    => v0.3.0 or higher
-#
-# Library Dependenices:
-#               lib.gen_libs            => v2.4.0 or higher
-#               blackbox_libs           => v0.2.0 or higher
-#
-###############################################################################
-
 """Program:  blackbox_test.py
 
     Description:  Blackbox testing of rmq_2_sysmon.py program.
@@ -47,14 +34,14 @@ import version
 __version__ = version.__version__
 
 
-def test_1(RQ, file_path, sysmon_dir, **kwargs):
+def test_1(rq, file_path, sysmon_dir, **kwargs):
 
     """Function:  test_1
 
     Description:  Process a single properly formatted message.
 
     Arguments:
-        (input) RQ -> RabbitMQ Publisher instance
+        (input) rq -> RabbitMQ Publisher instance
         (input) file_path -> Directory path to test file location.
         (input) sysmon_dir -> Directory path to location of sysmon reports.
         (input) **kwargs:
@@ -64,11 +51,9 @@ def test_1(RQ, file_path, sysmon_dir, **kwargs):
 
     print("\tTest 1:  Process formatted sysmon report.")
     f_name = "SERVER_NAME"
-
-    status, err_msg = blackbox_libs.publish_msg(RQ,
+    status, err_msg = blackbox_libs.publish_msg(rq,
                                                 os.path.join(file_path,
                                                              f_name + ".txt"))
-
     time.sleep(1)
 
     if status:
@@ -112,11 +97,10 @@ def main():
     config_path = os.path.join(test_path, "config")
     file_path = os.path.join(test_path, "testfiles")
     cfg = gen_libs.load_module("rabbitmq", config_path)
+    rq = blackbox_libs.create_rq_pub(cfg)
 
-    RQ = blackbox_libs.create_rq_pub(cfg)
-
-    if RQ:
-        test_1(RQ, file_path, cfg.sysmon_dir)
+    if rq:
+        test_1(rq, file_path, cfg.sysmon_dir)
 
     else:
         print("Error:  Failed to create RabbitMQ Publisher instance")
