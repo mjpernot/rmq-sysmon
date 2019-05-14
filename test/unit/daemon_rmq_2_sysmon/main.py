@@ -1,19 +1,6 @@
 #!/usr/bin/python
 # Classification (U)
 
-###############################################################################
-#
-# Program:      main.py
-#
-# Class Dependencies:
-#               None
-#
-# Library Dependenices:
-#               daemon_rmq_2_sysmon => 0.0.1 or higher
-#               lib/gen_libs        => 2.4.0 or higher
-#
-###############################################################################
-
 """Program:  main.py
 
     Description:  Unit testing of main in daemon_rmq_2_sysmon.py.
@@ -81,7 +68,6 @@ class UnitTest(unittest.TestCase):
         """
 
         args = {"-a": "start", "-c": "rabbitmq"}
-
         mock_arg.arg_parse2.return_value = args
         mock_arg.arg_require.return_value = False
         mock_daemon.return_value = True
@@ -103,7 +89,6 @@ class UnitTest(unittest.TestCase):
         """
 
         args = {"-a": "stop", "-c": "rabbitmq"}
-
         mock_arg.arg_parse2.return_value = args
         mock_arg.arg_require.return_value = False
         mock_daemon.return_value = True
@@ -125,7 +110,6 @@ class UnitTest(unittest.TestCase):
         """
 
         args = {"-a": "restart", "-c": "rabbitmq"}
-
         mock_arg.arg_parse2.return_value = args
         mock_arg.arg_require.return_value = False
         mock_daemon.return_value = True
@@ -145,7 +129,6 @@ class UnitTest(unittest.TestCase):
         """
 
         args = {"-a": "nostart", "-c": "rabbitmq"}
-
         mock_arg.arg_parse2.return_value = args
         mock_arg.arg_require.return_value = False
 
@@ -167,7 +150,6 @@ class UnitTest(unittest.TestCase):
         """
 
         args = {"-a": "start", "-c": "rabbitmq"}
-
         mock_arg.arg_parse2.return_value = args
         mock_arg.arg_require.return_value = False
         mock_daemon.return_value = True
@@ -187,7 +169,6 @@ class UnitTest(unittest.TestCase):
         """
 
         args = {"-a": "start", "-c": "rabbitmq"}
-
         mock_arg.arg_parse2.return_value = args
         mock_arg.arg_require.return_value = True
 
