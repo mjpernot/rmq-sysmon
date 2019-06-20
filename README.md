@@ -2,7 +2,7 @@
 # Classification (U)
 
 # Description:
-  This program consists of a Python program that processes Package Admin emails in RabbitMQ, converts the emails to a JSON report and write the JSON report to the sysmon directory.
+  This program consists of a Python program that processes Package Admin emails in RabbitMQ, converts the emails to a JSON report and write the JSON report to a specified directory.
 
 
 ###  This README file is broken down into the following sections:
@@ -11,9 +11,7 @@
  * Installation
  * Configuration
  * Running
- * Program Description
  * Program Help Function
- * Help Message
  * Testing
    - Unit
    - Integration
@@ -157,17 +155,6 @@ service rmq_2_sysmon stop
 ```
 
 
-# Program Description:
-### Program:  rmq_2_sysmon.py
-##### Description:  Process Package Admin emails in RabbitMQ, convert the email to a JSON report, and write the JSON report to the sysmon directory.
-
-### Program:  daemon_rmq_2_sysmon.py
-##### Description:  Runs the rmq_2_sysmon program as a daemon/service.
-
-### Program:  rmq_2_sysmon_service.sh
-##### Description:  Init script for use with the Linux service command.
-
-
 # Program Help Function:
 
   All of the programs, except the command and class files, will have an -h (Help option) that will show display a help message for that particular program.  The help message will usually consist of a description, usage, arugments to the program, example, notes about the program, and any known bugs not yet fixed.  To run the help command:
@@ -176,89 +163,6 @@ service rmq_2_sysmon stop
 ```
     `{Python_Project}/rmq-sysmon/rmq_2_sysmon.py -h`
 ```
-
-
-# Help Message:
-  Below is the help message for each of the programs along with the current version for the program.  Recommend running the -h option on the command line to ensure you have the latest help message for the program.
-
-
-    Program:  rmq_2_sysmon.py
-
-    Description:  Process Package Admin emails in RabbitMQ, convert the email
-        to a JSON report, and write the JSON report to the sysmon directory.
-
-    Usage:
-        rmq_2_sysmon.py -c file -d dir_path [-M] [-v | -h]
-
-    Arguments:
-        -M => Monitor and process messages from a RabbitMQ queue.
-        -c file => RabbitMQ configuration file.  Required argument.
-        -d dir_path => Directory path for option '-c'.  Required argument.
-        -v => Display version of this program.
-        -h => Help and usage message.
-
-        NOTE 1:  -v or -h overrides all other options.
-
-    Notes:
-        The option to monitor the RabbitMQ is setup to run in an infinite loop
-        and can only be killed with a CTRL-C on the command line or shutdown of
-        the service.
-
-        RabbitMQ configuration file format (rabbitmq.py).  The configuration
-        file format is for the RabbitMQ connection.
-
-            # RabbitMQ Configuration file
-            # Classification (U)
-            # Unclassified until filled.
-            user = "USER"
-            passwd = "PASSWORD"
-            host = "HOSTNAME"
-            # Directory for writing sysmon reports to.
-            sysmon_dir = "DIR_PATH"
-            # RabbitMQ Exchange name being monitored.
-            exchange_name = "EXCHANGE_NAME"
-            # RabbitMQ Queue name being monitored.
-            queue_name = "QUEUE_NAME"
-            # Email address(es) to send non-processed messages to or None.
-            # None state no emails are required to be sent.
-            to_line = "EMAIL_ADDRESS@DOMAIN_NAME"
-            # RabbitMQ listening port, default is 5672.
-            port = 5672
-            # Type of exchange:  direct, topic, fanout, headers
-            exchange_type = "direct"
-            # Is exchange durable: True|False
-            x_durable = True
-            # Are queues durable: True|False
-            q_durable = True
-            # Queues automatically delete message after processing: True|False
-            auto_delete = False
-            # Archive directory name for non-processed messages.
-            message_dir = "message_dir"
-            # Directory name for log files.
-            log_dir = "logs"
-            # File name to program log.
-            log_file = "rmq_2_sysmon.log"
-
-    Example:
-        rmq_2_sysmon.py -c rabbitmq -d config -M
-
-
-    Program:  daemon_rmq_2_sysmon.py
-
-    Description:  Runs the rmq_2_sysmon program as a daemon/service.
-
-    Usage:
-        daemon_rmq_2_sysmon.py -a {start|stop|restart} {rmq_2_sysmon options}
-
-    Arguments:
-        -a {start|stop|restart} => Start, stop, restart the rmq_2_sysmon
-            daemon.
-        rmq_2_sysmon options => See rmq_2_sysmon for options.
-            -c module option from rmq_2_sysmon is required to make the daemon
-                pidfile unique for running multiple instances.
-
-    Example:
-        daemon_rmq_2_sysmon.py -a start -c rabbitmq -d config -M
 
 
 # Testing:
