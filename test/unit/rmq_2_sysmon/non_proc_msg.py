@@ -9,7 +9,6 @@
         test/unit/rmq_2_sysmon/non_proc_msg.py
 
     Arguments:
-        None
 
 """
 
@@ -28,7 +27,6 @@ sys.path.append(os.getcwd())
 import rmq_2_sysmon
 import version
 
-# Version Information
 __version__ = version.__version__
 
 
@@ -40,7 +38,7 @@ class UnitTest(unittest.TestCase):
 
     Super-Class:  unittest.TestCase
 
-    Sub-Classes:  None
+    Sub-Classes:
 
     Methods:
         setUp -> Initialize testing environment.
@@ -57,7 +55,6 @@ class UnitTest(unittest.TestCase):
         Description:  Initialization for unit testing.
 
         Arguments:
-            None
 
         """
 
@@ -69,7 +66,7 @@ class UnitTest(unittest.TestCase):
 
             Super-Class:  object
 
-            Sub-Classes:  None
+            Sub-Classes:
 
             Methods:
                 __init__ -> Initialize configuration environment.
@@ -83,7 +80,6 @@ class UnitTest(unittest.TestCase):
                 Description:  Initialization instance of the CfgTest class.
 
                 Arguments:
-                        None
 
                 """
 
@@ -104,9 +100,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test non_proc_msg function with empty to line.
 
         Arguments:
-            mock_log -> Mock Ref:  rmq_2_sysmon.gen_class.Logger
-            mock_write -> Mock Ref:  rmq_2_sysmon.gen_libs.write_file
-            mock_mail -> Mock Ref:  rmq_2_sysmon.gen_class.Mail
 
         """
 
@@ -127,9 +120,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test non_proc_msg function with valid to line.
 
         Arguments:
-            mock_log -> Mock Ref:  rmq_2_sysmon.gen_class.Logger
-            mock_write -> Mock Ref:  rmq_2_sysmon.gen_libs.write_file
-            mock_mail -> Mock Ref:  rmq_2_sysmon.gen_class.Mail
 
         """
 
@@ -149,7 +139,6 @@ class UnitTest(unittest.TestCase):
         Description:  Clean up of unit testing.
 
         Arguments:
-            None
 
         """
 

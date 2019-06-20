@@ -9,7 +9,6 @@
         test/unit/rmq_2_sysmon/help_message.py
 
     Arguments:
-        None
 
 """
 
@@ -28,7 +27,6 @@ import rmq_2_sysmon
 import lib.gen_libs as gen_libs
 import version
 
-# Version Information
 __version__ = version.__version__
 
 
@@ -40,7 +38,7 @@ class UnitTest(unittest.TestCase):
 
     Super-Class:  unittest.TestCase
 
-    Sub-Classes:  None
+    Sub-Classes:
 
     Methods:
         test_help_message -> Test with no arguments.
@@ -54,7 +52,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test help_message function.
 
         Arguments:
-            None
 
         """
 
