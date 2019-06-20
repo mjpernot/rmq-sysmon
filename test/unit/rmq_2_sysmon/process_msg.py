@@ -9,7 +9,6 @@
         test/unit/rmq_2_sysmon/process_msg.py
 
     Arguments:
-        None
 
 """
 
@@ -29,7 +28,6 @@ import rmq_2_sysmon
 import version
 import lib.gen_libs as gen_libs
 
-# Version Information
 __version__ = version.__version__
 
 
@@ -41,7 +39,7 @@ class UnitTest(unittest.TestCase):
 
     Super-Class:  unittest.TestCase
 
-    Sub-Classes:  None
+    Sub-Classes:
 
     Methods:
         setUp -> Initialize testing environment.
@@ -61,7 +59,6 @@ class UnitTest(unittest.TestCase):
         Description:  Initialization for unit testing.
 
         Arguments:
-            None
 
         """
 
@@ -73,7 +70,7 @@ class UnitTest(unittest.TestCase):
 
             Super-Class:  object
 
-            Sub-Classes:  None
+            Sub-Classes:
 
             Methods:
                 __init__ -> Initialize configuration environment.
@@ -87,7 +84,6 @@ class UnitTest(unittest.TestCase):
                 Description:  Initialization instance of the CfgTest class.
 
                 Arguments:
-                        None
 
                 """
 
@@ -109,6 +105,9 @@ class UnitTest(unittest.TestCase):
                 self.log_file = "rmq_2_isse.log"
                 self.proc_file = "files_processed"
                 self.ignore_ext = ["_kmz.64.txt", "_pptx.64.txt"]
+                self.prename = "Pre-filename"
+                self.postname = "Post-filename"
+                self.key = "Server"
 
         self.cfg = CfgTest()
         self.base_dir = "/BASE_DIR_PATH"
@@ -127,9 +126,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test if the body is unable to convert to JSON.
 
         Arguments:
-            mock_json -> Mock Ref:  rmq_2_sysmon.json.loads
-            mock_log -> Mock Ref:  rmq_2_sysmon.gen_class.Logger
-            mock_msg -> Mock Ref:  rmq_2_sysmon.non_proc_msg
 
         """
 
@@ -151,10 +147,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test if the body is unable to convert to JSON.
 
         Arguments:
-            mock_json -> Mock Ref:  rmq_2_sysmon.json.loads
-            mock_log -> Mock Ref:  rmq_2_sysmon.gen_class.Logger
-            mock_libs -> Mock Ref:  rmq_2_sysmon.gen_libs.print_dict
-            mock_msg -> Mock Ref:  rmq_2_sysmon.non_proc_msg
 
         """
 
@@ -176,9 +168,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test if the body is converted to JSON.
 
         Arguments:
-            mock_json -> Mock Ref:  rmq_2_sysmon.json.loads
-            mock_log -> Mock Ref:  rmq_2_sysmon.gen_class.Logger
-            mock_libs -> Mock Ref:  rmq_2_sysmon.gen_libs.print_dict
 
         """
 
@@ -199,9 +188,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test if the body is a dictionary.
 
         Arguments:
-            mock_json -> Mock Ref:  rmq_2_sysmon.json.loads
-            mock_log -> Mock Ref:  rmq_2_sysmon.gen_class.Logger
-            mock_libs -> Mock Ref:  rmq_2_sysmon.gen_libs.print_dict
 
         """
 
@@ -222,9 +208,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test if the body is not a dictionary.
 
         Arguments:
-            mock_json -> Mock Ref:  rmq_2_sysmon.json.loads
-            mock_msg -> Mock Ref:  rmq_2_sysmon.non_proc_msg
-            mock_log -> Mock Ref:  rmq_2_sysmon.gen_class.Logger
 
         """
 
@@ -242,7 +225,6 @@ class UnitTest(unittest.TestCase):
         Description:  Clean up of unit testing.
 
         Arguments:
-            None
 
         """
 

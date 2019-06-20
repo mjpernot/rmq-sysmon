@@ -9,7 +9,6 @@
         test/blackbox/rmq_2_sysmon/blackbox_test.py
 
     Arguments:
-        None
 
 """
 
@@ -32,7 +31,6 @@ import lib.gen_libs as gen_libs
 import blackbox_libs
 import version
 
-# Version Information
 __version__ = version.__version__
 
 
@@ -47,8 +45,6 @@ def test_1(rq, file_path, message_dir, log_dir, **kwargs):
         (input) file_path -> Directory path to test file location.
         (input) message_dir -> Directory path to location of error messages.
         (input) log_dir -> Directory path to location of log file.
-        (input) **kwargs:
-            None
 
     """
 
@@ -91,7 +87,6 @@ def main():
         file_path -> Directory path the test files.
 
     Arguments:
-        None
 
     """
 

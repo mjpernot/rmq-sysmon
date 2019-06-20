@@ -9,7 +9,6 @@
         test/unit/rmq_2_sysmon/validate_create_settings.py
 
     Arguments:
-        None
 
 """
 
@@ -30,7 +29,6 @@ import rmq_2_sysmon
 import version
 import lib.gen_libs as gen_libs
 
-# Version Information
 __version__ = version.__version__
 
 
@@ -42,7 +40,7 @@ class UnitTest(unittest.TestCase):
 
     Super-Class:  unittest.TestCase
 
-    Sub-Classes:  None
+    Sub-Classes:
 
     Methods:
         setUp -> Initialize testing environment.
@@ -64,7 +62,6 @@ class UnitTest(unittest.TestCase):
         Description:  Initialization for unit testing.
 
         Arguments:
-            None
 
         """
 
@@ -76,7 +73,7 @@ class UnitTest(unittest.TestCase):
 
             Super-Class:  object
 
-            Sub-Classes:  None
+            Sub-Classes:
 
             Methods:
                 __init__ -> Initialize configuration environment.
@@ -90,7 +87,6 @@ class UnitTest(unittest.TestCase):
                 Description:  Initialization instance of the CfgTest class.
 
                 Arguments:
-                        None
 
                 """
 
@@ -130,7 +126,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test if multiple checks return False.
 
         Arguments:
-            mock_lib -> Mock Ref:  rmq_2_sysmon.gen_libs
 
         """
 
@@ -152,7 +147,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test if multiple checks return False.
 
         Arguments:
-            mock_lib -> Mock Ref:  rmq_2_sysmon.gen_libs
 
         """
 
@@ -173,7 +167,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test if sysmon_dir check returns False.
 
         Arguments:
-            mock_lib -> Mock Ref:  rmq_2_sysmon.gen_libs
 
         """
 
@@ -193,7 +186,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test if sysmon_dir check returns True.
 
         Arguments:
-            mock_lib -> Mock Ref:  rmq_2_sysmon.gen_libs
 
         """
 
@@ -212,7 +204,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test if log_dir check returns False.
 
         Arguments:
-            mock_lib -> Mock Ref:  rmq_2_sysmon.gen_libs
 
         """
 
@@ -232,7 +223,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test if log_dir check returns True.
 
         Arguments:
-            mock_lib -> Mock Ref:  rmq_2_sysmon.gen_libs
 
         """
 
@@ -253,7 +243,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test if message_dir check returns False.
 
         Arguments:
-            mock_lib -> Mock Ref:  rmq_2_sysmon.gen_libs
 
         """
 
@@ -272,7 +261,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test if message_dir check returns True.
 
         Arguments:
-            mock_lib -> Mock Ref:  rmq_2_sysmon.gen_libs
 
         """
 
@@ -290,7 +278,6 @@ class UnitTest(unittest.TestCase):
         Description:  Clean up of unit testing.
 
         Arguments:
-            None
 
         """
 

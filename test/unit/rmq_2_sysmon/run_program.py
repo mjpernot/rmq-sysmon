@@ -9,7 +9,6 @@
         test/unit/rmq_2_sysmon/run_program.py
 
     Arguments:
-        None
 
 """
 
@@ -29,7 +28,6 @@ import rmq_2_sysmon
 import lib.gen_libs as gen_libs
 import version
 
-# Version Information
 __version__ = version.__version__
 
 
@@ -56,7 +54,7 @@ class UnitTest(unittest.TestCase):
 
     Super-Class:  unittest.TestCase
 
-    Sub-Classes:  None
+    Sub-Classes:
 
     Methods:
         setUp -> Initialize testing environment.
@@ -75,7 +73,6 @@ class UnitTest(unittest.TestCase):
         Description:  Initialization for unit testing.
 
         Arguments:
-            None
 
         """
 
@@ -87,7 +84,7 @@ class UnitTest(unittest.TestCase):
 
             Super-Class:  object
 
-            Sub-Classes:  None
+            Sub-Classes:
 
             Methods:
                 __init__ -> Initialize configuration environment.
@@ -101,7 +98,6 @@ class UnitTest(unittest.TestCase):
                 Description:  Initialization instance of the CfgTest class.
 
                 Arguments:
-                        None
 
                 """
 
@@ -125,7 +121,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test run_program function with status is False.
 
         Arguments:
-            None
 
         """
 
@@ -147,7 +142,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test run_program function with status is True.
 
         Arguments:
-            None
 
         """
 
@@ -172,7 +166,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test run_program function with call to function.
 
         Arguments:
-            None
 
         """
 
@@ -196,7 +189,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test run_program function with raising the exception.
 
         Arguments:
-            None
 
         """
 
@@ -216,7 +208,6 @@ class UnitTest(unittest.TestCase):
         Description:  Clean up of unit testing.
 
         Arguments:
-            None
 
         """
 

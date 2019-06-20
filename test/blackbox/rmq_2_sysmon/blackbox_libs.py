@@ -9,7 +9,6 @@
         test/blackbox/rmq_2_sysmon/blackbox_libs.py
 
     Arguments:
-        None
 
 """
 
@@ -29,7 +28,6 @@ import rabbit_lib.rabbitmq_class as rabbitmq_class
 import lib.gen_libs as gen_libs
 import version
 
-# Version Information
 __version__ = version.__version__
 
 
@@ -41,8 +39,6 @@ def create_rq_pub(cfg, **kwargs):
 
     Arguments:
         (input) cfg -> Configuration settings module for the program.
-        (input) **kwargs:
-            None
         (output) rq -> RabbitMQ Publisher instance
 
     """
@@ -71,8 +67,6 @@ def file_test(f_name, **kwargs):
 
     Arguments:
         (input) f_name ->  Full path and file name of sysmon test file.
-        (input) **kwargs:
-            None
         (output) status -> True|False - Success of the test.
         (output) err_msg -> Error message.
 
@@ -107,8 +101,6 @@ def publish_msg(rq, f_name, **kwargs):
     Arguments:
         (input) rq -> RabbitMQ Publisher instance
         (input) f_name ->  Full path and file name of test file.
-        (input) **kwargs:
-            None
         (output) status -> True|False - Status of publish.
         (output) err_msg -> Error message.
 
