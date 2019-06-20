@@ -9,7 +9,6 @@
         test/blackbox/rmq_2_sysmon/blackbox_test2.py
 
     Arguments:
-        None
 
 """
 
@@ -29,7 +28,6 @@ import lib.gen_libs as gen_libs
 import blackbox_libs
 import version
 
-# Version Information
 __version__ = version.__version__
 
 
@@ -41,8 +39,6 @@ def test_1(sysmon_dir, **kwargs):
 
     Arguments:
         (input) sysmon_dir -> Directory path to location of sysmon reports.
-        (input) **kwargs:
-            None
 
     """
 
@@ -75,7 +71,6 @@ def main():
         config_path -> Directory path to config, including test_path.
 
     Arguments:
-        None
 
     """
 

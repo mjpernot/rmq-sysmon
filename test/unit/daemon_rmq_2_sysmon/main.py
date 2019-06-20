@@ -9,7 +9,6 @@
         test/unit/daemon_rmq_2_sysmon/main.py
 
     Arguments:
-        None
 
 """
 
@@ -29,7 +28,6 @@ import daemon_rmq_2_sysmon
 import lib.gen_libs as gen_libs
 import version
 
-# Version Information
 __version__ = version.__version__
 
 
@@ -41,7 +39,7 @@ class UnitTest(unittest.TestCase):
 
     Super-Class:  unittest.TestCase
 
-    Sub-Classes:  None
+    Sub-Classes:
 
     Methods:
         test_start_daemon -> Test main function with daemon start option.
@@ -62,8 +60,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test main function with daemon start option.
 
         Arguments:
-            mock_daemon -> Mock Ref:  daemon_rmq_2_sysmon.Rmq2SysmonDaemon
-            mock_arg -> Mock Ref:  daemon_rmq_2_sysmon.arg_parser
 
         """
 
@@ -83,8 +79,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test main function with daemon stop option.
 
         Arguments:
-            mock_daemon -> Mock Ref:  daemon_rmq_2_sysmon.Rmq2SysmonDaemon
-            mock_arg -> Mock Ref:  daemon_rmq_2_sysmon.arg_parser
 
         """
 
@@ -104,8 +98,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test main function with daemon restart option.
 
         Arguments:
-            mock_daemon -> Mock Ref:  daemon_rmq_2_sysmon.Rmq2SysmonDaemon
-            mock_arg -> Mock Ref:  daemon_rmq_2_sysmon.arg_parser
 
         """
 
@@ -124,7 +116,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test main function with invalid option.
 
         Arguments:
-            mock_arg -> Mock Ref:  daemon_rmq_2_sysmon.arg_parser
 
         """
 
@@ -144,8 +135,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test main function with arg_require false.
 
         Arguments:
-            mock_daemon -> Mock Ref:  daemon_rmq_2_sysmon.Rmq2SysmonDaemon
-            mock_arg -> Mock Ref:  daemon_rmq_2_sysmon.arg_parser
 
         """
 
@@ -164,7 +153,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test main function with arg_require true.
 
         Arguments:
-            mock_arg -> Mock Ref:  daemon_rmq_2_sysmon.arg_parser
 
         """
 

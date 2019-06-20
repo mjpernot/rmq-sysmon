@@ -10,7 +10,6 @@
         test/blackbox/rmq_2_sysmon/cleanup.py
 
     Arguments:
-        None
 
 """
 
@@ -29,7 +28,6 @@ import blackbox_cleanup
 import rmq_cleanup
 import version
 
-# Version Information
 __version__ = version.__version__
 
 
@@ -43,7 +41,6 @@ def main():
         None
 
     Arguments:
-        None
 
     """
 

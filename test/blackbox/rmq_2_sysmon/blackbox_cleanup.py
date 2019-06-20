@@ -8,7 +8,7 @@
 
     Usage:  blackbox_cleanup.py
 
-    Arguments:  None
+    Arguments:
 
 """
 
@@ -25,7 +25,6 @@ import glob
 sys.path.append(os.getcwd())
 import version
 
-# Version Information
 __version__ = version.__version__
 
 
@@ -38,8 +37,6 @@ def delete_files(base_dir, f_filter, **kwargs):
     Arguments:
         (input) base_dir -> Base directory path to testing directory.
         (input) f_filter -> File filter for searching.
-        (input) **kwargs:
-            None
 
     """
 
@@ -54,10 +51,8 @@ def main():
     Description:  Controls flow of program.
 
     Variables:
-        None
 
     Arguments:
-        None
 
     """
 

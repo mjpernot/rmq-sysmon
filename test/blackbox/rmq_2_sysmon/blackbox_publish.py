@@ -9,7 +9,6 @@
         test/blackbox/rmq_2_sysmon/blackbox_publish.py
 
     Arguments:
-        None
 
 """
 
@@ -29,7 +28,6 @@ import lib.gen_libs as gen_libs
 import blackbox_libs
 import version
 
-# Version Information
 __version__ = version.__version__
 
 
@@ -42,8 +40,6 @@ def test_1(rq, file_path, **kwargs):
     Arguments:
         (input) rq -> RabbitMQ Publisher instance
         (input) file_path -> Directory path to test file location.
-        (input) **kwargs:
-            None
 
     """
 

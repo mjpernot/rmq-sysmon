@@ -9,7 +9,6 @@
         test/blackbox/rmq_2_sysmon/rmq_cleanup.py
 
     Arguments:
-        None
 
 """
 
@@ -28,7 +27,6 @@ import rabbit_lib.rabbitmq_class as rabbitmq_class
 import lib.gen_libs as gen_libs
 import version
 
-# Version Information
 __version__ = version.__version__
 
 
@@ -145,7 +143,6 @@ def main():
         cfg -> Configuration settings module for the program.
 
     Arguments:
-        None
 
     """
 

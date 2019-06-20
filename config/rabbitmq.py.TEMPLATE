@@ -13,6 +13,12 @@ queue_name = "QUEUE_NAME"
 # Email address(es) to send non-processed messages to or None.
 # None state no emails are required to be sent.
 to_line = "EMAIL_ADDRESS"
+# Pre-name and post-name for the file name.
+# An empty string will not be included in the file name.
+prename = ""
+postname = ""
+# Dictionary key in JSON to be part of the file name.
+key = "Server"
 # RabbitMQ listening port, default is 5672.
 port = 5672
 # Type of exchange:  direct, topic, fanout, headers

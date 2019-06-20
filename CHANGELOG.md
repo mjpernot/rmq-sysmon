@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [0.3.1] - 2019-06-20
+- Allow different JSON report formats to be processed.
+
+### Changed
+- process_msg:  Replaced dictionary key with a configuration setting and changed the format of the file name for the JSON report.
+- Added new entries to the rabbitmq configuration template file.
+
+
 ## [0.3.0] - 2019-05-14
 - General Field Release
 

@@ -9,7 +9,6 @@
         test/unit/rmq_2_sysmon/monitor_queue.py
 
     Arguments:
-        None
 
 """
 
@@ -28,7 +27,6 @@ sys.path.append(os.getcwd())
 import rmq_2_sysmon
 import version
 
-# Version Information
 __version__ = version.__version__
 
 
@@ -40,7 +38,7 @@ class UnitTest(unittest.TestCase):
 
     Super-Class:  unittest.TestCase
 
-    Sub-Classes:  None
+    Sub-Classes:
 
     Methods:
         setUp -> Initialize testing environment.
@@ -60,7 +58,6 @@ class UnitTest(unittest.TestCase):
         Description:  Initialization for unit testing.
 
         Arguments:
-            None
 
         """
 
@@ -72,7 +69,7 @@ class UnitTest(unittest.TestCase):
 
             Super-Class:  object
 
-            Sub-Classes:  None
+            Sub-Classes:
 
             Methods:
                 __init__ -> Initialize configuration environment.
@@ -86,7 +83,6 @@ class UnitTest(unittest.TestCase):
                 Description:  Initialization instance of the CfgTest class.
 
                 Arguments:
-                        None
 
                 """
 
@@ -113,8 +109,6 @@ class UnitTest(unittest.TestCase):
             message.
 
         Arguments:
-            mock_log -> Mock Ref:  rmq_2_sysmon.gen_class.Logger
-            mock_rq -> Mock Ref:  rmq_2_sysmon.rabbitmq_class.RabbitMQCon
 
         """
 
@@ -134,8 +128,6 @@ class UnitTest(unittest.TestCase):
             channel is False.
 
         Arguments:
-            mock_log -> Mock Ref:  rmq_2_sysmon.gen_class.Logger
-            mock_rq -> Mock Ref:  rmq_2_sysmon.rabbitmq_class.RabbitMQCon
 
         """
 
@@ -156,8 +148,6 @@ class UnitTest(unittest.TestCase):
             channel is False.
 
         Arguments:
-            mock_log -> Mock Ref:  rmq_2_sysmon.gen_class.Logger
-            mock_rq -> Mock Ref:  rmq_2_sysmon.rabbitmq_class.RabbitMQCon
 
         """
 
@@ -178,8 +168,6 @@ class UnitTest(unittest.TestCase):
             channel is True.
 
         Arguments:
-            mock_log -> Mock Ref:  rmq_2_sysmon.gen_class.Logger
-            mock_rq -> Mock Ref:  rmq_2_sysmon.rabbitmq_class.RabbitMQCon
 
         """
 
@@ -200,8 +188,6 @@ class UnitTest(unittest.TestCase):
             channel is True.
 
         Arguments:
-            mock_log -> Mock Ref:  rmq_2_sysmon.gen_class.Logger
-            mock_rq -> Mock Ref:  rmq_2_sysmon.rabbitmq_class.RabbitMQCon
 
         """
 
@@ -221,7 +207,6 @@ class UnitTest(unittest.TestCase):
         Description:  Clean up of unit testing.
 
         Arguments:
-            None
 
         """
 
