@@ -10,7 +10,6 @@
         test/integration/rmq_2_sysmon/validate_create_settings.py
 
     Arguments:
-        None
 
 """
 
@@ -30,7 +29,6 @@ import rmq_2_sysmon
 import lib.gen_libs as gen_libs
 import version
 
-# Version Information
 __version__ = version.__version__
 
 
@@ -42,20 +40,16 @@ class UnitTest(unittest.TestCase):
 
     Super-Class:  unittest.TestCase
 
-    Sub-Classes:  None
+    Sub-Classes:
 
     Methods:
         setUp -> Initialize testing environment.
-        test_sysmon_dir_chk_false -> Test gen_libs.chk_crt_dir(sysmon_dir) is
-            False.
-        test_log_dir_chk_false -> Test gen_libs.chk_crt_dir(log_dir) is False.
-        test_msg_dir_chk_false -> Test gen_libs.chk_crt_dir(message_dir) is
-            False.
-        test_sysmon_dir_chk_true -> Test gen_libs.chk_crt_dir(sysmon_dir) is
-            True.
-        test_log_dir_chk_true -> Test gen_libs.chk_crt_dir(log_dir) is True.
-        test_msg_dir_chk_true -> Test gen_libs.chk_crt_dir(message_dir) is
-            True.
+        test_sysmon_dir_chk_false -> Test chk_crt_dir(sysmon_dir) is False.
+        test_log_dir_chk_false -> Test chk_crt_dir(log_dir) is False.
+        test_msg_dir_chk_false -> Test chk_crt_dir(message_dir) is False.
+        test_sysmon_dir_chk_true -> Test chk_crt_dir(sysmon_dir) is True.
+        test_log_dir_chk_true -> Test chk_crt_dir(log_dir) is True.
+        test_msg_dir_chk_true -> Test chk_crt_dir(message_dir) is True.
         tearDown -> Clean up of testing environment.
 
     """
@@ -67,7 +61,6 @@ class UnitTest(unittest.TestCase):
         Description:  Initialization for integration testing.
 
         Arguments:
-            None
 
         """
 
@@ -90,7 +83,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test gen_libs.chk_crt_dir(sysmon_dir) is False.
 
         Arguments:
-            mock_base -> Mock Ref:  rmq_2_sysmon.gen_libs.get_base_dir
 
         """
 
@@ -111,7 +103,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test gen_libs.chk_crt_dir(log_dir) is False.
 
         Arguments:
-            mock_base -> Mock Ref:  rmq_2_sysmon.gen_libs.get_base_dir
 
         """
 
@@ -132,7 +123,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test gen_libs.chk_crt_dir(message_dir) is False.
 
         Arguments:
-            mock_base -> Mock Ref:  rmq_2_sysmon.gen_libs.get_base_dir
 
         """
 
@@ -154,7 +144,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test gen_libs.chk_crt_dir(sysmon_dir) is True.
 
         Arguments:
-            mock_base -> Mock Ref:  rmq_2_sysmon.gen_libs.get_base_dir
 
         """
 
@@ -172,7 +161,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test gen_libs.chk_crt_dir(log_dir) is True.
 
         Arguments:
-            mock_base -> Mock Ref:  rmq_2_sysmon.gen_libs.get_base_dir
 
         """
 
@@ -190,7 +178,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test gen_libs.chk_crt_dir(message_dir) is True.
 
         Arguments:
-            mock_base -> Mock Ref:  rmq_2_sysmon.gen_libs.get_base_dir
 
         """
 
@@ -207,7 +194,6 @@ class UnitTest(unittest.TestCase):
         Description:  Clean up of integration testing.
 
         Arguments:
-            None
 
         """
 
