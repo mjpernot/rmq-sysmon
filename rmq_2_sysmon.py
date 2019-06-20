@@ -41,6 +41,12 @@
             # Email address(es) to send non-processed messages to or None.
             # None state no emails are required to be sent.
             to_line = "EMAIL_ADDRESS@DOMAIN_NAME"
+            # Pre-name and post-name for the file name.
+            # An empty string will not be included in the file name.
+            prename = ""
+            postname = ""
+            # Dictionary key in JSON to be part of the file name.
+            key = "Server"
             # RabbitMQ listening port, default is 5672.
             port = 5672
             # Type of exchange:  direct, topic, fanout, headers
@@ -81,7 +87,6 @@ import lib.gen_class as gen_class
 import rabbit_lib.rabbitmq_class as rabbitmq_class
 import version
 
-# Version
 __version__ = version.__version__
 
 
@@ -93,8 +98,6 @@ def help_message(**kwargs):
         message when -h option is selected.
 
     Arguments:
-        (input) **kwargs:
-            None
 
     """
 
@@ -110,8 +113,6 @@ def validate_create_settings(cfg, **kwargs):
 
     Arguments:
         (input) cfg -> Configuration module name.
-        (input) **kwargs:
-            None
         (output) cfg -> Configuration module handler.
         (output) status_flag -> True|False - successfully validation/creation.
         (output) err_msg -> Error message from checks.
@@ -169,8 +170,6 @@ def non_proc_msg(rq, log, cfg, data, subj, **kwargs):
         (input) log -> Log class instance.
         (input) cfg -> Configuration settings module for the program.
         (input) data -> Body of message that was not processed.
-        (input) **kwargs:
-            None
 
     """
 
@@ -210,8 +209,6 @@ def process_msg(rq, log, cfg, method, body, **kwargs):
         (input) cfg -> Configuration settings module for the program.
         (input) method -> Delivery properties.
         (input) body -> Message body.
-        (input) **kwargs:
-            None
 
     """
 
@@ -248,8 +245,6 @@ def monitor_queue(cfg, log, **kwargs):
     Arguments:
         (input) cfg -> Configuration settings module for the program.
         (input) log -> Log class instance.
-        (input) **kwargs:
-            None
 
     """
 
@@ -306,8 +301,6 @@ def run_program(args_array, func_dict, **kwargs):
     Arguments:
         (input) args_array -> Dict of command line options and values.
         (input) func_dict -> Dict of function calls and associated options.
-        (input) **kwargs:
-            None
 
     """
 
