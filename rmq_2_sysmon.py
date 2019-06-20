@@ -221,10 +221,10 @@ def process_msg(rq, log, cfg, method, body, **kwargs):
 
     if isinstance(data, dict):
 
-        if "Server" in data:
-            f_name = os.path.join(cfg.sysmon_dir,
-                                  str(data["Server"].split(".")[0]) +
-                                  "_pkgs.json")
+        if cfg.key in data:
+            f_name = os.path.join(cfg.sysmon_dir, cfg.prename +
+                                  str(data[cfg.key].split(".")[0]) +
+                                  cfg.postname + ".json")
 
             err_flag, err_msg = gen_libs.print_dict(data, json_fmt=True,
                                                     no_std=True, ofile=f_name)
