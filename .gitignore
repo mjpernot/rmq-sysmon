@@ -2,5 +2,7 @@
 .coverage
 *.swp
 coverage.xml
+config/*.py
+config/*.cfg
 lib
 rabbit_lib
