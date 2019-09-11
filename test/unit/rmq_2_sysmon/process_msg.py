@@ -39,6 +39,7 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Initialize testing environment.
+        test_json_load_fails -> Test with json.load fails.
         test_key_not_in_dict -> Test if key is not in dictionary.
         test_create_json_fail -> Test if the body is unable to convert to JSON.
         test_create_json -> Test if the body is converted to JSON.
@@ -106,7 +107,26 @@ class UnitTest(unittest.TestCase):
         self.method = "Method Properties"
         self.body = {"Server": "SERVER_NAME.domain.name"}
         self.body2 = {"Non-Key": "Non-Value"}
+        self.body3 = "This a string"
         self.rq = "RabbitMQ Instance"
+
+    @mock.patch("rmq_2_sysmon.gen_class.Logger")
+    @mock.patch("rmq_2_sysmon.non_proc_msg")
+    def test_json_load_fails(self, mock_msg, mock_log):
+
+        """Function:  test_json_load_fails
+
+        Description:  Test with json.load fails.
+
+        Arguments:
+
+        """
+
+        mock_msg.return_value = True
+        mock_log.return_value = True
+
+        self.assertFalse(rmq_2_sysmon.process_msg(self.rq, mock_log, self.cfg,
+                                                  self.method, self.body3))
 
     @mock.patch("rmq_2_sysmon.non_proc_msg")
     @mock.patch("rmq_2_sysmon.gen_class.Logger")
