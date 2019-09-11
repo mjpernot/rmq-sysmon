@@ -14,7 +14,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 ### Changed
 - process_msg:  Replaced dictionary key with a configuration setting and changed the format of the file name for the JSON report.
-- Added new entries to the rabbitmq configuration template file.
+- config/rabbitmq.py.TEMPLATE: Added new entries to the rabbitmq configuration template file.
 
 
 ## [0.3.0] - 2019-05-14
