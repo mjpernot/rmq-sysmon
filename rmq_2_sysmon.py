@@ -214,26 +214,32 @@ def process_msg(rq, log, cfg, method, body, **kwargs):
 
     log.log_info("process_msg:  Processing body of message...")
 
-    data = json.loads(body)
+    try:
+        data = json.loads(body)
 
-    if isinstance(data, dict):
+        if isinstance(data, dict):
 
-        if cfg.key in data:
-            f_name = os.path.join(cfg.sysmon_dir, cfg.prename +
-                                  str(data[cfg.key].split(".")[0]) +
-                                  cfg.postname + ".json")
+            if cfg.key in data:
+                f_name = os.path.join(cfg.sysmon_dir, cfg.prename +
+                                      str(data[cfg.key].split(".")[0]) +
+                                      cfg.postname + ".json")
+                err_flag, err_msg = gen_libs.print_dict(data, json_fmt=True,
+                                                        no_std=True,
+                                                        ofile=f_name)
 
-            err_flag, err_msg = gen_libs.print_dict(data, json_fmt=True,
-                                                    no_std=True, ofile=f_name)
+                if err_flag:
+                    non_proc_msg(rq, log, cfg, data,
+                                 "Unable to convert to JSON")
 
-            if err_flag:
-                non_proc_msg(rq, log, cfg, data, "Unable to convert to JSON")
+            else:
+                non_proc_msg(rq, log, cfg, data,
+                             "Dictionary does not contain key")
 
         else:
-            non_proc_msg(rq, log, cfg, data, "Dictionary does not contain key")
+            non_proc_msg(rq, log, cfg, body, "Non-dictionary format")
 
-    else:
-        non_proc_msg(rq, log, cfg, body, "Non-dictionary format")
+    except ValueError as e:
+        non_proc_msg(rq, log, cfg, body, e)
 
 
 def monitor_queue(cfg, log, **kwargs):

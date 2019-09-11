@@ -36,7 +36,6 @@ import lib.gen_class as gen_class
 import rmq_2_sysmon
 import version
 
-# Version
 __version__ = version.__version__
 
 
@@ -45,12 +44,6 @@ class Rmq2SysmonDaemon(gen_class.Daemon):
     """Class:  Rmq2SysmonDaemon
 
     Description:
-
-    Super-Class:
-        gen_class.Daemon
-
-    Sub-Classes:
-        None
 
     Methods:
         run -> Daemon instance will execute this code when called.
@@ -68,7 +61,6 @@ class Rmq2SysmonDaemon(gen_class.Daemon):
             self.argv_list -> List of command line options and values.
 
         Arguments:
-            None
 
         """
 
