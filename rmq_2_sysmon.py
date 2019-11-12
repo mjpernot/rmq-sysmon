@@ -239,7 +239,7 @@ def process_msg(rq, log, cfg, method, body, **kwargs):
             non_proc_msg(rq, log, cfg, body, "Non-dictionary format")
 
     except ValueError as e:
-        non_proc_msg(rq, log, cfg, body, e)
+        non_proc_msg(rq, log, cfg, body, str(e))
 
 
 def monitor_queue(cfg, log, **kwargs):

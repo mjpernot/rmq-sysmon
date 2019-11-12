@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [1.0.0] - 2019-11-12
+- General Production Release
+
+### Fixed
+- process_msg:  Convert exception message from a class to a string.
+
+
 ## [0.3.2] - 2019-09-10
 ### Fixed
 - process_msg:  Capture exception for non-JSON formatted messages.
