@@ -10,6 +10,9 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 ### Fixed
 - process_msg:  Convert exception message from a class to a string.
 
+### Changed
+- Documentation update.
+
 
 ## [0.3.2] - 2019-09-10
 ### Fixed

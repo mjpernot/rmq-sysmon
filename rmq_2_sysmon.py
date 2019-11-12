@@ -170,6 +170,7 @@ def non_proc_msg(rq, log, cfg, data, subj, **kwargs):
         (input) log -> Log class instance.
         (input) cfg -> Configuration settings module for the program.
         (input) data -> Body of message that was not processed.
+        (input) subj -> Email subject line.
 
     """
 
