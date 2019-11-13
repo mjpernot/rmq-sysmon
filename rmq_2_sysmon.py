@@ -170,6 +170,7 @@ def non_proc_msg(rq, log, cfg, data, subj, **kwargs):
         (input) log -> Log class instance.
         (input) cfg -> Configuration settings module for the program.
         (input) data -> Body of message that was not processed.
+        (input) subj -> Email subject line.
 
     """
 
@@ -239,7 +240,7 @@ def process_msg(rq, log, cfg, method, body, **kwargs):
             non_proc_msg(rq, log, cfg, body, "Non-dictionary format")
 
     except ValueError as e:
-        non_proc_msg(rq, log, cfg, body, e)
+        non_proc_msg(rq, log, cfg, body, str(e))
 
 
 def monitor_queue(cfg, log, **kwargs):
@@ -290,7 +291,7 @@ def monitor_queue(cfg, log, **kwargs):
         log.log_info("Connected to RabbitMQ node")
 
         # Setup the RabbitMQ Consume callback and start monitoring.
-        tag_name = rq.consume(callback)
+        rq.consume(callback)
         rq.start_loop()
 
     else:
