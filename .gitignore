@@ -1,6 +1,7 @@
 *.pyc
 .coverage
 *.swp
+*.sh
 coverage.xml
 config/*.py
 config/*.cfg
