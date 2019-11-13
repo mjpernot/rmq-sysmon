@@ -7,6 +7,9 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 ## [1.0.0] - 2019-11-12
 - General Production Release
 
+### Changed
+- monitor_queue:  Removed unused variable.
+
 ### Fixed
 - process_msg:  Convert exception message from a class to a string.
 
