@@ -7,12 +7,12 @@
         to a JSON report, and write the JSON report to the sysmon directory.
 
     Usage:
-        rmq_2_sysmon.py -c file -d dir_path [-M] [-v | -h]
+        rmq_2_sysmon.py -c file -d dir_path {-M} [-v | -h]
 
     Arguments:
-        -M => Monitor and process messages from a RabbitMQ queue.
         -c file => RabbitMQ configuration file.  Required argument.
         -d dir_path => Directory path for option '-c'.  Required argument.
+        -M => Monitor and process messages from a RabbitMQ queue.
         -v => Display version of this program.
         -h => Help and usage message.
 
@@ -192,7 +192,6 @@ def non_proc_msg(rq, log, cfg, data, subj, **kwargs):
 
     log.log_err("Message was not processed due to: %s" % (subj))
     log.log_info("Saving message to: %s" % (f_path))
-
     gen_libs.write_file(f_path, data="Exchange: %s, Queue: %s"
                         % (rq.exchange, rq.queue_name))
     gen_libs.write_file(f_path, data=data)
@@ -276,15 +275,12 @@ def monitor_queue(cfg, log, **kwargs):
         rq.ack(method.delivery_tag)
 
     log.log_info("monitor_queue:  Start monitoring queue...")
-
     rq = rabbitmq_class.RabbitMQCon(cfg.user, cfg.passwd, cfg.host, cfg.port,
                                     cfg.exchange_name, cfg.exchange_type,
                                     cfg.queue_name, cfg.queue_name,
                                     cfg.x_durable, cfg.q_durable,
                                     cfg.auto_delete)
-
     log.log_info("Connection info: %s->%s" % (cfg.host, cfg.exchange_name))
-
     connect_status, err_msg = rq.create_connection()
 
     if connect_status and rq.channel.is_open:
@@ -370,7 +366,6 @@ def main(**kwargs):
     """
 
     sys.argv = list(kwargs.get("argv_list", sys.argv))
-
     dir_chk_list = ["-d"]
     func_dict = {"-M": monitor_queue}
     opt_req_list = ["-c", "-d"]
@@ -382,7 +377,6 @@ def main(**kwargs):
     if not gen_libs.help_func(args_array, __version__, help_message) \
        and not arg_parser.arg_require(args_array, opt_req_list) \
        and not arg_parser.arg_dir_chk_crt(args_array, dir_chk_list):
-
         run_program(args_array, func_dict)
 
 
