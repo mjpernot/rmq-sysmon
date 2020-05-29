@@ -26,8 +26,6 @@
 
 # Prerequisites:
   * List of Linux packages that need to be installed on the server.
-    - python-libs
-    - python-devel
     - git
     - python-pip
 
@@ -161,15 +159,13 @@ service rmq_2_sysmon stop
   * Replace **{Python_Project}** with the baseline path of the python program.
 
 ```
-    `{Python_Project}/rmq-sysmon/rmq_2_sysmon.py -h`
+`{Python_Project}/rmq-sysmon/rmq_2_sysmon.py -h`
 ```
 
 
 # Testing:
 
 # Unit Testing:
-
-### Description: Testing consists of unit testing for the functions in the rmq_2_sysmon.py program.
 
 ### Installation:
 
@@ -200,79 +196,23 @@ pip install -r requirements-python-lib.txt --target lib --trusted-host pypi.appd
 pip install -r requirements-rabbitmq-lib.txt --target rabbit_lib --trusted-host pypi.appdev.proj.coe.ic.gov
 ```
 
-# Unit test runs for rmq_2_sysmon.py:
+### Testing:
   * Replace **{Python_Project}** with the baseline path of the python program.
 
 ```
 cd {Python_Project}/rmq-sysmon
-```
-
-### Unit:  help_message
-```
-test/unit/rmq_2_sysmon/help_message.py
-```
-
-### Unit:  validate_create_settings
-```
-test/unit/rmq_2_sysmon/validate_create_settings.py
-```
-
-### Unit:  non_proc_msg
-```
-test/unit/rmq_2_sysmon/non_proc_msg.py
-```
-
-### Unit:  process_msg
-```
-test/unit/rmq_2_sysmon/process_msg.py
-```
-
-### Unit:  monitor_queue
-```
-test/unit/rmq_2_sysmon/monitor_queue.py
-```
-
-### Unit:  run_program
-```
-test/unit/rmq_2_sysmon/run_program.py
-```
-
-### Unit:  main
-```
-test/unit/rmq_2_sysmon/main.py
-```
-
-### All unit testing
-```
 test/unit/rmq_2_sysmon/unit_test_run.sh
-```
-
-### Unit test code coverage
-```
-test/unit/rmq_2_sysmon/code_coverage.sh
-```
-
-# Unit test runs for daemon_rmq_2_sysmon.py:
-  * Replace **{Python_Project}** with the baseline path of the python program.
-
-```
-cd {Python_Project}/rmq-sysmon
-```
-
-### Unit:  main
-```
 test/unit/daemon_rmq_2_sysmon/main.py
 ```
 
-### Unit test code coverage
+### Code coverage:
 ```
+cd {Python_Project}/rmq-sysmon
+test/unit/rmq_2_sysmon/code_coverage.sh
 test/unit/daemon_rmq_2_sysmon/code_coverage.sh
 ```
 
-
 # Integration Testing:
-
-### Description: Testing consists of integration testing of functions in the rmq_2_sysmon.py program.
 
 ### Installation:
 
@@ -332,34 +272,22 @@ vim rabbitmq.py
 chmod 600 rabbitmq.py
 ```
 
-# Integration test runs for rmq_2_sysmon.py:
+### Testing:
   * Replace **{Python_Project}** with the baseline path of the python program.
 
-### Integration tests
 ```
 cd {Python_Project}/rmq-sysmon
-test/integration/rmq_2_sysmon/process_msg.py
-test/integration/rmq_2_sysmon/validate_create_settings.py
-test/integration/rmq_2_sysmon/non_proc_msg.py
-test/integration/rmq_2_sysmon/monitor_queue.py
-test/integration/rmq_2_sysmon/run_program.py
-test/integration/rmq_2_sysmon/main.py
-```
-
-### All integration testing
-```
 test/integration/rmq_2_sysmon/integration_test_run.sh
 ```
 
-### Integration test code coverage
+### Code coverage:
 ```
+cd {Python_Project}/rmq-sysmon
 test/integration/daemon_rmq_2_sysmon/code_coverage.sh
 ```
 
 
 # Blackbox Testing:
-
-### Description: Testing consists of blackbox testing of the rmq_2_sysmon.py program.
 
 ### Installation:
 
@@ -420,7 +348,7 @@ vim rabbitmq.py
 chmod 600 rabbitmq.py
 ```
 
-### Blackbox test run for rmq_2_sysmon.py:
+### Testing:
   * Replace **{Python_Project}** with the baseline path of the python program.
 
 ```
