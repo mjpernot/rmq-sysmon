@@ -59,25 +59,25 @@ pipeline {
                                 "pattern": "./*.py",
                                 "recursive": false,
                                 "excludePatterns": [],
-                                "target": "generic-local/highpoint/rmq-sysmon/"
+                                "target": "pypi-proj-local/highpoint/rmq-sysmon/"
                             },
                             {
                                 "pattern": "./*.txt",
                                 "recursive": false,
                                 "excludePatterns": [],
-                                "target": "generic-local/highpoint/rmq-sysmon/"
+                                "target": "pypi-proj-local/highpoint/rmq-sysmon/"
                             },
                             {
                                 "pattern": "./*.md",
                                 "recursive": false,
                                 "excludePatterns": [],
-                                "target": "generic-local/highpoint/rmq-sysmon/"
+                                "target": "pypi-proj-local/highpoint/rmq-sysmon/"
                             },
                             {
                                 "pattern": "*.TEMPLATE",
                                 "recursive": true,
                                 "excludePatterns": [],
-                                "target": "generic-local/highpoint/rmq-sysmon/config/"
+                                "target": "pypi-proj-local/highpoint/rmq-sysmon/config/"
                             }
                         ]
                     }"""
