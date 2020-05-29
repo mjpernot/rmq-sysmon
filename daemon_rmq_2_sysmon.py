@@ -6,17 +6,21 @@
     Description:  Runs the rmq_2_sysmon program as a daemon/service.
 
     Usage:
-        daemon_rmq_2_sysmon.py -a {start|stop|restart} {rmq_2_sysmon options}
+        daemon_rmq_2_sysmon.py -a {start|stop|restart} {rmq_2_sysmon_options}
 
     Arguments:
-        -a {start|stop|restart} => Start, stop, restart the rmq_2_sysmon
-            daemon.
-        rmq_2_sysmon options => See rmq_2_sysmon for options.
+        -a {start|stop|restart} => start, stop, restart rmq_2_sysmon daemon.
+        rmq_2_sysmon_options => See rmq_2_sysmon for all options.
             -c module option from rmq_2_sysmon is required to make the daemon
                 pidfile unique for running multiple instances.
+            -d full_absolute_directory_path => Directory path for option '-c'.
+            -M => Monitor and process messages from a RabbitMQ queue.
+
+        NOTE:  -d option requires the full absolute path the configuration
+            directory.  The daemon cannot use a relative path.
 
     Example:
-        daemon_rmq_2_sysmon.py -a start -c rabbitmq -d config -M
+        daemon_rmq_2_sysmon.py -a start -c rabbitmq -d /full/path/config -M
 
 """
 
