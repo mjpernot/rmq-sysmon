@@ -91,10 +91,8 @@ def main():
 
     # Process argument list from command line.
     args_array = arg_parser.arg_parse2(sys.argv, opt_val_list)
-
     f_name = "rmq2sysmon_daemon_" + args_array.get("-c", "") + ".pid"
     pid_file = os.path.join(gen_libs.get_base_dir(__file__), "tmp", f_name)
-
     daemon = Rmq2SysmonDaemon(pid_file, argv_list=sys.argv)
 
     if not arg_parser.arg_require(args_array, opt_req_list):
