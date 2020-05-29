@@ -46,6 +46,33 @@ def monitor_queue(cfg, log, **kwargs):
     pass
 
 
+class ProgramLock(object):
+
+    """Class:  ProgramLock
+
+    Description:  Class stub holder for gen_class.ProgramLock class.
+
+    Methods:
+        __init__ -> Class initialization.
+
+    """
+
+    def __init__(self, cmdline, flavor):
+
+        """Method:  __init__
+
+        Description:  Class initialization.
+
+        Arguments:
+            (input) cmdline -> Argv command line.
+            (input) flavor -> Lock flavor ID.
+
+        """
+
+        self.cmdline = cmdline
+        self.flavor = flavor
+
+
 class UnitTest(unittest.TestCase):
 
     """Class:  UnitTest
@@ -100,6 +127,7 @@ class UnitTest(unittest.TestCase):
                 self.to_line = "TO_LINE"
 
         self.ct = CfgTest()
+        self.proglock = ProgramLock(["cmdline"], "FlavorID")
         self.args = {"-c": "config_file", "-d": "config_dir", "-M": True}
         self.func_dict = {"-M": monitor_queue}
 
@@ -165,7 +193,7 @@ class UnitTest(unittest.TestCase):
         mock_load.return_value = self.ct
         mock_valid.return_value = (self.ct, True, "")
         mock_class.Logger.log_close.return_value = True
-        mock_class.ProgramLock = rmq_2_sysmon.gen_class.ProgramLock
+        mock_class.ProgramLock.return_value = self.proglock
         mock_func.return_value = True
 
         self.assertFalse(rmq_2_sysmon.run_program(self.args, self.func_dict))
