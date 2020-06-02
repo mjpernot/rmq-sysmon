@@ -17,8 +17,12 @@
 # Standard
 import sys
 import os
-import unittest
 import datetime
+
+if sys.version_info < (2, 7):
+    import unittest2 as unittest
+else:
+    import unittest
 
 # Third-party
 import mock
