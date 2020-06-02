@@ -30,6 +30,7 @@
 import sys
 import time
 import os
+import psutil
 
 # Third-party
 
@@ -73,6 +74,36 @@ class Rmq2SysmonDaemon(gen_class.Daemon):
             time.sleep(1)
 
 
+def is_active(pidfile, proc_name, **kwargs):
+
+    """Function:  is_active
+
+    Description:  Reads a pid from file and determines if the pid is running
+        as the process name.
+
+    Arguments:
+        (input) pidfile -> Path and file name to a PID file.
+        (input) proc_name -> Process name.
+        (output) status -> True|False - If process is running.
+
+    """
+
+    status = False
+
+    with open(pidfile, "r") as pfile:
+        pid = int(pfile.read().strip())
+
+    if pid:
+
+        for proc in psutil.process_iter():
+
+            if proc.pid == pid and proc.name == proc_name:
+                status = True
+                break
+
+    return status
+
+
 def main():
 
     """Function:  main
@@ -92,6 +123,7 @@ def main():
 
     opt_val_list = ["-a", "-c", "-d"]
     opt_req_list = ["-a", "-c", "-d"]
+    proc_name = "daemon_rmq_2_sy"
 
     # Process argument list from command line.
     args_array = arg_parser.arg_parse2(sys.argv, opt_val_list)
