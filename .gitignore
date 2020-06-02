@@ -1,8 +1,8 @@
 *.pyc
 .coverage
 *.swp
-*.sh
 *.HOLD
+./*.sh
 coverage.xml
 config/*.py
 config/*.cfg
