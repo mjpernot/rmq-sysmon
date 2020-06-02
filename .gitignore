@@ -2,6 +2,7 @@
 .coverage
 *.swp
 *.sh
+*.HOLD
 coverage.xml
 config/*.py
 config/*.cfg
