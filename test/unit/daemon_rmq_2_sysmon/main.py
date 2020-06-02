@@ -42,6 +42,9 @@ class UnitTest(unittest.TestCase):
     Description:  Class which is a representation of a unit testing.
 
     Methods:
+        setUp -> Initialize testing environment.
+        test_pid_not_running -> Test with pid file and process not running.
+        test_pid_running -> Test with pid file and process running.
         test_start_daemon -> Test main function with daemon start option.
         test_stop_daemon -> Test main function with daemon stop option.
         test_restart_daemon -> Test main function with daemon restart option.
@@ -51,9 +54,68 @@ class UnitTest(unittest.TestCase):
 
     """
 
+    def setUp(self):
+
+        """Function:  setUp
+
+        Description:  Initialization for unit testing.
+
+        Arguments:
+
+        """
+
+        self.args = {"-a": "start", "-c": "rabbitmq"}
+
+    @mock.patch("daemon_rmq_2_sysmon.os.remove", mock.Mock(return_value=True))
+    @mock.patch("daemon_rmq_2_sysmon.is_active", mock.Mock(return_value=False))
+    @mock.patch("daemon_rmq_2_sysmon.os.path.isfile",
+                mock.Mock(return_value=True))
+    @mock.patch("daemon_rmq_2_sysmon.Rmq2SysmonDaemon.start",
+                mock.Mock(return_value=True))
     @mock.patch("daemon_rmq_2_sysmon.arg_parser")
-    @mock.patch("daemon_rmq_2_sysmon.Rmq2SysmonDaemon.start")
-    def test_start_daemon(self, mock_daemon, mock_arg):
+    def test_pid_not_running(self, mock_arg):
+
+        """Function:  test_pid_not_running
+
+        Description:  Test with pid file and process not running.
+
+        Arguments:
+
+        """
+
+        mock_arg.arg_parse2.return_value = self.args
+        mock_arg.arg_require.return_value = False
+
+        self.assertRaises(SystemExit, daemon_rmq_2_sysmon.main)
+
+    @mock.patch("daemon_rmq_2_sysmon.is_active", mock.Mock(return_value=True))
+    @mock.patch("daemon_rmq_2_sysmon.os.path.isfile",
+                mock.Mock(return_value=True))
+    @mock.patch("daemon_rmq_2_sysmon.Rmq2SysmonDaemon.start",
+                mock.Mock(return_value=True))
+    @mock.patch("daemon_rmq_2_sysmon.arg_parser")
+    def test_pid_running(self, mock_arg):
+
+        """Function:  test_pid_running
+
+        Description:  Test with pid file and process running.
+
+        Arguments:
+
+        """
+
+        mock_arg.arg_parse2.return_value = self.args
+        mock_arg.arg_require.return_value = False
+
+        with gen_libs.no_std_out():
+            self.assertRaises(SystemExit, daemon_rmq_2_sysmon.main)
+
+    @mock.patch("daemon_rmq_2_sysmon.os.path.isfile",
+                mock.Mock(return_value=False))
+    @mock.patch("daemon_rmq_2_sysmon.Rmq2SysmonDaemon.start",
+                mock.Mock(return_value=True))
+    @mock.patch("daemon_rmq_2_sysmon.arg_parser")
+    def test_start_daemon(self, mock_arg):
 
         """Function:  test_start_daemon
 
@@ -63,10 +125,8 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        args = {"-a": "start", "-c": "rabbitmq"}
-        mock_arg.arg_parse2.return_value = args
+        mock_arg.arg_parse2.return_value = self.args
         mock_arg.arg_require.return_value = False
-        mock_daemon.return_value = True
 
         self.assertRaises(SystemExit, daemon_rmq_2_sysmon.main)
 
@@ -82,8 +142,8 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        args = {"-a": "stop", "-c": "rabbitmq"}
-        mock_arg.arg_parse2.return_value = args
+        self.args["-a"] = "stop"
+        mock_arg.arg_parse2.return_value = self.args
         mock_arg.arg_require.return_value = False
         mock_daemon.return_value = True
 
@@ -101,8 +161,8 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        args = {"-a": "restart", "-c": "rabbitmq"}
-        mock_arg.arg_parse2.return_value = args
+        self.args["-a"] = "restart"
+        mock_arg.arg_parse2.return_value = self.args
         mock_arg.arg_require.return_value = False
         mock_daemon.return_value = True
 
@@ -119,16 +179,19 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        args = {"-a": "nostart", "-c": "rabbitmq"}
-        mock_arg.arg_parse2.return_value = args
+        self.args["-a"] = "nostart"
+        mock_arg.arg_parse2.return_value = self.args
         mock_arg.arg_require.return_value = False
 
         with gen_libs.no_std_out():
             self.assertRaises(SystemExit, daemon_rmq_2_sysmon.main)
 
+    @mock.patch("daemon_rmq_2_sysmon.os.path.isfile",
+                mock.Mock(return_value=False))
+    @mock.patch("daemon_rmq_2_sysmon.Rmq2SysmonDaemon.start",
+                mock.Mock(return_value=True))
     @mock.patch("daemon_rmq_2_sysmon.arg_parser")
-    @mock.patch("daemon_rmq_2_sysmon.Rmq2SysmonDaemon.start")
-    def test_arg_require_false(self, mock_daemon, mock_arg):
+    def test_arg_require_false(self, mock_arg):
 
         """Function:  test_arg_require_false
 
@@ -138,10 +201,8 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        args = {"-a": "start", "-c": "rabbitmq"}
-        mock_arg.arg_parse2.return_value = args
+        mock_arg.arg_parse2.return_value = self.args
         mock_arg.arg_require.return_value = False
-        mock_daemon.return_value = True
 
         self.assertRaises(SystemExit, daemon_rmq_2_sysmon.main)
 
@@ -156,8 +217,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        args = {"-a": "start", "-c": "rabbitmq"}
-        mock_arg.arg_parse2.return_value = args
+        mock_arg.arg_parse2.return_value = self.args
         mock_arg.arg_require.return_value = True
 
         with gen_libs.no_std_out():
