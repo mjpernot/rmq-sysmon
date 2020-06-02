@@ -5,6 +5,9 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 
 ## [1.0.1] - 2020-05-29
+### Fixed
+- daemon_rmq_2_sysmon.main:  Start up action to check for existing pid file and process.
+
 ### Added
 - daemon_rmq_2_sysmon.is_active:  Determine if PID is active process on the server.
 

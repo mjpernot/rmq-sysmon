@@ -134,7 +134,20 @@ def main():
     if not arg_parser.arg_require(args_array, opt_req_list):
 
         if "start" == args_array["-a"]:
-            daemon.start()
+
+            if os.path.isfile(pid_file):
+
+                if is_active(pid_file, proc_name):
+
+                    print("Warning:  Pidfile %s exists and process is running."
+                          % (pid_file))
+
+                else:
+                    os.remove(pid_file)
+                    daemon.start()
+
+            else:
+                daemon.start()
 
         elif "stop" == args_array["-a"]:
             daemon.stop()
