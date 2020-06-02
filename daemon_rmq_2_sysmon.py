@@ -135,16 +135,14 @@ def main():
 
         if "start" == args_array["-a"]:
 
-            if os.path.isfile(pid_file):
+            if os.path.isfile(pid_file) and is_active(pid_file, proc_name):
 
-                if is_active(pid_file, proc_name):
+                print("Warning:  Pidfile %s exists and process is running."
+                      % (pid_file))
 
-                    print("Warning:  Pidfile %s exists and process is running."
-                          % (pid_file))
-
-                else:
-                    os.remove(pid_file)
-                    daemon.start()
+            elif os.path.isfile(pid_file):
+                os.remove(pid_file)
+                daemon.start()
 
             else:
                 daemon.start()
