@@ -31,7 +31,6 @@ import mock
 sys.path.append(os.getcwd())
 import rmq_2_sysmon
 import version
-import lib.gen_libs as gen_libs
 
 __version__ = version.__version__
 
