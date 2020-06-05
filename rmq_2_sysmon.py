@@ -78,6 +78,7 @@ import socket
 import getpass
 
 # Third-party
+import ast
 import json
 
 # Local
@@ -214,8 +215,9 @@ def process_msg(rq, log, cfg, method, body, **kwargs):
 
     log.log_info("process_msg:  Processing body of message...")
 
+
     try:
-        data = json.loads(body)
+        data = ast.literal_eval(body)
 
         if isinstance(data, dict):
 
@@ -234,6 +236,9 @@ def process_msg(rq, log, cfg, method, body, **kwargs):
             non_proc_msg(rq, log, cfg, body, "Non-dictionary format")
 
     except ValueError as e:
+        non_proc_msg(rq, log, cfg, body, str(e))
+
+    except SyntaxError as e:
         non_proc_msg(rq, log, cfg, body, str(e))
 
 
