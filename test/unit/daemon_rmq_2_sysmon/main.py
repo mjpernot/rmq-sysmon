@@ -89,7 +89,6 @@ class UnitTest(unittest.TestCase):
         mock_arg.arg_parse2.return_value = self.args
         mock_arg.arg_require.return_value = False
 
-
         self.assertRaises(SystemExit, daemon_rmq_2_sysmon.main)
 
     @mock.patch("daemon_rmq_2_sysmon.os.path.isfile",
