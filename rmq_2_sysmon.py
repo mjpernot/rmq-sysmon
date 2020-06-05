@@ -223,13 +223,8 @@ def process_msg(rq, log, cfg, method, body, **kwargs):
                 f_name = os.path.join(cfg.sysmon_dir, cfg.prename +
                                       str(data[cfg.key].split(".")[0]) +
                                       cfg.postname + ".json")
-                err_flag, err_msg = gen_libs.print_dict(data, json_fmt=True,
-                                                        no_std=True,
-                                                        ofile=f_name)
-
-                if err_flag:
-                    non_proc_msg(rq, log, cfg, data,
-                                 "Unable to convert to JSON")
+                gen_libs.write_file(fname=f_name, mode="w",
+                                    data=json.dumps(data, indent=4))
 
             else:
                 non_proc_msg(rq, log, cfg, data,
