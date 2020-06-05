@@ -114,8 +114,8 @@ class UnitTest(unittest.TestCase):
         self.body = {"Server": "SERVER_NAME.domain.name"}
         self.body2 = {"Non-Key": "Non-Value"}
         self.body3 = "This a string"
-        self.rawbody2 = {"Non-Key": "Non-Value"}
-        self.rawbody3 = "This a string"
+        self.rawbody2 = '{"Non-Key": "Non-Value"}'
+        self.rawbody3 = '"This a string"'
         self.rq = "RabbitMQ Instance"
 
     @mock.patch("rmq_2_sysmon.gen_class.Logger")
@@ -134,7 +134,7 @@ class UnitTest(unittest.TestCase):
         mock_log.return_value = True
 
         self.assertFalse(rmq_2_sysmon.process_msg(self.rq, mock_log, self.cfg,
-                                                  self.method, self.body3))
+                                                  self.method, self.rawbody3))
 
     @mock.patch("rmq_2_sysmon.gen_class.Logger")
     @mock.patch("rmq_2_sysmon.non_proc_msg")
