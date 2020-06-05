@@ -43,6 +43,8 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Initialize testing environment.
+        test_start_remove -> Test with daemon start option, but pid file exist.
+        test_start_exists -> Test with daemon start option but already running.
         test_pid_not_running -> Test with pid file and process not running.
         test_pid_running -> Test with pid file and process running.
         test_start_daemon -> Test main function with daemon start option.
@@ -65,6 +67,51 @@ class UnitTest(unittest.TestCase):
         """
 
         self.args = {"-a": "start", "-c": "rabbitmq"}
+
+    @mock.patch("daemon_rmq_2_sysmon.os.remove", mock.Mock(return_value=True))
+    @mock.patch("daemon_rmq_2_sysmon.os.path.isfile",
+                mock.Mock(return_value=True))
+    @mock.patch("daemon_rmq_2_sysmon.is_active",
+                mock.Mock(return_value=False))
+    @mock.patch("daemon_rmq_2_sysmon.Rmq2SysmonDaemon.start",
+                mock.Mock(return_value=True))
+    @mock.patch("daemon_rmq_2_sysmon.arg_parser")
+    def test_start_remove(self, mock_arg):
+
+        """Function:  test_start_remove
+
+        Description:  Test with daemon start option, but pid file exist.
+
+        Arguments:
+
+        """
+
+        mock_arg.arg_parse2.return_value = self.args
+        mock_arg.arg_require.return_value = False
+
+
+        self.assertRaises(SystemExit, daemon_rmq_2_sysmon.main)
+
+    @mock.patch("daemon_rmq_2_sysmon.os.path.isfile",
+                mock.Mock(return_value=True))
+    @mock.patch("daemon_rmq_2_sysmon.is_active",
+                mock.Mock(return_value=True))
+    @mock.patch("daemon_rmq_2_sysmon.arg_parser")
+    def test_start_exists(self, mock_arg):
+
+        """Function:  test_start_exists
+
+        Description:  Test with daemon start option, but already running.
+
+        Arguments:
+
+        """
+
+        mock_arg.arg_parse2.return_value = self.args
+        mock_arg.arg_require.return_value = False
+
+        with gen_libs.no_std_out():
+            self.assertRaises(SystemExit, daemon_rmq_2_sysmon.main)
 
     @mock.patch("daemon_rmq_2_sysmon.os.remove", mock.Mock(return_value=True))
     @mock.patch("daemon_rmq_2_sysmon.is_active", mock.Mock(return_value=False))
