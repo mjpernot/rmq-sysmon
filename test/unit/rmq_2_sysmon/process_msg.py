@@ -211,7 +211,7 @@ class UnitTest(unittest.TestCase):
                                                   self.method, self.body2))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
-                mock.Mock(return_value = True))
+                mock.Mock(return_value=True))
     @mock.patch("rmq_2_sysmon.non_proc_msg")
     @mock.patch("rmq_2_sysmon.gen_class.Logger")
     @mock.patch("rmq_2_sysmon.ast.literal_eval")
@@ -233,7 +233,7 @@ class UnitTest(unittest.TestCase):
                                                   self.method, self.body))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
-                mock.Mock(return_value = True))
+                mock.Mock(return_value=True))
     @mock.patch("rmq_2_sysmon.gen_class.Logger")
     @mock.patch("rmq_2_sysmon.ast.literal_eval")
     def test_create_json(self, mock_json, mock_log):
@@ -253,7 +253,7 @@ class UnitTest(unittest.TestCase):
                                                   self.method, self.body))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
-                mock.Mock(return_value = True))
+                mock.Mock(return_value=True))
     @mock.patch("rmq_2_sysmon.gen_class.Logger")
     @mock.patch("rmq_2_sysmon.ast.literal_eval")
     def test_is_dict(self, mock_json, mock_log):
