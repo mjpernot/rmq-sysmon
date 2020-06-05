@@ -152,11 +152,12 @@ class UnitTest(unittest.TestCase):
         self.assertFalse(rmq_2_sysmon.process_msg(self.rq, mock_log, self.cfg,
                                                   self.method, self.body2))
 
+    @mock.patch("rmq_2_sysmon.gen_libs.write_file",
+                mock.Mock(return_value = True))
     @mock.patch("rmq_2_sysmon.non_proc_msg")
-    @mock.patch("rmq_2_sysmon.gen_libs.print_dict")
     @mock.patch("rmq_2_sysmon.gen_class.Logger")
     @mock.patch("rmq_2_sysmon.json.loads")
-    def test_create_json_fail(self, mock_json, mock_log, mock_libs, mock_msg):
+    def test_create_json_fail(self, mock_json, mock_log, mock_msg):
 
         """Function:  test_create_json_fail
 
@@ -168,16 +169,16 @@ class UnitTest(unittest.TestCase):
 
         mock_json.return_value = self.body
         mock_log.return_value = True
-        mock_libs.return_value = (True, "Unable to convert to JSON")
         mock_msg.return_value = True
 
         self.assertFalse(rmq_2_sysmon.process_msg(self.rq, mock_log, self.cfg,
                                                   self.method, self.body))
 
-    @mock.patch("rmq_2_sysmon.gen_libs.print_dict")
+    @mock.patch("rmq_2_sysmon.gen_libs.write_file",
+                mock.Mock(return_value = True))
     @mock.patch("rmq_2_sysmon.gen_class.Logger")
     @mock.patch("rmq_2_sysmon.json.loads")
-    def test_create_json(self, mock_json, mock_log, mock_libs):
+    def test_create_json(self, mock_json, mock_log):
 
         """Function:  test_create_json
 
@@ -189,15 +190,15 @@ class UnitTest(unittest.TestCase):
 
         mock_json.return_value = self.body
         mock_log.return_value = True
-        mock_libs.return_value = (False, "")
 
         self.assertFalse(rmq_2_sysmon.process_msg(self.rq, mock_log, self.cfg,
                                                   self.method, self.body))
 
-    @mock.patch("rmq_2_sysmon.gen_libs.print_dict")
+    @mock.patch("rmq_2_sysmon.gen_libs.write_file",
+                mock.Mock(return_value = True))
     @mock.patch("rmq_2_sysmon.gen_class.Logger")
     @mock.patch("rmq_2_sysmon.json.loads")
-    def test_is_dict(self, mock_json, mock_log, mock_libs):
+    def test_is_dict(self, mock_json, mock_log):
 
         """Function:  test_is_dict
 
@@ -209,7 +210,6 @@ class UnitTest(unittest.TestCase):
 
         mock_json.return_value = self.body
         mock_log.return_value = True
-        mock_libs.return_value = (False, "")
 
         self.assertFalse(rmq_2_sysmon.process_msg(self.rq, mock_log, self.cfg,
                                                   self.method, self.body))
