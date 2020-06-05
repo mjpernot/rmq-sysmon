@@ -43,7 +43,10 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Initialize testing environment.
-        test_json_load_fails -> Test with json.load fails.
+        test_str_convert_pass -> Test with ast.literal_eval pass for string.
+        test_dict_convert_pass -> Test with ast.literal_eval pass for dict.
+        test_str_convert_fails -> Test with ast.literal_eval fails for string.
+        test_dict_convert_fails -> Test with ast.literal_eval fails for dict.
         test_key_not_in_dict -> Test if key is not in dictionary.
         test_create_json_fail -> Test if the body is unable to convert to JSON.
         test_create_json -> Test if the body is converted to JSON.
@@ -112,15 +115,17 @@ class UnitTest(unittest.TestCase):
         self.body = {"Server": "SERVER_NAME.domain.name"}
         self.body2 = {"Non-Key": "Non-Value"}
         self.body3 = "This a string"
+        self.rawbody2 = {"Non-Key": "Non-Value"}
+        self.rawbody3 = "This a string"
         self.rq = "RabbitMQ Instance"
 
     @mock.patch("rmq_2_sysmon.gen_class.Logger")
     @mock.patch("rmq_2_sysmon.non_proc_msg")
-    def test_json_load_fails(self, mock_msg, mock_log):
+    def test_str_convert_pass(self, mock_msg, mock_log):
 
-        """Function:  test_json_load_fails
+        """Function:  test_str_convert_pass
 
-        Description:  Test with json.load fails.
+        Description:  Test with ast.literal_eval pass for string.
 
         Arguments:
 
@@ -132,9 +137,63 @@ class UnitTest(unittest.TestCase):
         self.assertFalse(rmq_2_sysmon.process_msg(self.rq, mock_log, self.cfg,
                                                   self.method, self.body3))
 
+    @mock.patch("rmq_2_sysmon.gen_class.Logger")
+    @mock.patch("rmq_2_sysmon.non_proc_msg")
+    def test_dict_convert_pass(self, mock_msg, mock_log):
+
+        """Function:  test_dict_convert_pass
+
+        Description:  Test with ast.literal_eval pass for dict.
+
+        Arguments:
+
+        """
+
+        mock_msg.return_value = True
+        mock_log.return_value = True
+
+        self.assertFalse(rmq_2_sysmon.process_msg(self.rq, mock_log, self.cfg,
+                                                  self.method, self.rawbody2))
+
+    @mock.patch("rmq_2_sysmon.gen_class.Logger")
+    @mock.patch("rmq_2_sysmon.non_proc_msg")
+    def test_str_convert_fails(self, mock_msg, mock_log):
+
+        """Function:  test_str_convert_fails
+
+        Description:  Test with ast.literal_eval fails for string.
+
+        Arguments:
+
+        """
+
+        mock_msg.return_value = True
+        mock_log.return_value = True
+
+        self.assertFalse(rmq_2_sysmon.process_msg(self.rq, mock_log, self.cfg,
+                                                  self.method, self.body3))
+
+    @mock.patch("rmq_2_sysmon.gen_class.Logger")
+    @mock.patch("rmq_2_sysmon.non_proc_msg")
+    def test_dict_convert_fails(self, mock_msg, mock_log):
+
+        """Function:  test_dict_convert_fails
+
+        Description:  Test with ast.literal_eval fails for dict.
+
+        Arguments:
+
+        """
+
+        mock_msg.return_value = True
+        mock_log.return_value = True
+
+        self.assertFalse(rmq_2_sysmon.process_msg(self.rq, mock_log, self.cfg,
+                                                  self.method, self.body2))
+
     @mock.patch("rmq_2_sysmon.non_proc_msg")
     @mock.patch("rmq_2_sysmon.gen_class.Logger")
-    @mock.patch("rmq_2_sysmon.json.loads")
+    @mock.patch("rmq_2_sysmon.ast.literal_eval")
     def test_key_not_in_dict(self, mock_json, mock_log, mock_msg):
 
         """Function:  test_create_json_fail
@@ -156,7 +215,7 @@ class UnitTest(unittest.TestCase):
                 mock.Mock(return_value = True))
     @mock.patch("rmq_2_sysmon.non_proc_msg")
     @mock.patch("rmq_2_sysmon.gen_class.Logger")
-    @mock.patch("rmq_2_sysmon.json.loads")
+    @mock.patch("rmq_2_sysmon.ast.literal_eval")
     def test_create_json_fail(self, mock_json, mock_log, mock_msg):
 
         """Function:  test_create_json_fail
@@ -177,7 +236,7 @@ class UnitTest(unittest.TestCase):
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
                 mock.Mock(return_value = True))
     @mock.patch("rmq_2_sysmon.gen_class.Logger")
-    @mock.patch("rmq_2_sysmon.json.loads")
+    @mock.patch("rmq_2_sysmon.ast.literal_eval")
     def test_create_json(self, mock_json, mock_log):
 
         """Function:  test_create_json
@@ -197,7 +256,7 @@ class UnitTest(unittest.TestCase):
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
                 mock.Mock(return_value = True))
     @mock.patch("rmq_2_sysmon.gen_class.Logger")
-    @mock.patch("rmq_2_sysmon.json.loads")
+    @mock.patch("rmq_2_sysmon.ast.literal_eval")
     def test_is_dict(self, mock_json, mock_log):
 
         """Function:  test_is_dict
@@ -216,7 +275,7 @@ class UnitTest(unittest.TestCase):
 
     @mock.patch("rmq_2_sysmon.gen_class.Logger")
     @mock.patch("rmq_2_sysmon.non_proc_msg")
-    @mock.patch("rmq_2_sysmon.json.loads")
+    @mock.patch("rmq_2_sysmon.ast.literal_eval")
     def test_is_not_dict(self, mock_json, mock_msg, mock_log):
 
         """Function:  test_is_not_dict
