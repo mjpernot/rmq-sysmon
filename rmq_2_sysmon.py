@@ -234,10 +234,7 @@ def process_msg(rq, log, cfg, method, body, **kwargs):
         else:
             non_proc_msg(rq, log, cfg, body, "Non-dictionary format")
 
-    except ValueError as e:
-        non_proc_msg(rq, log, cfg, body, str(e))
-
-    except SyntaxError as e:
+    except (ValueError, SyntaxError) as e:
         non_proc_msg(rq, log, cfg, body, str(e))
 
 
