@@ -215,7 +215,6 @@ def process_msg(rq, log, cfg, method, body, **kwargs):
 
     log.log_info("process_msg:  Processing body of message...")
 
-
     try:
         data = ast.literal_eval(body)
 
