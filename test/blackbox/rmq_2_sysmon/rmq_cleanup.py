@@ -46,7 +46,7 @@ def rmq_cleanup(cfg, queue_name, drop_exch=False):
     rmq = rabbitmq_class.RabbitMQPub(
         cfg.user, cfg.passwd, cfg.host, cfg.port,
         exchange_name=cfg.exchange_name, exchange_type=cfg.exchange_type,
-        queue_name=cfg.queue_name, routing_key=cfg.queue_name,
+        queue_name=queue_name, routing_key=queue_name,
         x_durable=cfg.x_durable, q_durable=cfg.q_durable,
         auto_delete=cfg.auto_delete)
 
