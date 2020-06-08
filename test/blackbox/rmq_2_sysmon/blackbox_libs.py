@@ -17,7 +17,6 @@
 # Standard
 import os
 import sys
-import time
 
 # Third-party
 import json
@@ -39,19 +38,20 @@ def create_rq_pub(cfg, **kwargs):
 
     Arguments:
         (input) cfg -> Configuration settings module for the program.
-        (output) rq -> RabbitMQ Publisher instance
+        (output) rmq -> RabbitMQ Publisher instance
 
     """
 
-    rq = rabbitmq_class.RabbitMQPub(cfg.user, cfg.passwd, cfg.host, cfg.port,
-                                    cfg.exchange_name, cfg.exchange_type,
-                                    cfg.queue_name, cfg.queue_name,
-                                    cfg.x_durable, cfg.q_durable,
-                                    cfg.auto_delete)
-    connect_status, err_msg = rq.create_connection()
+    rmq = rabbitmq_class.RabbitMQPub(
+        cfg.user, cfg.passwd, cfg.host, cfg.port,
+        exchange_name=cfg.exchange_name, exchange_type=cfg.exchange_type,
+        queue_name=cfg.queue_name, routing_key=cfg.queue_name,
+        x_durable=cfg.x_durable, q_durable=cfg.q_durable,
+        auto_delete=cfg.auto_delete)
+    connect_status, err_msg = rmq.create_connection()
 
-    if connect_status and rq.channel.is_open:
-        return rq
+    if connect_status and rmq.channel.is_open:
+        return rmq
 
     else:
         print("Error:  Failed to connect to RabbitMQ as Publisher.")
@@ -92,14 +92,14 @@ def file_test(f_name, **kwargs):
     return status, err_msg
 
 
-def publish_msg(rq, f_name, **kwargs):
+def publish_msg(rmq, f_name, **kwargs):
 
     """Function:  publish_msg
 
     Description:  Publish a message to RabbitMQ.
 
     Arguments:
-        (input) rq -> RabbitMQ Publisher instance
+        (input) rmq -> RabbitMQ Publisher instance
         (input) f_name ->  Full path and file name of test file.
         (output) status -> True|False - Status of publish.
         (output) err_msg -> Error message.
@@ -112,7 +112,7 @@ def publish_msg(rq, f_name, **kwargs):
     with open(f_name, "r") as f_hldr:
         body = f_hldr.read()
 
-    if not rq.publish_msg(body):
+    if not rmq.publish_msg(body):
         err_msg = "\tError:  Failed to publish message to RabbitMQ."
         status = False
 
