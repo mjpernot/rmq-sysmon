@@ -63,7 +63,7 @@ def rmq_cleanup(cfg, queue_name, drop_exch=False):
 
                 try:
                     rmq.channel.exchange_declare(exchange=rmq.exchange,
-                                                passive=True)
+                                                 passive=True)
                     rmq.create_queue()
                     _cleanup(rmq, connect_status, drop_exch)
 
