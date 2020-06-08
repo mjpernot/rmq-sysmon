@@ -17,8 +17,6 @@
 # Standard
 import sys
 import os
-import contextlib
-import io
 
 if sys.version_info < (2, 7):
     import unittest2 as unittest
