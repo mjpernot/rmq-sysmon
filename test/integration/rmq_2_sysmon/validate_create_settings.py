@@ -71,6 +71,7 @@ class UnitTest(unittest.TestCase):
         self.log_dir = os.path.join(self.test_path, self.cfg.log_dir)
         self.sysmon_dir = os.path.join(self.test_path, self.cfg.sysmon_dir)
         self.msg = " does not exist."
+        self.msg2 = "Error: Directory: "
 
     @mock.patch("rmq_2_sysmon.gen_libs.get_base_dir")
     def test_sysmon_dir_chk_false(self, mock_base):
@@ -87,7 +88,7 @@ class UnitTest(unittest.TestCase):
         self.cfg.sysmon_dir = os.path.join(self.test_path,
                                            self.cfg.sysmon_dir + "FALSE")
         self.cfg, status, msg = rmq_2_sysmon.validate_create_settings(self.cfg)
-        t_msg = "Error: Directory: " + self.cfg.sysmon_dir + self.msg
+        t_msg = self.msg2 + self.cfg.sysmon_dir + self.msg
 
         self.assertEqual((self.cfg.sysmon_dir, status, msg),
                          (self.sysmon_dir + "FALSE", False, t_msg))
@@ -107,7 +108,7 @@ class UnitTest(unittest.TestCase):
         self.cfg.log_dir = os.path.join(self.test_path,
                                         self.cfg.log_dir + "FALSE")
         self.cfg, status, msg = rmq_2_sysmon.validate_create_settings(self.cfg)
-        t_msg = "Error: Directory: " + self.cfg.log_dir + self.msg
+        t_msg = self.msg2 + self.cfg.log_dir + self.msg
 
         self.assertEqual((self.cfg.log_dir, status, msg),
                          (self.log_dir + "FALSE", False, t_msg))
@@ -128,7 +129,7 @@ class UnitTest(unittest.TestCase):
                                             self.cfg.message_dir + "FALSE")
         self.cfg, status, msg = rmq_2_sysmon.validate_create_settings(self.cfg)
         t_msg = \
-            "Error: Directory: " + self.cfg.message_dir + self.msg
+            self.msg2 + self.cfg.message_dir + self.msg
 
         self.assertEqual((self.cfg.message_dir, status, msg),
                          (self.message_dir + "FALSE", False, t_msg))
