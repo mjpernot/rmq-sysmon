@@ -160,14 +160,14 @@ def validate_create_settings(cfg, **kwargs):
     return cfg, status_flag, err_msg
 
 
-def non_proc_msg(rq, log, cfg, data, subj, **kwargs):
+def non_proc_msg(rmq, log, cfg, data, subj, **kwargs):
 
     """Function:  non_proc_msg
 
     Description:  Process non-processed messages.
 
     Arguments:
-        (input) rq -> RabbitMQ class instance.
+        (input) rmq -> RabbitMQ class instance.
         (input) log -> Log class instance.
         (input) cfg -> Configuration settings module for the program.
         (input) data -> Body of message that was not processed.
@@ -177,7 +177,7 @@ def non_proc_msg(rq, log, cfg, data, subj, **kwargs):
 
     log.log_info("non_proc_msg:  Processing non-processed message...")
     frm_line = getpass.getuser() + "@" + socket.gethostname()
-    f_name = rq.exchange + "_" + rq.queue_name + "_" + gen_libs.get_date() \
+    f_name = rmq.exchange + "_" + rmq.queue_name + "_" + gen_libs.get_date() \
         + "_" + gen_libs.get_time() + ".txt"
     f_path = os.path.join(cfg.message_dir, f_name)
     subj = "rmq_2_sysmon: " + subj
@@ -194,7 +194,7 @@ def non_proc_msg(rq, log, cfg, data, subj, **kwargs):
     log.log_err("Message was not processed due to: %s" % (subj))
     log.log_info("Saving message to: %s" % (f_path))
     gen_libs.write_file(f_path, data="Exchange: %s, Queue: %s"
-                        % (rq.exchange, rq.queue_name))
+                        % (rmq.exchange, rmq.queue_name))
     gen_libs.write_file(f_path, data=data)
 
 
