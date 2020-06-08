@@ -133,7 +133,7 @@ def main():
 
     if not arg_parser.arg_require(args_array, opt_req_list):
 
-        if "start" == args_array["-a"]:
+        if args_array["-a"] == "start":
 
             if os.path.isfile(pid_file) and is_active(pid_file, proc_name):
 
@@ -147,10 +147,10 @@ def main():
             else:
                 daemon.start()
 
-        elif "stop" == args_array["-a"]:
+        elif args_array["-a"] == "stop":
             daemon.stop()
 
-        elif "restart" == args_array["-a"]:
+        elif args_array["-a"] == "restart":
             daemon.restart()
 
         else:
