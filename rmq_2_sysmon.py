@@ -327,8 +327,7 @@ def run_program(args_array, func_dict, **kwargs):
 
             # Intersect args_array & func_dict to find which functions to call.
             for opt in set(args_array.keys()) & set(func_dict.keys()):
-
-                    func_dict[opt](cfg, log, **kwargs)
+                func_dict[opt](cfg, log, **kwargs)
 
             del prog_lock
 
