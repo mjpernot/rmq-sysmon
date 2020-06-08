@@ -234,8 +234,8 @@ def process_msg(rmq, log, cfg, method, body, **kwargs):
         else:
             non_proc_msg(rmq, log, cfg, body, "Non-dictionary format")
 
-    except (ValueError, SyntaxError) as e:
-        non_proc_msg(rmq, log, cfg, body, str(e))
+    except (ValueError, SyntaxError) as err:
+        non_proc_msg(rmq, log, cfg, body, str(err))
 
 
 def monitor_queue(cfg, log, **kwargs):
