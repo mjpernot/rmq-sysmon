@@ -265,27 +265,27 @@ def monitor_queue(cfg, log, **kwargs):
         """
 
         log.log_info("callback:  Processing message...")
-        process_msg(rq, log, cfg, method, body)
+        process_msg(rmq, log, cfg, method, body)
 
         log.log_info("Deleting message from RabbitMQ")
-        rq.ack(method.delivery_tag)
+        rmq.ack(method.delivery_tag)
 
     log.log_info("monitor_queue:  Start monitoring queue...")
-    rq = rabbitmq_class.RabbitMQCon(
+    rmq = rabbitmq_class.RabbitMQCon(
         cfg.user, cfg.passwd, cfg.host, cfg.port,
         exchange_name=cfg.exchange_name, exchange_type=cfg.exchange_type,
         queue_name=cfg.queue_name, routing_key=cfg.queue_name,
         x_durable=cfg.x_durable, q_durable=cfg.q_durable,
         auto_delete=cfg.auto_delete)
     log.log_info("Connection info: %s->%s" % (cfg.host, cfg.exchange_name))
-    connect_status, err_msg = rq.create_connection()
+    connect_status, err_msg = rmq.create_connection()
 
-    if connect_status and rq.channel.is_open:
+    if connect_status and rmq.channel.is_open:
         log.log_info("Connected to RabbitMQ node")
 
         # Setup the RabbitMQ Consume callback and start monitoring.
-        rq.consume(callback)
-        rq.start_loop()
+        rmq.consume(callback)
+        rmq.start_loop()
 
     else:
         log.log_err("Failed to connnect to RabbuitMQ -> Msg: %s" % (err_msg))
