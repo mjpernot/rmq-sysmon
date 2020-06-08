@@ -93,7 +93,7 @@ class UnitTest(unittest.TestCase):
                 self.q_durable = True
                 self.auto_delete = False
 
-        self.CT = CfgTest()
+        self.cfg = CfgTest()
 
     @mock.patch("rmq_2_sysmon.rabbitmq_class.RabbitMQCon")
     @mock.patch("rmq_2_sysmon.gen_class.Logger")
@@ -112,7 +112,7 @@ class UnitTest(unittest.TestCase):
         mock_rq.return_value = rmq_2_sysmon.rabbitmq_class.RabbitMQCon
         mock_rq.create_connection.return_value = (False, "Error_Message")
 
-        self.assertFalse(rmq_2_sysmon.monitor_queue(self.CT, mock_log))
+        self.assertFalse(rmq_2_sysmon.monitor_queue(self.cfg, mock_log))
 
     @mock.patch("rmq_2_sysmon.rabbitmq_class.RabbitMQCon")
     @mock.patch("rmq_2_sysmon.gen_class.Logger")
@@ -132,7 +132,7 @@ class UnitTest(unittest.TestCase):
         mock_rq.create_connection.return_value = (False, "Error_Message")
         mock_rq.channel.is_open = False
 
-        self.assertFalse(rmq_2_sysmon.monitor_queue(self.CT, mock_log))
+        self.assertFalse(rmq_2_sysmon.monitor_queue(self.cfg, mock_log))
 
     @mock.patch("rmq_2_sysmon.rabbitmq_class.RabbitMQCon")
     @mock.patch("rmq_2_sysmon.gen_class.Logger")
@@ -152,7 +152,7 @@ class UnitTest(unittest.TestCase):
         mock_rq.create_connection.return_value = (True, "Error_Message")
         mock_rq.channel.is_open = False
 
-        self.assertFalse(rmq_2_sysmon.monitor_queue(self.CT, mock_log))
+        self.assertFalse(rmq_2_sysmon.monitor_queue(self.cfg, mock_log))
 
     @mock.patch("rmq_2_sysmon.rabbitmq_class.RabbitMQCon")
     @mock.patch("rmq_2_sysmon.gen_class.Logger")
@@ -172,7 +172,7 @@ class UnitTest(unittest.TestCase):
         mock_rq.create_connection.return_value = (False, "Error_Message")
         mock_rq.channel.is_open = True
 
-        self.assertFalse(rmq_2_sysmon.monitor_queue(self.CT, mock_log))
+        self.assertFalse(rmq_2_sysmon.monitor_queue(self.cfg, mock_log))
 
     @mock.patch("rmq_2_sysmon.rabbitmq_class.RabbitMQCon")
     @mock.patch("rmq_2_sysmon.gen_class.Logger")
@@ -194,7 +194,7 @@ class UnitTest(unittest.TestCase):
         mock_rq.consume.return_value = "RabbitMQ_Tag"
         mock_rq.start_loop.return_value = True
 
-        self.assertFalse(rmq_2_sysmon.monitor_queue(self.CT, mock_log))
+        self.assertFalse(rmq_2_sysmon.monitor_queue(self.cfg, mock_log))
 
     def tearDown(self):
 
@@ -206,7 +206,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.CT = None
+        self.cfg = None
 
 
 if __name__ == "__main__":
