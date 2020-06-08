@@ -13,6 +13,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - daemon_rmq_2_sysmon.is_active:  Determine if PID is active process on the server.
 
 ### Changed
+- config/rabbitmq.py.TEMPLATE:  Changed the format for several of the settings.
 - monitor_queue:  Changed RabbitMQCon call from positional arguments to keyword arguments.
 - process_msg:  Added SyntaxError exception for the data conversion.
 - process_msg:  Replaced gen_libs.print_dict with gen_libs.write_file and removed post-if statement.
