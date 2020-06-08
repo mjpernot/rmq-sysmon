@@ -271,11 +271,12 @@ def monitor_queue(cfg, log, **kwargs):
         rq.ack(method.delivery_tag)
 
     log.log_info("monitor_queue:  Start monitoring queue...")
-    rq = rabbitmq_class.RabbitMQCon(cfg.user, cfg.passwd, cfg.host, cfg.port,
-                                    cfg.exchange_name, cfg.exchange_type,
-                                    cfg.queue_name, cfg.queue_name,
-                                    cfg.x_durable, cfg.q_durable,
-                                    cfg.auto_delete)
+    rq = rabbitmq_class.RabbitMQCon(
+        cfg.user, cfg.passwd, cfg.host, cfg.port,
+        exchange_name=cfg.exchange_name, exchange_type=cfg.exchange_type,
+        queue_name=cfg.queue_name, routing_key=cfg.queue_name,
+        x_durable=cfg.x_durable, q_durable=cfg.q_durable,
+        auto_delete=cfg.auto_delete)
     log.log_info("Connection info: %s->%s" % (cfg.host, cfg.exchange_name))
     connect_status, err_msg = rq.create_connection()
 
