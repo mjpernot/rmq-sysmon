@@ -64,24 +64,22 @@ class UnitTest(unittest.TestCase):
         self.cfg.log_file = os.path.join(log_path, self.cfg.log_file)
         self.cfg.message_dir = os.path.join(self.test_path,
                                             self.cfg.message_dir)
-        self.LOG = gen_class.Logger(self.cfg.log_file, self.cfg.log_file,
+        self.log = gen_class.Logger(self.cfg.log_file, self.cfg.log_file,
                                     "INFO",
                                     "%(asctime)s %(levelname)s %(message)s",
                                     "%Y-%m-%dT%H:%M:%SZ")
-        self.RQ = rabbitmq_class.RabbitMQCon(self.cfg.user, self.cfg.passwd,
-                                             self.cfg.host, self.cfg.port,
-                                             self.cfg.exchange_name,
-                                             self.cfg.exchange_type,
-                                             self.cfg.queue_name,
-                                             self.cfg.queue_name,
-                                             self.cfg.x_durable,
-                                             self.cfg.q_durable,
-                                             self.cfg.auto_delete)
+        self.rmq = rabbitmq_class.RabbitMQCon(
+            self.cfg.user, self.cfg.passwd, self.cfg.host, self.cfg.port,
+            exchange_name=self.cfg.exchange_name,
+            exchange_type=self.cfg.exchange_type,
+            queue_name=self.cfg.queue_name, routing_key=self.cfg.queue_name,
+            x_durable=self.cfg.x_durable, q_durable=self.cfg.q_durable,
+            auto_delete=self.cfg.auto_delete)
         self.line = "Test_Me_File"
         self.subj = "Test_Me"
         self.test_date = "2018-01-01"
         self.test_time = "10:00:00"
-        self.test_file = self.RQ.exchange + "_" + self.RQ.queue_name + "_" \
+        self.test_file = self.rmq.exchange + "_" + self.rmq.queue_name + "_" \
             + self.test_date + "_" + self.test_time + ".txt"
 
     @mock.patch("rmq_2_sysmon.gen_class.Mail")
@@ -100,9 +98,9 @@ class UnitTest(unittest.TestCase):
         mock_date.return_value = self.test_date
         mock_time.return_value = self.test_time
         mock_mail.send_mail.return_value = True
-        rmq_2_sysmon.non_proc_msg(self.RQ, self.LOG, self.cfg, self.line,
+        rmq_2_sysmon.non_proc_msg(self.rmq, self.log, self.cfg, self.line,
                                   self.subj)
-        self.LOG.log_close()
+        self.log.log_close()
 
         if self.line in open(os.path.join(self.cfg.message_dir,
                                           self.test_file)).read():
