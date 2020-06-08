@@ -338,18 +338,19 @@ cp ../../../../config/rabbitmq.py.TEMPLATE rabbitmq.py
 ```
 
 Make the appropriate changes to the RabbitMQ environment.
-  * Replace **PYTHON_PROJECT** with the baseline path of the python program.
+  * Replace **{PYTHON_PROJECT}** with the baseline path of the python program.
   * Change these entries in the rabbitmq.py file.  The "user", "passwd", and "host" variables are the connection information to a RabbitMQ node, the other variables use the "Change to" settings.
     - user = "USER"
     - passwd = "PASSWORD"
     - host = "HOSTNAME"
-    - sysmon_dir = "DIR_PATH"                     -> Change to:  sysmon_dir = "test/blackbox/rmq_2_sysmon/sysmon"
+    - sysmon_dir = "DIR_PATH"                     -> Change to:  sysmon_dir = "{PYTHON_PROJECT}/test/blackbox/rmq_2_sysmon/sysmon"
     - exchange_name = "EXCHANGE_NAME"             -> Change to:  exchange_name = "blackbox-test"
     - queue_name = "QUEUE_NAME"                   -> Change to:  queue_name = "blackbox-test"
     - to_line = "EMAIL_ADDRESS@DOMAIN_NAME"       -> Change to:  to_line = None
     - key = "DICT_KEY"                            -> Change to:  key = "Server"
-    - message_dir = "/DIRECTORY_PATH/message_dir" -> Change to:  message_dir = "test/blackbox/rmq_2_sysmon/message_dir"
-    - log_dir = "/DIRECTORY_PATH/logs"            -> Change to:  log_dir = "test/blackbox/rmq_2_sysmon/logs"
+    - postname = ""                               -> Change to:  postname = "_pkgs"
+    - message_dir = "/DIRECTORY_PATH/message_dir" -> Change to:  message_dir = "{PYTHON_PROJECT}/test/blackbox/rmq_2_sysmon/message_dir"
+    - log_dir = "/DIRECTORY_PATH/logs"            -> Change to:  log_dir = "{PYTHON_PROJECT}/test/blackbox/rmq_2_sysmon/logs"
 
 ```
 vim rabbitmq.py
