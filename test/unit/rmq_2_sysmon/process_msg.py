@@ -116,7 +116,7 @@ class UnitTest(unittest.TestCase):
         self.body3 = "This a string"
         self.rawbody2 = '{"Non-Key": "Non-Value"}'
         self.rawbody3 = '"This a string"'
-        self.rq = "RabbitMQ Instance"
+        self.rmq = "RabbitMQ Instance"
 
     @mock.patch("rmq_2_sysmon.gen_class.Logger")
     @mock.patch("rmq_2_sysmon.non_proc_msg")
@@ -133,7 +133,7 @@ class UnitTest(unittest.TestCase):
         mock_msg.return_value = True
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon.process_msg(self.rq, mock_log, self.cfg,
+        self.assertFalse(rmq_2_sysmon.process_msg(self.rmq, mock_log, self.cfg,
                                                   self.method, self.rawbody3))
 
     @mock.patch("rmq_2_sysmon.gen_class.Logger")
@@ -151,7 +151,7 @@ class UnitTest(unittest.TestCase):
         mock_msg.return_value = True
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon.process_msg(self.rq, mock_log, self.cfg,
+        self.assertFalse(rmq_2_sysmon.process_msg(self.rmq, mock_log, self.cfg,
                                                   self.method, self.rawbody2))
 
     @mock.patch("rmq_2_sysmon.gen_class.Logger")
@@ -169,7 +169,7 @@ class UnitTest(unittest.TestCase):
         mock_msg.return_value = True
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon.process_msg(self.rq, mock_log, self.cfg,
+        self.assertFalse(rmq_2_sysmon.process_msg(self.rmq, mock_log, self.cfg,
                                                   self.method, self.body3))
 
     @mock.patch("rmq_2_sysmon.gen_class.Logger")
@@ -187,7 +187,7 @@ class UnitTest(unittest.TestCase):
         mock_msg.return_value = True
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon.process_msg(self.rq, mock_log, self.cfg,
+        self.assertFalse(rmq_2_sysmon.process_msg(self.rmq, mock_log, self.cfg,
                                                   self.method, self.body2))
 
     @mock.patch("rmq_2_sysmon.non_proc_msg")
@@ -207,7 +207,7 @@ class UnitTest(unittest.TestCase):
         mock_log.return_value = True
         mock_msg.return_value = True
 
-        self.assertFalse(rmq_2_sysmon.process_msg(self.rq, mock_log, self.cfg,
+        self.assertFalse(rmq_2_sysmon.process_msg(self.rmq, mock_log, self.cfg,
                                                   self.method, self.body2))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
@@ -229,7 +229,7 @@ class UnitTest(unittest.TestCase):
         mock_log.return_value = True
         mock_msg.return_value = True
 
-        self.assertFalse(rmq_2_sysmon.process_msg(self.rq, mock_log, self.cfg,
+        self.assertFalse(rmq_2_sysmon.process_msg(self.rmq, mock_log, self.cfg,
                                                   self.method, self.body))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
@@ -249,7 +249,7 @@ class UnitTest(unittest.TestCase):
         mock_json.return_value = self.body
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon.process_msg(self.rq, mock_log, self.cfg,
+        self.assertFalse(rmq_2_sysmon.process_msg(self.rmq, mock_log, self.cfg,
                                                   self.method, self.body))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
@@ -269,7 +269,7 @@ class UnitTest(unittest.TestCase):
         mock_json.return_value = self.body
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon.process_msg(self.rq, mock_log, self.cfg,
+        self.assertFalse(rmq_2_sysmon.process_msg(self.rmq, mock_log, self.cfg,
                                                   self.method, self.body))
 
     @mock.patch("rmq_2_sysmon.gen_class.Logger")
@@ -289,7 +289,7 @@ class UnitTest(unittest.TestCase):
         mock_msg.return_value = True
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon.process_msg(self.rq, mock_log, self.cfg,
+        self.assertFalse(rmq_2_sysmon.process_msg(self.rmq, mock_log, self.cfg,
                                                   self.method, self.body))
 
     def tearDown(self):
