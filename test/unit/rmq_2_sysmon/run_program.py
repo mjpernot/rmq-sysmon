@@ -35,7 +35,7 @@ import version
 __version__ = version.__version__
 
 
-def monitor_queue(cfg, log, **kwargs):
+def monitor_queue(cfg, log):
 
     """Function Stub:  monitor_queue
 
@@ -47,7 +47,12 @@ def monitor_queue(cfg, log, **kwargs):
 
     """
 
-    pass
+    status = True
+
+    if cfg and log:
+        status = True
+
+    return status
 
 
 class ProgramLock(object):
@@ -130,7 +135,7 @@ class UnitTest(unittest.TestCase):
                 self.log_file = "LOG_FILE"
                 self.to_line = "TO_LINE"
 
-        self.ct = CfgTest()
+        self.cfg = CfgTest()
         self.proglock = ProgramLock(["cmdline"], "FlavorID")
         self.args = {"-c": "config_file", "-d": "config_dir", "-M": True}
         self.func_dict = {"-M": monitor_queue}
@@ -149,8 +154,8 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_log.return_value = True
-        mock_load.return_value = self.ct
-        mock_valid.return_value = (self.ct, False, "Failed to load cfg")
+        mock_load.return_value = self.cfg
+        mock_valid.return_value = (self.cfg, False, "Failed to load cfg")
 
         with gen_libs.no_std_out():
             self.assertFalse(rmq_2_sysmon.run_program(self.args,
@@ -170,8 +175,8 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_log.return_value = rmq_2_sysmon.gen_class.Logger
-        mock_load.return_value = self.ct
-        mock_valid.return_value = (self.ct, True, "")
+        mock_load.return_value = self.cfg
+        mock_valid.return_value = (self.cfg, True, "")
         mock_log.log_close.return_value = True
 
         # Remove to skip "for" loop.
@@ -194,8 +199,8 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_class.Logger.return_value = rmq_2_sysmon.gen_class.Logger
-        mock_load.return_value = self.ct
-        mock_valid.return_value = (self.ct, True, "")
+        mock_load.return_value = self.cfg
+        mock_valid.return_value = (self.cfg, True, "")
         mock_class.Logger.log_close.return_value = True
         mock_class.ProgramLock.return_value = self.proglock
         mock_func.return_value = True
@@ -220,8 +225,8 @@ class UnitTest(unittest.TestCase):
         mock_log.return_value = rmq_2_sysmon.gen_class.Logger
         mock_log.log_info.return_value = True
         mock_log.log_close.return_value = True
-        mock_load.return_value = self.ct
-        mock_valid.return_value = (self.ct, True, "")
+        mock_load.return_value = self.cfg
+        mock_valid.return_value = (self.cfg, True, "")
 
         self.assertFalse(rmq_2_sysmon.run_program(self.args, self.func_dict))
 
@@ -235,7 +240,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.ct = None
+        self.cfg = None
 
 
 if __name__ == "__main__":
