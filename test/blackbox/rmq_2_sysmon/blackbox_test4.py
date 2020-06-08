@@ -24,7 +24,6 @@ import glob
 
 # Local
 sys.path.append(os.getcwd())
-import rabbit_lib.rabbitmq_class as rabbitmq_class
 import lib.gen_libs as gen_libs
 import blackbox_libs
 import version
@@ -32,7 +31,7 @@ import version
 __version__ = version.__version__
 
 
-def test_1(rmq, file_path, message_dir, log_dir, **kwargs):
+def test_1(rmq, file_path, log_dir):
 
     """Function:  test_1
 
@@ -41,7 +40,6 @@ def test_1(rmq, file_path, message_dir, log_dir, **kwargs):
     Arguments:
         (input) rmq -> RabbitMQ Publisher instance
         (input) file_path -> Directory path to test file location.
-        (input) message_dir -> Directory path to location of error messages.
         (input) log_dir -> Directory path to location of log file.
 
     """
@@ -96,7 +94,7 @@ def main():
     rmq = blackbox_libs.create_rq_pub(cfg)
 
     if rmq:
-        test_1(rmq, file_path, cfg.message_dir, cfg.log_dir)
+        test_1(rmq, file_path, cfg.log_dir)
 
     else:
         print("Error:  Failed to create RabbitMQ Publisher instance")

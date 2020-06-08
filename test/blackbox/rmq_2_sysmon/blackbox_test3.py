@@ -25,7 +25,6 @@ import ast
 
 # Local
 sys.path.append(os.getcwd())
-import rabbit_lib.rabbitmq_class as rabbitmq_class
 import lib.gen_libs as gen_libs
 import blackbox_libs
 import version
@@ -33,7 +32,7 @@ import version
 __version__ = version.__version__
 
 
-def test_1(rmq, file_path, message_dir, log_dir, **kwargs):
+def test_1(rmq, file_path, message_dir, log_dir):
 
     """Function:  test_1
 

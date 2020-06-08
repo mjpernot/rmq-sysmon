@@ -43,10 +43,12 @@ def rmq_cleanup(cfg, queue_name, drop_exch=False):
 
     """
 
-    rmq = rabbitmq_class.RabbitMQPub(cfg.user, cfg.passwd, cfg.host, cfg.port,
-                                    cfg.exchange_name, cfg.exchange_type,
-                                    queue_name, queue_name, cfg.x_durable,
-                                    cfg.q_durable, cfg.auto_delete)
+    rmq = rabbitmq_class.RabbitMQPub(
+        cfg.user, cfg.passwd, cfg.host, cfg.port,
+        exchange_name=cfg.exchange_name, exchange_type=cfg.exchange_type,
+        queue_name=cfg.queue_name, routing_key=cfg.queue_name,
+        x_durable=cfg.x_durable, q_durable=cfg.q_durable,
+        auto_delete=cfg.auto_delete)
 
     if isinstance(rmq, rabbitmq_class.RabbitMQPub):
         connect_status, err_msg = rmq.connect()
@@ -63,7 +65,7 @@ def rmq_cleanup(cfg, queue_name, drop_exch=False):
 
                 try:
                     rmq.channel.exchange_declare(exchange=rmq.exchange,
-                                                passive=True)
+                                                 passive=True)
                     rmq.create_queue()
                     _cleanup(rmq, connect_status, drop_exch)
 

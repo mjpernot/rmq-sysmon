@@ -30,7 +30,7 @@ import version
 __version__ = version.__version__
 
 
-def test_1(sysmon_dir, **kwargs):
+def test_1(sysmon_dir):
 
     """Function:  test_1
 

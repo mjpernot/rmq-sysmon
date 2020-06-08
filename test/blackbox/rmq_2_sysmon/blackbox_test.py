@@ -23,7 +23,6 @@ import time
 
 # Local
 sys.path.append(os.getcwd())
-import rabbit_lib.rabbitmq_class as rabbitmq_class
 import lib.gen_libs as gen_libs
 import blackbox_libs
 import version
@@ -31,7 +30,7 @@ import version
 __version__ = version.__version__
 
 
-def test_1(rmq, file_path, sysmon_dir, **kwargs):
+def test_1(rmq, file_path, sysmon_dir):
 
     """Function:  test_1
 

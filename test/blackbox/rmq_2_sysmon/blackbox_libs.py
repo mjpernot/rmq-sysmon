@@ -24,7 +24,6 @@ import json
 # Local
 sys.path.append(os.getcwd())
 import rabbit_lib.rabbitmq_class as rabbitmq_class
-import lib.gen_libs as gen_libs
 import version
 
 __version__ = version.__version__
