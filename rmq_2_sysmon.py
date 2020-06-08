@@ -184,9 +184,9 @@ def non_proc_msg(rq, log, cfg, data, subj, **kwargs):
 
     if cfg.to_line:
         log.log_info("Sending email to: %s..." % (cfg.to_line))
-        EMAIL = gen_class.Mail(cfg.to_line, subj, frm_line)
-        EMAIL.add_2_msg(data)
-        EMAIL.send_mail()
+        email = gen_class.Mail(cfg.to_line, subj, frm_line)
+        email.add_2_msg(data)
+        email.send_mail()
 
     else:
         log.log_warn("No email being sent as TO line is empty.")
