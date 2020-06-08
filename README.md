@@ -79,13 +79,16 @@ Make the appropriate changes to the RabbitMQ environment.
   * The "user", "passwd", "host", "exchange_name", and "queue_name"  is connection and exchange/queue information to a RabbitMQ node.
   * The "sysmon_dir" is the directory path to where the package admin reports will be written to.
   * The "to_line" is the email address/email alias to the RabbitMQ administrator(s).
+  * The "message_dir" and "log_dir" is where error messages and log files are written to respectively.
     - user = "USER"
     - passwd = "PASSWORD"
     - host = "HOSTNAME"
     - exchange_name = "EXCHANGE_NAME"
     - queue_name = "QUEUE_NAME"
-    - sysmon_dir = "DIR_PATH"
+    - sysmon_dir = "DIRECTORY_PATH"
     - to_line = "EMAIL_ADDRESS@DOMAIN_NAME"
+    - message_dir = "/DIRECTORY_PATH/message_dir"
+    - log_dir = "/DIRECTORY_PATH/logs"
 
 ```
 vim rabbitmq.py
@@ -262,10 +265,14 @@ Make the appropriate changes to the RabbitMQ environment.
     - user = "USER"
     - passwd = "PASSWORD"
     - host = "HOSTNAME"
-    - sysmon_dir = "DIR_PATH"               -> Change to:  sysmon_dir = "sysmon"
-    - exchange_name = "EXCHANGE_NAME"       -> Change to:  exchange_name = "intr-test"
-    - queue_name = "QUEUE_NAME"             -> Change to:  queue_name = "intr-test"
-    - to_line = "EMAIL_ADDRESS@DOMAIN_NAME" -> Change to:  to_line = None
+    - sysmon_dir = "DIR_PATH"                     -> Change to:  sysmon_dir = "sysmon"
+    - exchange_name = "EXCHANGE_NAME"             -> Change to:  exchange_name = "intr-test"
+    - queue_name = "QUEUE_NAME"                   -> Change to:  queue_name = "intr-test"
+    - to_line = "EMAIL_ADDRESS@DOMAIN_NAME"       -> Change to:  to_line = None
+    - key = "DICT_KEY"                            -> Change to:  key = "Server"
+    - postname = ""                               -> Change to:  postname = "_pkgs"
+    - message_dir = "/DIRECTORY_PATH/message_dir" -> Change to:  message_dir = "message_dir"
+    - log_dir = "/DIRECTORY_PATH/logs"            -> Change to:  log_dir = "logs"
 
 ```
 vim rabbitmq.py
@@ -331,17 +338,18 @@ cp ../../../../config/rabbitmq.py.TEMPLATE rabbitmq.py
 ```
 
 Make the appropriate changes to the RabbitMQ environment.
-  * Replace **{Python_Project}** with the baseline path of the python program.
+  * Replace **PYTHON_PROJECT** with the baseline path of the python program.
   * Change these entries in the rabbitmq.py file.  The "user", "passwd", and "host" variables are the connection information to a RabbitMQ node, the other variables use the "Change to" settings.
     - user = "USER"
     - passwd = "PASSWORD"
     - host = "HOSTNAME"
-    - sysmon_dir = "DIR_PATH"               -> Change to:  sysmon_dir = "{Python_Project}/test/blackbox/rmq_2_sysmon/sysmon"
-    - exchange_name = "EXCHANGE_NAME"       -> Change to:  exchange_name = "blackbox-test"
-    - queue_name = "QUEUE_NAME"             -> Change to:  queue_name = "blackbox-test"
-    - to_line = "EMAIL_ADDRESS@DOMAIN_NAME" -> Change to:  to_line = None
-    - message_dir = "message_dir"           -> Change to:  message_dir = "test/blackbox/rmq_2_sysmon/message_dir"
-    - log_dir = "logs"                      -> Change to:  log_dir = "test/blackbox/rmq_2_sysmon/logs"
+    - sysmon_dir = "DIR_PATH"                     -> Change to:  sysmon_dir = "test/blackbox/rmq_2_sysmon/sysmon"
+    - exchange_name = "EXCHANGE_NAME"             -> Change to:  exchange_name = "blackbox-test"
+    - queue_name = "QUEUE_NAME"                   -> Change to:  queue_name = "blackbox-test"
+    - to_line = "EMAIL_ADDRESS@DOMAIN_NAME"       -> Change to:  to_line = None
+    - key = "DICT_KEY"                            -> Change to:  key = "Server"
+    - message_dir = "/DIRECTORY_PATH/message_dir" -> Change to:  message_dir = "test/blackbox/rmq_2_sysmon/message_dir"
+    - log_dir = "/DIRECTORY_PATH/logs"            -> Change to:  log_dir = "test/blackbox/rmq_2_sysmon/logs"
 
 ```
 vim rabbitmq.py
