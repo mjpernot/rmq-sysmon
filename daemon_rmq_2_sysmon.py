@@ -121,15 +121,16 @@ def main():
 
     """
 
+    cmdline = gen_libs.get_inst(sys)
     opt_val_list = ["-a", "-c", "-d"]
     opt_req_list = ["-a", "-c", "-d"]
     proc_name = "daemon_rmq_2_sy"
 
     # Process argument list from command line.
-    args_array = arg_parser.arg_parse2(sys.argv, opt_val_list)
+    args_array = arg_parser.arg_parse2(cmdline.argv, opt_val_list)
     f_name = "rmq2sysmon_daemon_" + args_array.get("-c", "") + ".pid"
     pid_file = os.path.join(gen_libs.get_base_dir(__file__), "tmp", f_name)
-    daemon = Rmq2SysmonDaemon(pid_file, argv_list=sys.argv)
+    daemon = Rmq2SysmonDaemon(pid_file, argv_list=cmdline.argv)
 
     if not arg_parser.arg_require(args_array, opt_req_list):
 
@@ -162,7 +163,7 @@ def main():
     else:
         print("Usage: %s -a start|stop|restart -c module -d directory/config \
 {rmq_2_sysmon options}"
-              % sys.argv[0])
+              % cmdline.argv[0])
         sys.exit(2)
 
 

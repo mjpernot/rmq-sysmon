@@ -6,6 +6,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 ## [1.0.1] - 2020-05-29
 ### Fixed
+- daemon_rmq_2_sysmon.main:  Fixed handling command line arguments from SonarQube scan finding.
 - run_program: Fixed handling command line arguments from SonarQube scan finding.
 - main: Fixed handling command line arguments from SonarQube scan finding.
 - process_msg:  Data to covert can use single or double quotes within the data structure.
