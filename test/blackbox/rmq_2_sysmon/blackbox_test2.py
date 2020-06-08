@@ -20,7 +20,6 @@ import sys
 import time
 
 # Third-party
-import json
 
 # Local
 sys.path.append(os.getcwd())
