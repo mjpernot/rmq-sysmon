@@ -64,7 +64,7 @@ class UnitTest(unittest.TestCase):
         self.cfg.log_file = os.path.join(log_path, self.cfg.log_file)
         self.cfg.message_dir = os.path.join(self.test_path,
                                             self.cfg.message_dir)
-        self.LOG = gen_class.Logger(self.cfg.log_file, self.cfg.log_file,
+        self.log = gen_class.Logger(self.cfg.log_file, self.cfg.log_file,
                                     "INFO",
                                     "%(asctime)s %(levelname)s %(message)s",
                                     "%Y-%m-%dT%H:%M:%SZ")
@@ -83,8 +83,8 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_consume.return_value = "RabbitMQ_Tag"
-        rmq_2_sysmon.monitor_queue(self.cfg, self.LOG)
-        self.LOG.log_close()
+        rmq_2_sysmon.monitor_queue(self.cfg, self.log)
+        self.log.log_close()
 
         if self.connect_true in open(self.cfg.log_file).read():
             status = True
