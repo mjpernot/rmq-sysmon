@@ -151,7 +151,7 @@ class UnitTest(unittest.TestCase):
 
         for f_name in os.listdir(self.cfg.message_dir):
 
-            if ".gitignore" not in f_name:
+            if f_name not in [".gitignore", ".gitkeep"]:
                 os.remove(os.path.join(self.cfg.message_dir, f_name))
 
 
