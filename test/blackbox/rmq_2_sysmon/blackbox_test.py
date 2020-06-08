@@ -20,7 +20,6 @@ import sys
 import time
 
 # Third-party
-import json
 
 # Local
 sys.path.append(os.getcwd())
@@ -32,14 +31,14 @@ import version
 __version__ = version.__version__
 
 
-def test_1(rq, file_path, sysmon_dir, **kwargs):
+def test_1(rmq, file_path, sysmon_dir, **kwargs):
 
     """Function:  test_1
 
     Description:  Process a single properly formatted message.
 
     Arguments:
-        (input) rq -> RabbitMQ Publisher instance
+        (input) rmq -> RabbitMQ Publisher instance
         (input) file_path -> Directory path to test file location.
         (input) sysmon_dir -> Directory path to location of sysmon reports.
 
@@ -47,7 +46,7 @@ def test_1(rq, file_path, sysmon_dir, **kwargs):
 
     print("\tTest 1:  Process formatted sysmon report.")
     f_name = "SERVER_NAME"
-    status, err_msg = blackbox_libs.publish_msg(rq,
+    status, err_msg = blackbox_libs.publish_msg(rmq,
                                                 os.path.join(file_path,
                                                              f_name + ".txt"))
     time.sleep(1)
@@ -92,10 +91,10 @@ def main():
     config_path = os.path.join(test_path, "config")
     file_path = os.path.join(test_path, "testfiles")
     cfg = gen_libs.load_module("rabbitmq", config_path)
-    rq = blackbox_libs.create_rq_pub(cfg)
+    rmq = blackbox_libs.create_rq_pub(cfg)
 
-    if rq:
-        test_1(rq, file_path, cfg.sysmon_dir)
+    if rmq:
+        test_1(rmq, file_path, cfg.sysmon_dir)
 
     else:
         print("Error:  Failed to create RabbitMQ Publisher instance")
