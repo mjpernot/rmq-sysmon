@@ -198,14 +198,14 @@ def non_proc_msg(rmq, log, cfg, data, subj, **kwargs):
     gen_libs.write_file(f_path, data=data)
 
 
-def process_msg(rq, log, cfg, method, body, **kwargs):
+def process_msg(rmq, log, cfg, method, body, **kwargs):
 
     """Function:  process_msg
 
     Description:  Process message from RabbitMQ queue.
 
     Arguments:
-        (input) rq -> RabbitMQ class instance.
+        (input) rmq -> RabbitMQ class instance.
         (input) log -> Log class instance.
         (input) cfg -> Configuration settings module for the program.
         (input) method -> Delivery properties.
@@ -228,14 +228,14 @@ def process_msg(rq, log, cfg, method, body, **kwargs):
                                     data=json.dumps(data, indent=4))
 
             else:
-                non_proc_msg(rq, log, cfg, data,
+                non_proc_msg(rmq, log, cfg, data,
                              "Dictionary does not contain key")
 
         else:
-            non_proc_msg(rq, log, cfg, body, "Non-dictionary format")
+            non_proc_msg(rmq, log, cfg, body, "Non-dictionary format")
 
     except (ValueError, SyntaxError) as e:
-        non_proc_msg(rq, log, cfg, body, str(e))
+        non_proc_msg(rmq, log, cfg, body, str(e))
 
 
 def monitor_queue(cfg, log, **kwargs):
