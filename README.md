@@ -95,22 +95,26 @@ vim rabbitmq.py
 chmod 600 rabbitmq.py
 ```
 
-(Optional)  Enable program to be ran as a service.  Modify the service script to change the variables to reflect the environment setup.
-  * Replace **{Python_Project}** with the baseline path of the python program.
-  * Replace **{USER_ACCT}** with the same name as the user account in rmq_2_sysmon_service.sh script.
-  * MOD_LIBRARY is references the configuration file above (e.g. rabbitmq).
-  * USER_ACCT is the userid which will execute the daemon and the account must be on the server locally.
+(Optional)  Setup program to be ran as a service.
+
+Modify the service script to change the variables to reflect the environment setup.
   * Change these entries in the rmq_2_sysmon_service.sh file.
-    - BASE_PATH="{Python_Project}/rmq-sysmon"
-    - USER_ACCOUNT="USER_ACCT"
+    - BASE_PATH="PYTHON_PROJECT/rmq-sysmon"
+    - USER_ACCOUNT="USER_NAME"
+  * Replace **PYTHON_PROJECT** with the baseline path of the python program.
+  * Replace **USER_NAME** with the userid which will execute the daemon and the account must be on the server locally.
+  * MOD_LIBRARY is references the configuration file above (e.g. rabbitmq).
 
 ```
-cd ..
 cp rmq_2_sysmon_service.sh.TEMPLATE rmq_2_sysmon_service.sh
 vim rmq_2_sysmon_service.sh
-sudo ln -s {Python_Project}/rmq-sysmon/rmq_2_sysmon_service.sh /etc/init.d/rmq_2_sysmon
+```
+
+Enable program as a service.
+```
+sudo ln -s PYTHON_PROJECT/rmq-sysmon/rmq_2_sysmon_service.sh /etc/init.d/rmq_2_sysmon
 sudo chkconfig --add rmq_2_sysmon
-sudo chown {USER_ACCT} config/rabbitmq.py
+sudo chown USER_NAME config/rabbitmq.py
 ```
 
 
