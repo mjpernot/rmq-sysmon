@@ -40,13 +40,13 @@
             queue_name = "QUEUE_NAME"
             # Email address(es) to send non-processed messages to or None.
             # None state no emails are required to be sent.
-            to_line = "EMAIL_ADDRESS@DOMAIN_NAME"
+            to_line = "EMAIL_ADDRESS"
             # Pre-name and post-name for the file name.
             # An empty string will not be included in the file name.
             prename = ""
             postname = ""
             # Dictionary key in JSON to be part of the file name.
-            key = "Server"
+            key = "DICT_KEY"
             # RabbitMQ listening port, default is 5672.
             port = 5672
             # Type of exchange:  direct, topic, fanout, headers
@@ -58,9 +58,9 @@
             # Queues automatically delete message after processing: True|False
             auto_delete = False
             # Archive directory name for non-processed messages.
-            message_dir = "message_dir"
+            message_dir = /DIRECTORY_PATH/"message_dir"
             # Directory name for log files.
-            log_dir = "logs"
+            log_dir = "/DIRECTORY_PATH/logs"
             # File name to program log.
             log_file = "rmq_2_sysmon.log"
 
@@ -266,7 +266,6 @@ def monitor_queue(cfg, log, **kwargs):
 
         log.log_info("callback:  Processing message...")
         process_msg(rmq, log, cfg, method, body)
-
         log.log_info("Deleting message from RabbitMQ")
         rmq.ack(method.delivery_tag)
 
@@ -277,6 +276,7 @@ def monitor_queue(cfg, log, **kwargs):
         queue_name=cfg.queue_name, routing_key=cfg.queue_name,
         x_durable=cfg.x_durable, q_durable=cfg.q_durable,
         auto_delete=cfg.auto_delete)
+
     log.log_info("Connection info: %s->%s" % (cfg.host, cfg.exchange_name))
     connect_status, err_msg = rmq.create_connection()
 
