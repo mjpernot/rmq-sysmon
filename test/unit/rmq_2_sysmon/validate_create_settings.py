@@ -17,8 +17,11 @@
 # Standard
 import sys
 import os
-import unittest
-import datetime
+
+if sys.version_info < (2, 7):
+    import unittest2 as unittest
+else:
+    import unittest
 
 # Third-party
 import mock
@@ -27,7 +30,6 @@ import mock
 sys.path.append(os.getcwd())
 import rmq_2_sysmon
 import version
-import lib.gen_libs as gen_libs
 
 __version__ = version.__version__
 
@@ -124,7 +126,7 @@ class UnitTest(unittest.TestCase):
         mock_lib.chk_crt_dir.side_effect = [(False, self.err_msg1),
                                             (False, self.err_msg2),
                                             (False, self.err_msg3)]
-        cfg_mod, status_flag, err_msg = \
+        _, status_flag, err_msg = \
             rmq_2_sysmon.validate_create_settings(self.cfg)
 
         self.assertEqual((status_flag, err_msg),
@@ -145,7 +147,7 @@ class UnitTest(unittest.TestCase):
         mock_lib.chk_crt_dir.side_effect = [(False, self.err_msg1),
                                             (False, self.err_msg2),
                                             (True, None)]
-        cfg_mod, status_flag, err_msg = \
+        _, status_flag, err_msg = \
             rmq_2_sysmon.validate_create_settings(self.cfg)
 
         self.assertEqual((status_flag, err_msg),
@@ -165,7 +167,7 @@ class UnitTest(unittest.TestCase):
         mock_lib.chk_crt_dir.side_effect = [(True, None),
                                             (False, self.err_msg3),
                                             (True, None)]
-        cfg_mod, status_flag, err_msg = \
+        _, status_flag, err_msg = \
             rmq_2_sysmon.validate_create_settings(self.cfg)
 
         self.assertEqual((status_flag, err_msg), (False, self.err_msg3))
@@ -183,7 +185,7 @@ class UnitTest(unittest.TestCase):
 
         mock_lib.chk_crt_dir.side_effect = [(True, None), (True, None),
                                             (True, None)]
-        cfg_mod, status_flag, err_msg = \
+        _, status_flag, err_msg = \
             rmq_2_sysmon.validate_create_settings(self.cfg)
 
         self.assertEqual((status_flag, err_msg), (True, ""))
@@ -202,7 +204,7 @@ class UnitTest(unittest.TestCase):
         mock_lib.chk_crt_dir.side_effect = [(True, None),
                                             (False, self.err_msg2),
                                             (True, None)]
-        cfg_mod, status_flag, err_msg = \
+        _, status_flag, err_msg = \
             rmq_2_sysmon.validate_create_settings(self.cfg)
 
         self.assertEqual((status_flag, err_msg), (False, self.err_msg2))
@@ -240,7 +242,7 @@ class UnitTest(unittest.TestCase):
 
         mock_lib.chk_crt_dir.side_effect = [(False, self.err_msg1),
                                             (True, None), (True, None)]
-        cfg_mod, status_flag, err_msg = \
+        _, status_flag, err_msg = \
             rmq_2_sysmon.validate_create_settings(self.cfg)
 
         self.assertEqual((status_flag, err_msg), (False, self.err_msg1))
@@ -258,7 +260,7 @@ class UnitTest(unittest.TestCase):
 
         mock_lib.chk_crt_dir.side_effect = [(True, None), (True, None),
                                             (True, None)]
-        cfg_mod, status_flag, err_msg = \
+        _, status_flag, err_msg = \
             rmq_2_sysmon.validate_create_settings(self.cfg)
 
         self.assertEqual((status_flag, err_msg), (True, ""))

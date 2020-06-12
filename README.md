@@ -26,8 +26,6 @@
 
 # Prerequisites:
   * List of Linux packages that need to be installed on the server.
-    - python-libs
-    - python-devel
     - git
     - python-pip
 
@@ -81,35 +79,42 @@ Make the appropriate changes to the RabbitMQ environment.
   * The "user", "passwd", "host", "exchange_name", and "queue_name"  is connection and exchange/queue information to a RabbitMQ node.
   * The "sysmon_dir" is the directory path to where the package admin reports will be written to.
   * The "to_line" is the email address/email alias to the RabbitMQ administrator(s).
+  * The "message_dir" and "log_dir" is where error messages and log files are written to respectively.
     - user = "USER"
     - passwd = "PASSWORD"
     - host = "HOSTNAME"
     - exchange_name = "EXCHANGE_NAME"
     - queue_name = "QUEUE_NAME"
-    - sysmon_dir = "DIR_PATH"
+    - sysmon_dir = "DIRECTORY_PATH"
     - to_line = "EMAIL_ADDRESS@DOMAIN_NAME"
+    - message_dir = "/DIRECTORY_PATH/message_dir"
+    - log_dir = "/DIRECTORY_PATH/logs"
 
 ```
 vim rabbitmq.py
 chmod 600 rabbitmq.py
 ```
 
-(Optional)  Enable program to be ran as a service.  Modify the service script to change the variables to reflect the environment setup.
-  * Replace **{Python_Project}** with the baseline path of the python program.
-  * Replace **{USER_ACCT}** with the same name as the user account in rmq_2_sysmon_service.sh script.
-  * MOD_LIBRARY is references the configuration file above (e.g. rabbitmq).
-  * USER_ACCT is the userid which will execute the daemon and the account must be on the server locally.
+(Optional)  Setup program to be ran as a service.
+
+Modify the service script to change the variables to reflect the environment setup.
   * Change these entries in the rmq_2_sysmon_service.sh file.
-    - BASE_PATH="{Python_Project}/rmq-sysmon"
-    - USER_ACCOUNT="USER_ACCT"
+    - BASE_PATH="PYTHON_PROJECT/rmq-sysmon"
+    - USER_ACCOUNT="USER_NAME"
+  * Replace **PYTHON_PROJECT** with the baseline path of the python program.
+  * Replace **USER_NAME** with the userid which will execute the daemon and the account must be on the server locally.
+  * MOD_LIBRARY is references the configuration file above (e.g. rabbitmq).
 
 ```
-cd ..
 cp rmq_2_sysmon_service.sh.TEMPLATE rmq_2_sysmon_service.sh
 vim rmq_2_sysmon_service.sh
-sudo ln -s {Python_Project}/rmq-sysmon/rmq_2_sysmon_service.sh /etc/init.d/rmq_2_sysmon
+```
+
+Enable program as a service.
+```
+sudo ln -s PYTHON_PROJECT/rmq-sysmon/rmq_2_sysmon_service.sh /etc/init.d/rmq_2_sysmon
 sudo chkconfig --add rmq_2_sysmon
-sudo chown {USER_ACCT} config/rabbitmq.py
+sudo chown USER_NAME config/rabbitmq.py
 ```
 
 
@@ -161,15 +166,13 @@ service rmq_2_sysmon stop
   * Replace **{Python_Project}** with the baseline path of the python program.
 
 ```
-    `{Python_Project}/rmq-sysmon/rmq_2_sysmon.py -h`
+`{Python_Project}/rmq-sysmon/rmq_2_sysmon.py -h`
 ```
 
 
 # Testing:
 
 # Unit Testing:
-
-### Description: Testing consists of unit testing for the functions in the rmq_2_sysmon.py program.
 
 ### Installation:
 
@@ -200,79 +203,23 @@ pip install -r requirements-python-lib.txt --target lib --trusted-host pypi.appd
 pip install -r requirements-rabbitmq-lib.txt --target rabbit_lib --trusted-host pypi.appdev.proj.coe.ic.gov
 ```
 
-# Unit test runs for rmq_2_sysmon.py:
+### Testing:
   * Replace **{Python_Project}** with the baseline path of the python program.
 
 ```
 cd {Python_Project}/rmq-sysmon
-```
-
-### Unit:  help_message
-```
-test/unit/rmq_2_sysmon/help_message.py
-```
-
-### Unit:  validate_create_settings
-```
-test/unit/rmq_2_sysmon/validate_create_settings.py
-```
-
-### Unit:  non_proc_msg
-```
-test/unit/rmq_2_sysmon/non_proc_msg.py
-```
-
-### Unit:  process_msg
-```
-test/unit/rmq_2_sysmon/process_msg.py
-```
-
-### Unit:  monitor_queue
-```
-test/unit/rmq_2_sysmon/monitor_queue.py
-```
-
-### Unit:  run_program
-```
-test/unit/rmq_2_sysmon/run_program.py
-```
-
-### Unit:  main
-```
-test/unit/rmq_2_sysmon/main.py
-```
-
-### All unit testing
-```
 test/unit/rmq_2_sysmon/unit_test_run.sh
-```
-
-### Unit test code coverage
-```
-test/unit/rmq_2_sysmon/code_coverage.sh
-```
-
-# Unit test runs for daemon_rmq_2_sysmon.py:
-  * Replace **{Python_Project}** with the baseline path of the python program.
-
-```
-cd {Python_Project}/rmq-sysmon
-```
-
-### Unit:  main
-```
 test/unit/daemon_rmq_2_sysmon/main.py
 ```
 
-### Unit test code coverage
+### Code coverage:
 ```
+cd {Python_Project}/rmq-sysmon
+test/unit/rmq_2_sysmon/code_coverage.sh
 test/unit/daemon_rmq_2_sysmon/code_coverage.sh
 ```
 
-
 # Integration Testing:
-
-### Description: Testing consists of integration testing of functions in the rmq_2_sysmon.py program.
 
 ### Installation:
 
@@ -322,44 +269,36 @@ Make the appropriate changes to the RabbitMQ environment.
     - user = "USER"
     - passwd = "PASSWORD"
     - host = "HOSTNAME"
-    - sysmon_dir = "DIR_PATH"               -> Change to:  sysmon_dir = "sysmon"
-    - exchange_name = "EXCHANGE_NAME"       -> Change to:  exchange_name = "intr-test"
-    - queue_name = "QUEUE_NAME"             -> Change to:  queue_name = "intr-test"
-    - to_line = "EMAIL_ADDRESS@DOMAIN_NAME" -> Change to:  to_line = None
+    - sysmon_dir = "DIR_PATH"                     -> Change to:  sysmon_dir = "sysmon"
+    - exchange_name = "EXCHANGE_NAME"             -> Change to:  exchange_name = "intr-test"
+    - queue_name = "QUEUE_NAME"                   -> Change to:  queue_name = "intr-test"
+    - to_line = "EMAIL_ADDRESS@DOMAIN_NAME"       -> Change to:  to_line = None
+    - key = "DICT_KEY"                            -> Change to:  key = "Server"
+    - postname = ""                               -> Change to:  postname = "_pkgs"
+    - message_dir = "/DIRECTORY_PATH/message_dir" -> Change to:  message_dir = "message_dir"
+    - log_dir = "/DIRECTORY_PATH/logs"            -> Change to:  log_dir = "logs"
 
 ```
 vim rabbitmq.py
 chmod 600 rabbitmq.py
 ```
 
-# Integration test runs for rmq_2_sysmon.py:
+### Testing:
   * Replace **{Python_Project}** with the baseline path of the python program.
 
-### Integration tests
 ```
 cd {Python_Project}/rmq-sysmon
-test/integration/rmq_2_sysmon/process_msg.py
-test/integration/rmq_2_sysmon/validate_create_settings.py
-test/integration/rmq_2_sysmon/non_proc_msg.py
-test/integration/rmq_2_sysmon/monitor_queue.py
-test/integration/rmq_2_sysmon/run_program.py
-test/integration/rmq_2_sysmon/main.py
-```
-
-### All integration testing
-```
 test/integration/rmq_2_sysmon/integration_test_run.sh
 ```
 
-### Integration test code coverage
+### Code coverage:
 ```
+cd {Python_Project}/rmq-sysmon
 test/integration/daemon_rmq_2_sysmon/code_coverage.sh
 ```
 
 
 # Blackbox Testing:
-
-### Description: Testing consists of blackbox testing of the rmq_2_sysmon.py program.
 
 ### Installation:
 
@@ -403,24 +342,26 @@ cp ../../../../config/rabbitmq.py.TEMPLATE rabbitmq.py
 ```
 
 Make the appropriate changes to the RabbitMQ environment.
-  * Replace **{Python_Project}** with the baseline path of the python program.
+  * Replace **{PYTHON_PROJECT}** with the baseline path of the python program.
   * Change these entries in the rabbitmq.py file.  The "user", "passwd", and "host" variables are the connection information to a RabbitMQ node, the other variables use the "Change to" settings.
     - user = "USER"
     - passwd = "PASSWORD"
     - host = "HOSTNAME"
-    - sysmon_dir = "DIR_PATH"               -> Change to:  sysmon_dir = "{Python_Project}/test/blackbox/rmq_2_sysmon/sysmon"
-    - exchange_name = "EXCHANGE_NAME"       -> Change to:  exchange_name = "blackbox-test"
-    - queue_name = "QUEUE_NAME"             -> Change to:  queue_name = "blackbox-test"
-    - to_line = "EMAIL_ADDRESS@DOMAIN_NAME" -> Change to:  to_line = None
-    - message_dir = "message_dir"           -> Change to:  message_dir = "test/blackbox/rmq_2_sysmon/message_dir"
-    - log_dir = "logs"                      -> Change to:  log_dir = "test/blackbox/rmq_2_sysmon/logs"
+    - sysmon_dir = "DIR_PATH"                     -> Change to:  sysmon_dir = "{PYTHON_PROJECT}/test/blackbox/rmq_2_sysmon/sysmon"
+    - exchange_name = "EXCHANGE_NAME"             -> Change to:  exchange_name = "blackbox-test"
+    - queue_name = "QUEUE_NAME"                   -> Change to:  queue_name = "blackbox-test"
+    - to_line = "EMAIL_ADDRESS@DOMAIN_NAME"       -> Change to:  to_line = None
+    - key = "DICT_KEY"                            -> Change to:  key = "Server"
+    - postname = ""                               -> Change to:  postname = "_pkgs"
+    - message_dir = "/DIRECTORY_PATH/message_dir" -> Change to:  message_dir = "{PYTHON_PROJECT}/test/blackbox/rmq_2_sysmon/message_dir"
+    - log_dir = "/DIRECTORY_PATH/logs"            -> Change to:  log_dir = "{PYTHON_PROJECT}/test/blackbox/rmq_2_sysmon/logs"
 
 ```
 vim rabbitmq.py
 chmod 600 rabbitmq.py
 ```
 
-### Blackbox test run for rmq_2_sysmon.py:
+### Testing:
   * Replace **{Python_Project}** with the baseline path of the python program.
 
 ```

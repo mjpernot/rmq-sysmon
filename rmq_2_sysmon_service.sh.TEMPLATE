@@ -13,7 +13,7 @@
 #			and then writes the JSON message to the sysmon directory.
 ### END INIT INFO
 
-BASE_PATH="{Python_Project}/rmq-sysmon"
+BASE_PATH="PYTHON_PROJECT/rmq-sysmon"
 MOD_LIBRARY="rabbitmq"
 USER_ACCOUNT="USER_NAME"
 

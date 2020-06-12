@@ -28,7 +28,7 @@ import version
 __version__ = version.__version__
 
 
-def delete_files(base_dir, f_filter, **kwargs):
+def delete_files(base_dir, f_filter):
 
     """Function:  delete_files
 
