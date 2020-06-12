@@ -16,6 +16,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - daemon_rmq_2_sysmon.is_active:  Determine if PID is active process on the server.
 
 ### Changed
+- rmq_2_sysmon_service.sh.TEMPLATE:  Changed format.
 - monitor_queue:  Changed variable name to standard naming convention.
 - callback:  Changed variable name to standard naming convention.
 - process_msg:  Changed variable name to standard naming convention.
