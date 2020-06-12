@@ -5,7 +5,7 @@ user = "USER"
 passwd = "PASSWORD"
 host = "HOSTNAME"
 # Directory for writing sysmon reports to.
-sysmon_dir = "DIR_PATH"
+sysmon_dir = "DIRECTORY_PATH"
 # RabbitMQ Exchange name being monitored.
 exchange_name = "EXCHANGE_NAME"
 # RabbitMQ Queue name being monitored.
@@ -18,7 +18,8 @@ to_line = "EMAIL_ADDRESS"
 prename = ""
 postname = ""
 # Dictionary key in JSON to be part of the file name.
-key = "Server"
+# Example: key = "Server"
+key = "DICT_KEY"
 # RabbitMQ listening port, default is 5672.
 port = 5672
 # Type of exchange:  direct, topic, fanout, headers
@@ -30,8 +31,8 @@ q_durable = True
 # Queues automatically delete message after processing: True|False
 auto_delete = False
 # Archive directory name for non-processed messages.
-message_dir = "message_dir"
+message_dir = "/DIRECTORY_PATH/message_dir"
 # Directory name for log files.
-log_dir = "logs"
+log_dir = "/DIRECTORY_PATH/logs"
 # File name to program log.
 log_file = "rmq_2_sysmon.log"

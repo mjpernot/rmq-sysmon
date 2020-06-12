@@ -6,17 +6,21 @@
     Description:  Runs the rmq_2_sysmon program as a daemon/service.
 
     Usage:
-        daemon_rmq_2_sysmon.py -a {start|stop|restart} {rmq_2_sysmon options}
+        daemon_rmq_2_sysmon.py -a {start|stop|restart} {rmq_2_sysmon_options}
 
     Arguments:
-        -a {start|stop|restart} => Start, stop, restart the rmq_2_sysmon
-            daemon.
-        rmq_2_sysmon options => See rmq_2_sysmon for options.
+        -a {start|stop|restart} => start, stop, restart rmq_2_sysmon daemon.
+        rmq_2_sysmon_options => See rmq_2_sysmon for all options.
             -c module option from rmq_2_sysmon is required to make the daemon
                 pidfile unique for running multiple instances.
+            -d full_absolute_directory_path => Directory path for option '-c'.
+            -M => Monitor and process messages from a RabbitMQ queue.
+
+        NOTE:  -d option requires the full absolute path the configuration
+            directory.  The daemon cannot use a relative path.
 
     Example:
-        daemon_rmq_2_sysmon.py -a start -c rabbitmq -d config -M
+        daemon_rmq_2_sysmon.py -a start -c rabbitmq -d /full/path/config -M
 
 """
 
@@ -26,6 +30,7 @@
 import sys
 import time
 import os
+import psutil
 
 # Third-party
 
@@ -69,6 +74,36 @@ class Rmq2SysmonDaemon(gen_class.Daemon):
             time.sleep(1)
 
 
+def is_active(pidfile, proc_name, **kwargs):
+
+    """Function:  is_active
+
+    Description:  Reads a pid from file and determines if the pid is running
+        as the process name.
+
+    Arguments:
+        (input) pidfile -> Path and file name to a PID file.
+        (input) proc_name -> Process name.
+        (output) status -> True|False - If process is running.
+
+    """
+
+    status = False
+
+    with open(pidfile, "r") as pfile:
+        pid = int(pfile.read().strip())
+
+    if pid:
+
+        for proc in psutil.process_iter():
+
+            if proc.pid == pid and proc.name == proc_name:
+                status = True
+                break
+
+    return status
+
+
 def main():
 
     """Function:  main
@@ -86,26 +121,37 @@ def main():
 
     """
 
+    cmdline = gen_libs.get_inst(sys)
     opt_val_list = ["-a", "-c", "-d"]
     opt_req_list = ["-a", "-c", "-d"]
+    proc_name = "daemon_rmq_2_sy"
 
     # Process argument list from command line.
-    args_array = arg_parser.arg_parse2(sys.argv, opt_val_list)
-
+    args_array = arg_parser.arg_parse2(cmdline.argv, opt_val_list)
     f_name = "rmq2sysmon_daemon_" + args_array.get("-c", "") + ".pid"
     pid_file = os.path.join(gen_libs.get_base_dir(__file__), "tmp", f_name)
-
-    daemon = Rmq2SysmonDaemon(pid_file, argv_list=sys.argv)
+    daemon = Rmq2SysmonDaemon(pid_file, argv_list=cmdline.argv)
 
     if not arg_parser.arg_require(args_array, opt_req_list):
 
-        if "start" == args_array["-a"]:
-            daemon.start()
+        if args_array["-a"] == "start":
 
-        elif "stop" == args_array["-a"]:
+            if os.path.isfile(pid_file) and is_active(pid_file, proc_name):
+
+                print("Warning:  Pidfile %s exists and process is running."
+                      % (pid_file))
+
+            elif os.path.isfile(pid_file):
+                os.remove(pid_file)
+                daemon.start()
+
+            else:
+                daemon.start()
+
+        elif args_array["-a"] == "stop":
             daemon.stop()
 
-        elif "restart" == args_array["-a"]:
+        elif args_array["-a"] == "restart":
             daemon.restart()
 
         else:
@@ -117,7 +163,7 @@ def main():
     else:
         print("Usage: %s -a start|stop|restart -c module -d directory/config \
 {rmq_2_sysmon options}"
-              % sys.argv[0])
+              % cmdline.argv[0])
         sys.exit(2)
 
 

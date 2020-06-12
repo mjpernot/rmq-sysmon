@@ -17,7 +17,11 @@
 # Standard
 import sys
 import os
-import unittest
+
+if sys.version_info < (2, 7):
+    import unittest2 as unittest
+else:
+    import unittest
 
 # Third-party
 import mock
@@ -80,7 +84,7 @@ class UnitTest(unittest.TestCase):
                 self.to_line = ""
                 self.message_dir = "message_dir"
 
-        self.CT = CfgTest()
+        self.cfg = CfgTest()
 
     @mock.patch("rmq_2_sysmon.gen_class.Mail")
     @mock.patch("rmq_2_sysmon.gen_libs.write_file")
@@ -99,8 +103,8 @@ class UnitTest(unittest.TestCase):
         mock_write.return_value = True
         mock_mail.send_mail.return_value = True
 
-        self.assertFalse(rmq_2_sysmon.non_proc_msg(self.CT, mock_log, self.CT,
-                                                   "Line", "Test_Subject"))
+        self.assertFalse(rmq_2_sysmon.non_proc_msg(
+            self.cfg, mock_log, self.cfg, "Line", "Test_Subject"))
 
     @mock.patch("rmq_2_sysmon.gen_class.Mail")
     @mock.patch("rmq_2_sysmon.gen_libs.write_file")
@@ -119,10 +123,10 @@ class UnitTest(unittest.TestCase):
         mock_write.return_value = True
         mock_mail.send_mail.return_value = True
 
-        self.CT.to_line = "Test_Email@email.domain"
+        self.cfg.to_line = "Test_Email@email.domain"
 
-        self.assertFalse(rmq_2_sysmon.non_proc_msg(self.CT, mock_log, self.CT,
-                                                   "Line", "Test_Subject"))
+        self.assertFalse(rmq_2_sysmon.non_proc_msg(
+            self.cfg, mock_log, self.cfg, "Line", "Test_Subject"))
 
     def tearDown(self):
 
@@ -134,7 +138,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.CT = None
+        self.cfg = None
 
 
 if __name__ == "__main__":

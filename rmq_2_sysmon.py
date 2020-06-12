@@ -7,12 +7,12 @@
         to a JSON report, and write the JSON report to the sysmon directory.
 
     Usage:
-        rmq_2_sysmon.py -c file -d dir_path [-M] [-v | -h]
+        rmq_2_sysmon.py -c file -d dir_path {-M} [-v | -h]
 
     Arguments:
-        -M => Monitor and process messages from a RabbitMQ queue.
         -c file => RabbitMQ configuration file.  Required argument.
         -d dir_path => Directory path for option '-c'.  Required argument.
+        -M => Monitor and process messages from a RabbitMQ queue.
         -v => Display version of this program.
         -h => Help and usage message.
 
@@ -40,13 +40,13 @@
             queue_name = "QUEUE_NAME"
             # Email address(es) to send non-processed messages to or None.
             # None state no emails are required to be sent.
-            to_line = "EMAIL_ADDRESS@DOMAIN_NAME"
+            to_line = "EMAIL_ADDRESS"
             # Pre-name and post-name for the file name.
             # An empty string will not be included in the file name.
             prename = ""
             postname = ""
             # Dictionary key in JSON to be part of the file name.
-            key = "Server"
+            key = "DICT_KEY"
             # RabbitMQ listening port, default is 5672.
             port = 5672
             # Type of exchange:  direct, topic, fanout, headers
@@ -58,9 +58,9 @@
             # Queues automatically delete message after processing: True|False
             auto_delete = False
             # Archive directory name for non-processed messages.
-            message_dir = "message_dir"
+            message_dir = /DIRECTORY_PATH/"message_dir"
             # Directory name for log files.
-            log_dir = "logs"
+            log_dir = "/DIRECTORY_PATH/logs"
             # File name to program log.
             log_file = "rmq_2_sysmon.log"
 
@@ -78,6 +78,7 @@ import socket
 import getpass
 
 # Third-party
+import ast
 import json
 
 # Local
@@ -159,14 +160,14 @@ def validate_create_settings(cfg, **kwargs):
     return cfg, status_flag, err_msg
 
 
-def non_proc_msg(rq, log, cfg, data, subj, **kwargs):
+def non_proc_msg(rmq, log, cfg, data, subj, **kwargs):
 
     """Function:  non_proc_msg
 
     Description:  Process non-processed messages.
 
     Arguments:
-        (input) rq -> RabbitMQ class instance.
+        (input) rmq -> RabbitMQ class instance.
         (input) log -> Log class instance.
         (input) cfg -> Configuration settings module for the program.
         (input) data -> Body of message that was not processed.
@@ -176,36 +177,35 @@ def non_proc_msg(rq, log, cfg, data, subj, **kwargs):
 
     log.log_info("non_proc_msg:  Processing non-processed message...")
     frm_line = getpass.getuser() + "@" + socket.gethostname()
-    f_name = rq.exchange + "_" + rq.queue_name + "_" + gen_libs.get_date() \
+    f_name = rmq.exchange + "_" + rmq.queue_name + "_" + gen_libs.get_date() \
         + "_" + gen_libs.get_time() + ".txt"
     f_path = os.path.join(cfg.message_dir, f_name)
     subj = "rmq_2_sysmon: " + subj
 
     if cfg.to_line:
         log.log_info("Sending email to: %s..." % (cfg.to_line))
-        EMAIL = gen_class.Mail(cfg.to_line, subj, frm_line)
-        EMAIL.add_2_msg(data)
-        EMAIL.send_mail()
+        email = gen_class.Mail(cfg.to_line, subj, frm_line)
+        email.add_2_msg(data)
+        email.send_mail()
 
     else:
         log.log_warn("No email being sent as TO line is empty.")
 
     log.log_err("Message was not processed due to: %s" % (subj))
     log.log_info("Saving message to: %s" % (f_path))
-
     gen_libs.write_file(f_path, data="Exchange: %s, Queue: %s"
-                        % (rq.exchange, rq.queue_name))
+                        % (rmq.exchange, rmq.queue_name))
     gen_libs.write_file(f_path, data=data)
 
 
-def process_msg(rq, log, cfg, method, body, **kwargs):
+def process_msg(rmq, log, cfg, method, body, **kwargs):
 
     """Function:  process_msg
 
     Description:  Process message from RabbitMQ queue.
 
     Arguments:
-        (input) rq -> RabbitMQ class instance.
+        (input) rmq -> RabbitMQ class instance.
         (input) log -> Log class instance.
         (input) cfg -> Configuration settings module for the program.
         (input) method -> Delivery properties.
@@ -216,7 +216,7 @@ def process_msg(rq, log, cfg, method, body, **kwargs):
     log.log_info("process_msg:  Processing body of message...")
 
     try:
-        data = json.loads(body)
+        data = ast.literal_eval(body)
 
         if isinstance(data, dict):
 
@@ -224,23 +224,18 @@ def process_msg(rq, log, cfg, method, body, **kwargs):
                 f_name = os.path.join(cfg.sysmon_dir, cfg.prename +
                                       str(data[cfg.key].split(".")[0]) +
                                       cfg.postname + ".json")
-                err_flag, err_msg = gen_libs.print_dict(data, json_fmt=True,
-                                                        no_std=True,
-                                                        ofile=f_name)
-
-                if err_flag:
-                    non_proc_msg(rq, log, cfg, data,
-                                 "Unable to convert to JSON")
+                gen_libs.write_file(fname=f_name, mode="w",
+                                    data=json.dumps(data, indent=4))
 
             else:
-                non_proc_msg(rq, log, cfg, data,
+                non_proc_msg(rmq, log, cfg, data,
                              "Dictionary does not contain key")
 
         else:
-            non_proc_msg(rq, log, cfg, body, "Non-dictionary format")
+            non_proc_msg(rmq, log, cfg, body, "Non-dictionary format")
 
-    except ValueError as e:
-        non_proc_msg(rq, log, cfg, body, str(e))
+    except (ValueError, SyntaxError) as err:
+        non_proc_msg(rmq, log, cfg, body, str(err))
 
 
 def monitor_queue(cfg, log, **kwargs):
@@ -270,29 +265,27 @@ def monitor_queue(cfg, log, **kwargs):
         """
 
         log.log_info("callback:  Processing message...")
-        process_msg(rq, log, cfg, method, body)
-
+        process_msg(rmq, log, cfg, method, body)
         log.log_info("Deleting message from RabbitMQ")
-        rq.ack(method.delivery_tag)
+        rmq.ack(method.delivery_tag)
 
     log.log_info("monitor_queue:  Start monitoring queue...")
-
-    rq = rabbitmq_class.RabbitMQCon(cfg.user, cfg.passwd, cfg.host, cfg.port,
-                                    cfg.exchange_name, cfg.exchange_type,
-                                    cfg.queue_name, cfg.queue_name,
-                                    cfg.x_durable, cfg.q_durable,
-                                    cfg.auto_delete)
+    rmq = rabbitmq_class.RabbitMQCon(
+        cfg.user, cfg.passwd, cfg.host, cfg.port,
+        exchange_name=cfg.exchange_name, exchange_type=cfg.exchange_type,
+        queue_name=cfg.queue_name, routing_key=cfg.queue_name,
+        x_durable=cfg.x_durable, q_durable=cfg.q_durable,
+        auto_delete=cfg.auto_delete)
 
     log.log_info("Connection info: %s->%s" % (cfg.host, cfg.exchange_name))
+    connect_status, err_msg = rmq.create_connection()
 
-    connect_status, err_msg = rq.create_connection()
-
-    if connect_status and rq.channel.is_open:
+    if connect_status and rmq.channel.is_open:
         log.log_info("Connected to RabbitMQ node")
 
         # Setup the RabbitMQ Consume callback and start monitoring.
-        rq.consume(callback)
-        rq.start_loop()
+        rmq.consume(callback)
+        rmq.start_loop()
 
     else:
         log.log_err("Failed to connnect to RabbuitMQ -> Msg: %s" % (err_msg))
@@ -311,6 +304,7 @@ def run_program(args_array, func_dict, **kwargs):
 
     """
 
+    cmdline = gen_libs.get_inst(sys)
     args_array = dict(args_array)
     func_dict = dict(func_dict)
     cfg = gen_libs.load_module(args_array["-c"], args_array["-d"])
@@ -330,12 +324,11 @@ def run_program(args_array, func_dict, **kwargs):
 
         try:
             flavor_id = cfg.exchange_name + cfg.queue_name
-            prog_lock = gen_class.ProgramLock(sys.argv, flavor_id)
+            prog_lock = gen_class.ProgramLock(cmdline.argv, flavor_id)
 
             # Intersect args_array & func_dict to find which functions to call.
             for opt in set(args_array.keys()) & set(func_dict.keys()):
-
-                    func_dict[opt](cfg, log, **kwargs)
+                func_dict[opt](cfg, log, **kwargs)
 
             del prog_lock
 
@@ -369,20 +362,19 @@ def main(**kwargs):
 
     """
 
-    sys.argv = list(kwargs.get("argv_list", sys.argv))
-
+    cmdline = gen_libs.get_inst(sys)
+    cmdline.argv = list(kwargs.get("argv_list", cmdline.argv))
     dir_chk_list = ["-d"]
     func_dict = {"-M": monitor_queue}
     opt_req_list = ["-c", "-d"]
     opt_val_list = ["-c", "-d"]
 
     # Process argument list from command line.
-    args_array = arg_parser.arg_parse2(sys.argv, opt_val_list)
+    args_array = arg_parser.arg_parse2(cmdline.argv, opt_val_list)
 
     if not gen_libs.help_func(args_array, __version__, help_message) \
        and not arg_parser.arg_require(args_array, opt_req_list) \
        and not arg_parser.arg_dir_chk_crt(args_array, dir_chk_list):
-
         run_program(args_array, func_dict)
 
 

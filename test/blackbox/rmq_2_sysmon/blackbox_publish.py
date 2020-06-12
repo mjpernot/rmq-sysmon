@@ -17,13 +17,11 @@
 # Standard
 import os
 import sys
-import time
 
 # Third-party
 
 # Local
 sys.path.append(os.getcwd())
-import rabbit_lib.rabbitmq_class as rabbitmq_class
 import lib.gen_libs as gen_libs
 import blackbox_libs
 import version
@@ -31,20 +29,20 @@ import version
 __version__ = version.__version__
 
 
-def test_1(rq, file_path, **kwargs):
+def test_1(rmq, file_path):
 
     """Function:  test_1
 
     Description:  Publish test message to RabbitMQ queue.
 
     Arguments:
-        (input) rq -> RabbitMQ Publisher instance
+        (input) rmq -> RabbitMQ Publisher instance
         (input) file_path -> Directory path to test file location.
 
     """
 
     f_name = "SERVER_NAME"
-    status, err_msg = blackbox_libs.publish_msg(rq,
+    status, err_msg = blackbox_libs.publish_msg(rmq,
                                                 os.path.join(file_path,
                                                              f_name + ".txt"))
 
@@ -75,10 +73,10 @@ def main():
     config_path = os.path.join(test_path, "config")
     file_path = os.path.join(test_path, "testfiles")
     cfg = gen_libs.load_module("rabbitmq", config_path)
-    rq = blackbox_libs.create_rq_pub(cfg)
+    rmq = blackbox_libs.create_rq_pub(cfg)
 
-    if rq:
-        test_1(rq, file_path)
+    if rmq:
+        test_1(rmq, file_path)
 
     else:
         print("Error:  Failed to create RabbitMQ Publisher instance")

@@ -20,13 +20,10 @@ import sys
 import time
 
 # Third-party
-import json
 import glob
-import ast
 
 # Local
 sys.path.append(os.getcwd())
-import rabbit_lib.rabbitmq_class as rabbitmq_class
 import lib.gen_libs as gen_libs
 import blackbox_libs
 import version
@@ -34,16 +31,15 @@ import version
 __version__ = version.__version__
 
 
-def test_1(rq, file_path, message_dir, log_dir, **kwargs):
+def test_1(rmq, file_path, log_dir):
 
     """Function:  test_1
 
     Description:  Process a single properly formatted message.
 
     Arguments:
-        (input) rq -> RabbitMQ Publisher instance
+        (input) rmq -> RabbitMQ Publisher instance
         (input) file_path -> Directory path to test file location.
-        (input) message_dir -> Directory path to location of error messages.
         (input) log_dir -> Directory path to location of log file.
 
     """
@@ -52,7 +48,7 @@ def test_1(rq, file_path, message_dir, log_dir, **kwargs):
     f_name = "SERVER_NAME3"
     msg = "Dictionary does not contain key"
     f_filter2 = "rmq_2_sysmon*.log"
-    status, err_msg = blackbox_libs.publish_msg(rq,
+    status, err_msg = blackbox_libs.publish_msg(rmq,
                                                 os.path.join(file_path,
                                                              f_name + ".txt"))
     time.sleep(1)
@@ -95,10 +91,10 @@ def main():
     config_path = os.path.join(test_path, "config")
     file_path = os.path.join(test_path, "testfiles")
     cfg = gen_libs.load_module("rabbitmq", config_path)
-    rq = blackbox_libs.create_rq_pub(cfg)
+    rmq = blackbox_libs.create_rq_pub(cfg)
 
-    if rq:
-        test_1(rq, file_path, cfg.message_dir, cfg.log_dir)
+    if rmq:
+        test_1(rmq, file_path, cfg.log_dir)
 
     else:
         print("Error:  Failed to create RabbitMQ Publisher instance")

@@ -20,7 +20,6 @@ import sys
 import time
 
 # Third-party
-import json
 
 # Local
 sys.path.append(os.getcwd())
@@ -31,7 +30,7 @@ import version
 __version__ = version.__version__
 
 
-def test_1(sysmon_dir, **kwargs):
+def test_1(sysmon_dir):
 
     """Function:  test_1
 

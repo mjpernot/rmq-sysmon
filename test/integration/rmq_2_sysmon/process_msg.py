@@ -66,19 +66,17 @@ class UnitTest(unittest.TestCase):
         self.cfg.message_dir = os.path.join(self.test_path,
                                             self.cfg.message_dir)
         self.cfg.sysmon_dir = os.path.join(self.test_path, self.cfg.sysmon_dir)
-        self.LOG = gen_class.Logger(self.cfg.log_file, self.cfg.log_file,
+        self.log = gen_class.Logger(self.cfg.log_file, self.cfg.log_file,
                                     "INFO",
                                     "%(asctime)s %(levelname)s %(message)s",
                                     "%Y-%m-%dT%H:%M:%SZ")
-        self.RQ = rabbitmq_class.RabbitMQCon(self.cfg.user, self.cfg.passwd,
-                                             self.cfg.host, self.cfg.port,
-                                             self.cfg.exchange_name,
-                                             self.cfg.exchange_type,
-                                             self.cfg.queue_name,
-                                             self.cfg.queue_name,
-                                             self.cfg.x_durable,
-                                             self.cfg.q_durable,
-                                             self.cfg.auto_delete)
+        self.rmq = rabbitmq_class.RabbitMQCon(
+            self.cfg.user, self.cfg.passwd, self.cfg.host, self.cfg.port,
+            exchange_name=self.cfg.exchange_name,
+            exchange_type=self.cfg.exchange_type,
+            queue_name=self.cfg.queue_name, routing_key=self.cfg.queue_name,
+            x_durable=self.cfg.x_durable, q_durable=self.cfg.q_durable,
+            auto_delete=self.cfg.auto_delete)
         self.method = "Method_Properties"
         self.body = '{"Server": "SERVER_NAME.domain.name"}'
         self.body2 = '["Server", "SERVER_NAME.domain.name"]'
@@ -99,9 +97,9 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_mail.send_mail.return_value = True
-        rmq_2_sysmon.process_msg(self.RQ, self.LOG, self.cfg, self.method,
+        rmq_2_sysmon.process_msg(self.rmq, self.log, self.cfg, self.method,
                                  self.body2)
-        self.LOG.log_close()
+        self.log.log_close()
 
         if self.non_proc_msg in open(self.cfg.log_file).read():
             status = True
@@ -121,9 +119,9 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        rmq_2_sysmon.process_msg(self.RQ, self.LOG, self.cfg, self.method,
+        rmq_2_sysmon.process_msg(self.rmq, self.log, self.cfg, self.method,
                                  self.body)
-        self.LOG.log_close()
+        self.log.log_close()
 
         if self.log_chk in open(self.cfg.log_file).read() and \
            os.path.isfile(self.sysmon_file):
@@ -151,7 +149,7 @@ class UnitTest(unittest.TestCase):
 
         for f_name in os.listdir(self.cfg.message_dir):
 
-            if ".gitignore" not in f_name:
+            if f_name not in [".gitignore", ".gitkeep"]:
                 os.remove(os.path.join(self.cfg.message_dir, f_name))
 
 

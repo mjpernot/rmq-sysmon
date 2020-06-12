@@ -4,6 +4,30 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [1.0.1] - 2020-05-29
+### Fixed
+- daemon_rmq_2_sysmon.main:  Fixed handling command line arguments from SonarQube scan finding.
+- run_program: Fixed handling command line arguments from SonarQube scan finding.
+- main: Fixed handling command line arguments from SonarQube scan finding.
+- process_msg:  Data to covert can use single or double quotes within the data structure.
+- daemon_rmq_2_sysmon.main:  Start up action to check for existing pid file and process.
+
+### Added
+- daemon_rmq_2_sysmon.is_active:  Determine if PID is active process on the server.
+
+### Changed
+- rmq_2_sysmon_service.sh.TEMPLATE:  Changed format.
+- monitor_queue:  Changed variable name to standard naming convention.
+- callback:  Changed variable name to standard naming convention.
+- process_msg:  Changed variable name to standard naming convention.
+- non_proc_msg:  Changed variable name to standard naming convention.
+- config/rabbitmq.py.TEMPLATE:  Changed the format for several of the settings.
+- monitor_queue:  Changed RabbitMQCon call from positional arguments to keyword arguments.
+- process_msg:  Added SyntaxError exception for the data conversion.
+- process_msg:  Replaced gen_libs.print_dict with gen_libs.write_file and removed post-if statement.
+- Documentation updates.
+
+
 ## [1.0.0] - 2019-11-12
 - General Production Release
 

@@ -29,6 +29,7 @@ pipeline {
                 ./test/unit/rmq_2_sysmon/validate_create_settings.py
                 ./test/unit/rmq_2_sysmon/run_program.py
                 ./test/unit/rmq_2_sysmon/main.py
+                ./test/unit/daemon_rmq_2_sysmon/is_active.py
                 ./test/unit/daemon_rmq_2_sysmon/main.py
                 deactivate
                 rm -rf test_env
@@ -59,25 +60,25 @@ pipeline {
                                 "pattern": "./*.py",
                                 "recursive": false,
                                 "excludePatterns": [],
-                                "target": "generic-local/highpoint/rmq-sysmon/"
+                                "target": "pypi-proj-local/highpoint/rmq-sysmon/"
                             },
                             {
                                 "pattern": "./*.txt",
                                 "recursive": false,
                                 "excludePatterns": [],
-                                "target": "generic-local/highpoint/rmq-sysmon/"
+                                "target": "pypi-proj-local/highpoint/rmq-sysmon/"
                             },
                             {
                                 "pattern": "./*.md",
                                 "recursive": false,
                                 "excludePatterns": [],
-                                "target": "generic-local/highpoint/rmq-sysmon/"
+                                "target": "pypi-proj-local/highpoint/rmq-sysmon/"
                             },
                             {
                                 "pattern": "*.TEMPLATE",
                                 "recursive": true,
                                 "excludePatterns": [],
-                                "target": "generic-local/highpoint/rmq-sysmon/config/"
+                                "target": "pypi-proj-local/highpoint/rmq-sysmon/config/"
                             }
                         ]
                     }"""
