@@ -23,30 +23,17 @@
         and can only be killed with a CTRL-C on the command line or shutdown of
         the service.
 
-        RabbitMQ configuration file format (rabbitmq.py).  The configuration
-        file format is for the RabbitMQ connection.
+        RabbitMQ configuration file format (config/rabbitmq.py.TEMPLATE).
 
             # RabbitMQ Configuration file
-            # Classification (U)
-            # Unclassified until filled.
             user = "USER"
             passwd = "PASSWORD"
             host = "HOSTNAME"
-            # Directory for writing sysmon reports to.
-            sysmon_dir = "DIR_PATH"
             # RabbitMQ Exchange name being monitored.
             exchange_name = "EXCHANGE_NAME"
-            # RabbitMQ Queue name being monitored.
-            queue_name = "QUEUE_NAME"
             # Email address(es) to send non-processed messages to or None.
             # None state no emails are required to be sent.
             to_line = "EMAIL_ADDRESS"
-            # Pre-name and post-name for the file name.
-            # An empty string will not be included in the file name.
-            prename = ""
-            postname = ""
-            # Dictionary key in JSON to be part of the file name.
-            key = "DICT_KEY"
             # RabbitMQ listening port, default is 5672.
             port = 5672
             # Type of exchange:  direct, topic, fanout, headers
@@ -63,9 +50,63 @@
             log_dir = "/DIRECTORY_PATH/logs"
             # File name to program log.
             log_file = "rmq_2_sysmon.log"
+            # List of queues to monitor.
+            # Make a copy of the dictionary for each combination of a queue
+                name and routing key.
+            # -> queue:  "QUEUE_NAME" - Name of queue to monitor.
+            # -> routing_key:  "ROUTING_KEY" - Name of the routing key for the
+                queue.
+            # -> directory:  "/DIR_PATH" - Directory path to where a report
+                will be written to.
+            # -> prename:  "NAME" - Static pre-file name string.
+            # -> postname:  "NAME" - Static post-file name string.
+            # -> key:  "DICT_KEY" - Is the name of a key in a dictionary.
+            # -> mode:  "a"|"w" - Write mode to the file: write or append to a
+                file.
+            # -> ext:  "NAME" - Extension name to the file name.
+            # -> dtg:  True|False - Add a date and time group to the file name.
+            # -> date:  True|False - Add a date to the file name.
+            # -> stype:  "any"|"dict"|"list"|"str" - Format of the messages
+                that are allowed in the message.
+            # -> flatten:  True|False - Flattens a dictionary format.
+            queue_list = [
+                    {"queue": "QUEUE_NAME",
+                     "routing_key": "ROUTING_KEY",
+                     "directory": "/DIR_PATH",
+                     "prename": "",
+                     "postname": "",
+                     "key": "",
+                     "mode": "a",
+                     "ext": "",
+                     "dtg": False,
+                     "date":  False,
+                     "stype": "any",
+                     "flatten": True
+                    },
+                    {"queue": "QUEUE_NAME",
+                     "routing_key": "ROUTING_KEY",
+                     "directory": "/DIR_PATH",
+                     "prename": "",
+                     "postname": "",
+                     "key": "",
+                     "mode": "a",
+                     "ext": "",
+                     "dtg": False,
+                     "date":  False,
+                     "stype": "any",
+                     "flatten": True
+                    }
+                ]
 
     Example:
-        rmq_2_sysmon.py -c rabbitmq -d config -M
+        Command Line:
+            rmq_2_sysmon.py -c rabbitmq -d config -M
+
+        Daemon:
+            daemon_rmq_2_sysmon.py -a start -c rabbitmq -d /path/config -M
+
+        Service:
+            service rmq_2_sysmon start
 
 """
 
