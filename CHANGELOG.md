@@ -10,6 +10,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - Added multiple routing keys to a single queue for monitoring.
 
 ### Changed
+- config/rabbitmq.py.TEMPLATE:  Changed format to allow for multiple queues.
 - Documentation updates.
 
 
