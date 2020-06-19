@@ -359,12 +359,17 @@ def run_program(args_array, func_dict, **kwargs):
         log.log_info("%s:%s Initialized" % (cfg.host, cfg.exchange_name))
         log.log_info("%s" % (str_val))
         log.log_info("Exchange Name:  %s" % (cfg.exchange_name))
-        log.log_info("Queue Name:  %s" % (cfg.queue_name))
+        log.log_info("Queue Configuration:")
+
+        for queue in cfg.queue_list:
+            log.log_info("\tQueue Name:  %s, Routing Key: %s" %
+                         (queue["queue"], queue["routing_key"]))
+
         log.log_info("To Email:  %s" % (cfg.to_line))
         log.log_info("%s" % (str_val))
 
         try:
-            flavor_id = cfg.exchange_name + cfg.queue_name
+            flavor_id = cfg.exchange_name
             prog_lock = gen_class.ProgramLock(cmdline.argv, flavor_id)
 
             # Intersect args_array & func_dict to find which functions to call.
