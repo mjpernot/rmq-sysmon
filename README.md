@@ -1,8 +1,8 @@
-# Python project for processing Package Admin emails in RabbitMQ and send them as JSON reports to the sysmon directory.
+# Python project for processing Admin Monitoring emails in RabbitMQ and save them to a specified directory.
 # Classification (U)
 
 # Description:
-  This program consists of a Python program that processes Package Admin emails in RabbitMQ, converts the emails to a JSON report and write the JSON report to a specified directory.
+  Python program that processes Admin Monitoring emails in RabbitMQ, will process a number of different data types in the report, and will save the report to a specified directory.
 
 
 ###  This README file is broken down into the following sections:
@@ -19,7 +19,7 @@
 
 
 # Features:
- * Process Sysmon reports in RabbitMQ and write JSON reports to sysmon directory.
+ * Process monitoring reports in RabbitMQ and write the reports to a specified directory.
  * Run the monitor program as a service/daemon.
  * Setup the program up as a service.
 
@@ -75,20 +75,64 @@ cp rabbitmq.py.TEMPLATE rabbitmq.py
 ```
 
 Make the appropriate changes to the RabbitMQ environment.
-  * Change these entries in the rabbitmq.py file.
-  * The "user", "passwd", "host", "exchange_name", and "queue_name"  is connection and exchange/queue information to a RabbitMQ node.
-  * The "sysmon_dir" is the directory path to where the package admin reports will be written to.
-  * The "to_line" is the email address/email alias to the RabbitMQ administrator(s).
-  * The "message_dir" and "log_dir" is where error messages and log files are written to respectively.
+  * The "user", "passwd" and "host" is connection and host information to a RabbitMQ node.
     - user = "USER"
     - passwd = "PASSWORD"
     - host = "HOSTNAME"
     - exchange_name = "EXCHANGE_NAME"
-    - queue_name = "QUEUE_NAME"
-    - sysmon_dir = "DIRECTORY_PATH"
-    - to_line = "EMAIL_ADDRESS@DOMAIN_NAME"
+      -> Name of the exchange that will be monitored.
+    - to_line = "EMAIL_ADDRESS"|None
+      -> Is the email address/email alias to the RabbitMQ administrator(s) or None if no emails required.
     - message_dir = "/DIRECTORY_PATH/message_dir"
+      -> Is where failed reports/messages are written to.
     - log_dir = "/DIRECTORY_PATH/logs"
+      -> Is where failed log files are written to.
+  * Do not change these unless you are familar with RabbitMQ.
+    - port = 5672
+    - exchange_type = "direct"
+    - x_durable = True
+    - q_durable = True
+    - auto_delete = False
+  * The next entry is the queue_list.  This is a list of dictionaries.  Each dictionary within the list is the unique combination of queue name and routing key.  Therefore, each queue name and routing key will have its own dictionary entry within the list.  Make a copy of the dictionary for each combination and modify it for that queue/routing key setup.  Below is a break out of the dictionary.
+    - "queue": "QUEUE_NAME"
+      -> Name of queue to monitor.
+    - "routing_key": "ROUTING_KEY"
+      -> Name of the routing key for the queue.
+      -> NOTE:  A single queue can have multiple routing keys, but each routing key will have it's own dictionary entry.
+    - "directory": "/DIRECTORY_PATH"
+      -> Directory path to where a report will be written to.
+    - "prename": ""
+      -> A static pre-file name string.
+      -> Default: "", nothing will be added to file name.
+    - "postname": ""
+      -> Default: "", nothing will be added to file name.
+      -> A static post-file name string.
+    - "key": ""
+      -> Is the name of a key in a dictionary.  If the key is present then value will be part of the file name.
+      -> Only applies if message is a dictionary.
+      -> Default: "", nothing will be checked or added to file name.
+    - "mode": "w"|"a"
+      -> Write mode to the file: write or append to a file.
+      -> Default: "a"
+    - "ext": ""
+      -> Extension name to the file name.
+      -> Default: "", nothing will be added to file name.
+    - "dtg": True|False
+      -> Add a date and time group to the file name.
+      -> Format is: YYYYMMDD_YYMMSS, example: 20200619_112012
+      -> Default: False, no datetime group will be added to file name.
+    - "date":  True|False
+      -> Add a date to the file name.
+      -> Format is: YYYYMMDD, example: 20200619
+      -> Default: False, no date will be added to file name.
+    - "stype": "any"|"dict"|"list"|"str"
+      -> Format of the messages that are allowed in the message.  Only one type is allowed.
+      -> Any - Any format is allowed, Dict - Dictionary, List - List, Str - String.
+      -> Default: "any", allow all data types to be processed.
+    - "flatten": True|False
+      -> Flattens a dictionary format.
+      -> Only applicable to dictionary format.
+      -> Default: True, will flatten a dictionary.
 
 ```
 vim rabbitmq.py
@@ -209,7 +253,7 @@ pip install -r requirements-rabbitmq-lib.txt --target rabbit_lib --trusted-host 
 ```
 cd {Python_Project}/rmq-sysmon
 test/unit/rmq_2_sysmon/unit_test_run.sh
-test/unit/daemon_rmq_2_sysmon/main.py
+test/unit/daemon_rmq_2_sysmon/unit_test_run.sh
 ```
 
 ### Code coverage:
@@ -269,14 +313,16 @@ Make the appropriate changes to the RabbitMQ environment.
     - user = "USER"
     - passwd = "PASSWORD"
     - host = "HOSTNAME"
-    - sysmon_dir = "DIR_PATH"                     -> Change to:  sysmon_dir = "sysmon"
     - exchange_name = "EXCHANGE_NAME"             -> Change to:  exchange_name = "intr-test"
-    - queue_name = "QUEUE_NAME"                   -> Change to:  queue_name = "intr-test"
-    - to_line = "EMAIL_ADDRESS@DOMAIN_NAME"       -> Change to:  to_line = None
-    - key = "DICT_KEY"                            -> Change to:  key = "Server"
-    - postname = ""                               -> Change to:  postname = "_pkgs"
+    - to_line = "EMAIL_ADDRESS"                   -> Change to:  to_line = None
     - message_dir = "/DIRECTORY_PATH/message_dir" -> Change to:  message_dir = "message_dir"
     - log_dir = "/DIRECTORY_PATH/logs"            -> Change to:  log_dir = "logs"
+  * Have one entry in the queue_list list:
+    - "queue_name":                               -> Change value to:  "intr-test"
+    - "routing_key":                              -> Change value to:  "intr-test"
+    - "directory":                                -> Change value to:  "sysmon"
+    - "key":                                      -> Change value to:  "Server"
+    - "postname":                                 -> Change value to:  "\_pkgs"
 
 ```
 vim rabbitmq.py
@@ -347,14 +393,16 @@ Make the appropriate changes to the RabbitMQ environment.
     - user = "USER"
     - passwd = "PASSWORD"
     - host = "HOSTNAME"
-    - sysmon_dir = "DIR_PATH"                     -> Change to:  sysmon_dir = "{PYTHON_PROJECT}/test/blackbox/rmq_2_sysmon/sysmon"
     - exchange_name = "EXCHANGE_NAME"             -> Change to:  exchange_name = "blackbox-test"
-    - queue_name = "QUEUE_NAME"                   -> Change to:  queue_name = "blackbox-test"
     - to_line = "EMAIL_ADDRESS@DOMAIN_NAME"       -> Change to:  to_line = None
-    - key = "DICT_KEY"                            -> Change to:  key = "Server"
-    - postname = ""                               -> Change to:  postname = "_pkgs"
     - message_dir = "/DIRECTORY_PATH/message_dir" -> Change to:  message_dir = "{PYTHON_PROJECT}/test/blackbox/rmq_2_sysmon/message_dir"
     - log_dir = "/DIRECTORY_PATH/logs"            -> Change to:  log_dir = "{PYTHON_PROJECT}/test/blackbox/rmq_2_sysmon/logs"
+  * Have one entry in the queue_list list:
+    - "queue_name":                               -> Change value to:  "blackbox-test"
+    - "routing_key":                              -> Change value to:  "blackbox-test"
+    - "directory":                                -> Change value to:  "{PYTHON_PROJECT}/test/blackbox/rmq_2_sysmon/sysmon"
+    - "key":                                      -> Change value to:  "Server"
+    - "postname":                                 -> Change value to:  "\_pkgs"
 
 ```
 vim rabbitmq.py
