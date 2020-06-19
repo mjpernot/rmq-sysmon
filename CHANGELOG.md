@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [2.0.0] - 2020-06-19
+- Added ability to monitor multiple RabbitMQ queues with a single run.
+- Allow multiple data types within the message body.
+- Added multiple routing keys to a single queue for monitoring.
+
+### Changed
+- Documentation updates.
+
+
 ## [1.0.1] - 2020-05-29
 ### Fixed
 - daemon_rmq_2_sysmon.main:  Fixed handling command line arguments from SonarQube scan finding.

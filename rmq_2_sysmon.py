@@ -58,7 +58,7 @@
             # Queues automatically delete message after processing: True|False
             auto_delete = False
             # Archive directory name for non-processed messages.
-            message_dir = /DIRECTORY_PATH/"message_dir"
+            message_dir = "/DIRECTORY_PATH/message_dir"
             # Directory name for log files.
             log_dir = "/DIRECTORY_PATH/logs"
             # File name to program log.
