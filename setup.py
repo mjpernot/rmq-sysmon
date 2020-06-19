@@ -26,7 +26,7 @@ with open(os.path.join(here, "README.md")) as f_hdlr:
 
 setuptools.setup(
     name="RabbitMQ_Sysmon",
-    description="RabbitMQ program to process Package Admin emails.",
+    description="RabbitMQ program to process Admin Monitoring emails.",
     author="Mark Pernot",
     author_email="Mark.J.Pernot@coe.ic.gov",
     url="https://sc.appdev.proj.coe.ic.gov/JAC-DSXD/rmq-sysmon",
