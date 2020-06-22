@@ -42,6 +42,7 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Initialize testing environment.
+        test_no_routing_key -> Test with no routing key detected.
         test_default_name -> Test for default file name.
         test_no_postname -> Test with no postname set.
         test_postname -> Test with postname set.
@@ -153,28 +154,31 @@ class UnitTest(unittest.TestCase):
 
         self.cfg = CfgTest()
         self.cfg2 = CfgTest()
-        self.cfg2.stype = "list"
+        self.cfg2.queue_list[0]["stype"] = "list"
         self.cfg3 = CfgTest()
-        self.cfg3.stype = "str"
+        self.cfg3.queue_list[0]["stype"] = "str"
         self.cfg4 = CfgTest()
-        self.cfg4.stype = "any"
+        self.cfg4.queue_list[0]["stype"] = "any"
         self.cfg5 = CfgTest()
-        self.cfg5.key = ""
+        self.cfg5.queue_list[0]["key"] = ""
         self.cfg6 = CfgTest()
-        self.cfg6.ext = "txt"
+        self.cfg6.queue_list[0]["ext"] = "txt"
         self.cfg7 = CfgTest()
-        self.cfg7.flatten = False
+        self.cfg7.queue_list[0]["flatten"] = False
         self.cfg8 = CfgTest()
-        self.cfg8.dtg = True
+        self.cfg8.queue_list[0]["dtg"] = True
         self.cfg9 = CfgTest()
-        self.cfg9.date = True
+        self.cfg9.queue_list[0]["date"] = True
         self.cfg10 = CfgTest()
-        self.cfg10.prename = ""
+        self.cfg10.queue_list[0]["prename"] = ""
         self.cfg11 = CfgTest()
-        self.cfg11.postname = ""
+        self.cfg11.queue_list[0]["postname"] = ""
         self.cfg12 = CfgTest()
-        self.cfg12.postname = ""
-        self.cfg12.prename = ""
+        self.cfg12.queue_list[0]["key"] = ""
+        self.cfg12.queue_list[0]["postname"] = ""
+        self.cfg12.queue_list[0]["prename"] = ""
+        self.cfg13 = CfgTest()
+        self.cfg13.queue_list[0]["routing_key"] = "NO_ROUTING_KEY"
         self.base_dir = "/BASE_DIR_PATH"
         self.method = MethodTest()
         self.body = {"Server": "SERVER_NAME.domain.name"}
@@ -185,6 +189,26 @@ class UnitTest(unittest.TestCase):
         self.rawbody3 = '"This a string"'
         self.rawbody4 = '["This", "a", "string"]'
         self.rmq = "RabbitMQ Instance"
+
+    @mock.patch("rmq_2_sysmon.gen_libs.write_file",
+                mock.Mock(return_value=True))
+    @mock.patch("rmq_2_sysmon.gen_class.Logger")
+    @mock.patch("rmq_2_sysmon.non_proc_msg")
+    def test_no_routing_key(self, mock_msg, mock_log):
+
+        """Function:  test_no_routing_key
+
+        Description:  Test with no routing key detected.
+
+        Arguments:
+
+        """
+
+        mock_msg.return_value = True
+        mock_log.return_value = True
+
+        self.assertFalse(rmq_2_sysmon.process_msg(
+            self.rmq, mock_log, self.cfg13, self.method, self.rawbody))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
                 mock.Mock(return_value=True))
@@ -204,7 +228,7 @@ class UnitTest(unittest.TestCase):
         mock_log.return_value = True
 
         self.assertFalse(rmq_2_sysmon.process_msg(
-            self.rmq, mock_log, self.cfg11, self.method, self.rawbody))
+            self.rmq, mock_log, self.cfg12, self.method, self.rawbody))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
                 mock.Mock(return_value=True))
@@ -244,7 +268,7 @@ class UnitTest(unittest.TestCase):
         mock_log.return_value = True
 
         self.assertFalse(rmq_2_sysmon.process_msg(
-            self.rmq, mock_log, self.cfg6, self.method, self.rawbody))
+            self.rmq, mock_log, self.cfg, self.method, self.rawbody))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
                 mock.Mock(return_value=True))
@@ -284,7 +308,7 @@ class UnitTest(unittest.TestCase):
         mock_log.return_value = True
 
         self.assertFalse(rmq_2_sysmon.process_msg(
-            self.rmq, mock_log, self.cfg6, self.method, self.rawbody))
+            self.rmq, mock_log, self.cfg, self.method, self.rawbody))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
                 mock.Mock(return_value=True))
@@ -324,7 +348,7 @@ class UnitTest(unittest.TestCase):
         mock_log.return_value = True
 
         self.assertFalse(rmq_2_sysmon.process_msg(
-            self.rmq, mock_log, self.cfg6, self.method, self.rawbody))
+            self.rmq, mock_log, self.cfg, self.method, self.rawbody))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
                 mock.Mock(return_value=True))
@@ -364,7 +388,7 @@ class UnitTest(unittest.TestCase):
         mock_log.return_value = True
 
         self.assertFalse(rmq_2_sysmon.process_msg(
-            self.rmq, mock_log, self.cfg6, self.method, self.rawbody))
+            self.rmq, mock_log, self.cfg, self.method, self.rawbody))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
                 mock.Mock(return_value=True))
@@ -404,7 +428,7 @@ class UnitTest(unittest.TestCase):
         mock_log.return_value = True
 
         self.assertFalse(rmq_2_sysmon.process_msg(
-            self.rmq, mock_log, self.cfg6, self.method, self.rawbody))
+            self.rmq, mock_log, self.cfg, self.method, self.rawbody))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
                 mock.Mock(return_value=True))
@@ -425,6 +449,26 @@ class UnitTest(unittest.TestCase):
 
         self.assertFalse(rmq_2_sysmon.process_msg(
             self.rmq, mock_log, self.cfg6, self.method, self.rawbody))
+
+    @mock.patch("rmq_2_sysmon.gen_libs.write_file",
+                mock.Mock(return_value=True))
+    @mock.patch("rmq_2_sysmon.gen_class.Logger")
+    @mock.patch("rmq_2_sysmon.non_proc_msg")
+    def test_no_ext_set(self, mock_msg, mock_log):
+
+        """Function:  test_no_ext_set
+
+        Description:  Test with no ext set.
+
+        Arguments:
+
+        """
+
+        mock_msg.return_value = True
+        mock_log.return_value = True
+
+        self.assertFalse(rmq_2_sysmon.process_msg(
+            self.rmq, mock_log, self.cfg, self.method, self.rawbody))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
                 mock.Mock(return_value=True))
