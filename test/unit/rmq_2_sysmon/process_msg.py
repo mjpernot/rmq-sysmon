@@ -42,6 +42,23 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Initialize testing environment.
+        test_default_name -> Test for default file name.
+        test_no_postname -> Test with no postname set.
+        test_postname -> Test with postname set.
+        test_no_prename -> Test with no prename set.
+        test_prename -> Test with prename set.
+        test_date_true -> Test with date set to True.
+        test_date_false -> Test with date set to False.
+        test_dtg_true -> Test with dtg set to True.
+        test_dtg_false -> Test with dtg set to False.
+        test_flatten_false -> Test with flatten set to False.
+        test_flatten_true -> Test with flatten set to True.
+        test_ext_set -> Test with ext set.
+        test_no_dict_key_set -> Test with dict_key not set.
+        test_no_dict_key_pass -> Test with no dictionary key in dictionary.
+        test_any_pass -> Test with any set for message type.
+        test_str_pass -> Test with string passed.
+        test_list_pass -> Test with list passed.
         test_str_convert_pass -> Test with ast.literal_eval pass for string.
         test_dict_convert_pass -> Test with ast.literal_eval pass for dict.
         test_str_convert_fails -> Test with ast.literal_eval fails for string.
@@ -65,6 +82,29 @@ class UnitTest(unittest.TestCase):
 
         """
 
+        class MethodTest(object):
+
+            """Class:  MethodTest
+
+            Description:  Class which is a representation of a method module.
+
+            Methods:
+                __init__ -> Initialize configuration environment.
+
+            """
+
+            def __init__(self):
+
+                """Method:  __init__
+
+                Description:  Initialization instance of the CfgTest class.
+
+                Arguments:
+
+                """
+
+                self.routing_key = "ROUTING_KEY"
+
         class CfgTest(object):
 
             """Class:  CfgTest
@@ -87,13 +127,8 @@ class UnitTest(unittest.TestCase):
                 """
 
                 self.host = "HOSTNAME"
-                self.sysmon_dir = "/SYSMON_DIR_PATH"
                 self.exchange_name = "rmq_2_isse_unit_test"
-                self.queue_name = "rmq_2_isse_unit_test"
                 self.to_line = None
-                self.transfer_dir = "/TRANSFER_DIR_PATH"
-                self.isse_dir = "/ISSE_DIR_PATH"
-                self.delta_month = 6
                 self.port = 5672
                 self.exchange_type = "direct"
                 self.x_durable = True
@@ -102,21 +137,394 @@ class UnitTest(unittest.TestCase):
                 self.message_dir = "message_dir"
                 self.log_dir = "logs"
                 self.log_file = "rmq_2_isse.log"
-                self.proc_file = "files_processed"
-                self.ignore_ext = ["_kmz.64.txt", "_pptx.64.txt"]
-                self.prename = "Pre-filename"
-                self.postname = "Post-filename"
-                self.key = "Server"
+                self.queue_list = [
+                    {"queue": "rmq_2_isse_unit_test",
+                     "routing_key": "ROUTING_KEY",
+                     "directory": "/SYSMON_DIR_PATH",
+                     "prename": "Pre-filename",
+                     "postname": "Post-filename",
+                     "key": "Server",
+                     "mode": "a",
+                     "ext": "",
+                     "dtg": False,
+                     "date":  False,
+                     "stype": "dict",
+                     "flatten": True}]
 
         self.cfg = CfgTest()
+        self.cfg2 = CfgTest()
+        self.cfg2.stype = "list"
+        self.cfg3 = CfgTest()
+        self.cfg3.stype = "str"
+        self.cfg4 = CfgTest()
+        self.cfg4.stype = "any"
+        self.cfg5 = CfgTest()
+        self.cfg5.key = ""
+        self.cfg6 = CfgTest()
+        self.cfg6.ext = "txt"
+        self.cfg7 = CfgTest()
+        self.cfg7.flatten = False
+        self.cfg8 = CfgTest()
+        self.cfg8.dtg = True
+        self.cfg9 = CfgTest()
+        self.cfg9.date = True
+        self.cfg10 = CfgTest()
+        self.cfg10.prename = ""
+        self.cfg11 = CfgTest()
+        self.cfg11.postname = ""
+        self.cfg12 = CfgTest()
+        self.cfg12.postname = ""
+        self.cfg12.prename = ""
         self.base_dir = "/BASE_DIR_PATH"
-        self.method = "Method Properties"
+        self.method = MethodTest()
         self.body = {"Server": "SERVER_NAME.domain.name"}
         self.body2 = {"Non-Key": "Non-Value"}
         self.body3 = "This a string"
+        self.rawbody = '{"Server": "SERVER_NAME.domain.name"}'
         self.rawbody2 = '{"Non-Key": "Non-Value"}'
         self.rawbody3 = '"This a string"'
+        self.rawbody4 = '["This", "a", "string"]'
         self.rmq = "RabbitMQ Instance"
+
+    @mock.patch("rmq_2_sysmon.gen_libs.write_file",
+                mock.Mock(return_value=True))
+    @mock.patch("rmq_2_sysmon.gen_class.Logger")
+    @mock.patch("rmq_2_sysmon.non_proc_msg")
+    def test_default_name(self, mock_msg, mock_log):
+
+        """Function:  test_default_name
+
+        Description:  Test for default file name.
+
+        Arguments:
+
+        """
+
+        mock_msg.return_value = True
+        mock_log.return_value = True
+
+        self.assertFalse(rmq_2_sysmon.process_msg(
+            self.rmq, mock_log, self.cfg11, self.method, self.rawbody))
+
+    @mock.patch("rmq_2_sysmon.gen_libs.write_file",
+                mock.Mock(return_value=True))
+    @mock.patch("rmq_2_sysmon.gen_class.Logger")
+    @mock.patch("rmq_2_sysmon.non_proc_msg")
+    def test_no_postname(self, mock_msg, mock_log):
+
+        """Function:  test_no_postname
+
+        Description:  Test with no postname set.
+
+        Arguments:
+
+        """
+
+        mock_msg.return_value = True
+        mock_log.return_value = True
+
+        self.assertFalse(rmq_2_sysmon.process_msg(
+            self.rmq, mock_log, self.cfg11, self.method, self.rawbody))
+
+    @mock.patch("rmq_2_sysmon.gen_libs.write_file",
+                mock.Mock(return_value=True))
+    @mock.patch("rmq_2_sysmon.gen_class.Logger")
+    @mock.patch("rmq_2_sysmon.non_proc_msg")
+    def test_postname(self, mock_msg, mock_log):
+
+        """Function:  test_postname
+
+        Description:  Test with postname set.
+
+        Arguments:
+
+        """
+
+        mock_msg.return_value = True
+        mock_log.return_value = True
+
+        self.assertFalse(rmq_2_sysmon.process_msg(
+            self.rmq, mock_log, self.cfg6, self.method, self.rawbody))
+
+    @mock.patch("rmq_2_sysmon.gen_libs.write_file",
+                mock.Mock(return_value=True))
+    @mock.patch("rmq_2_sysmon.gen_class.Logger")
+    @mock.patch("rmq_2_sysmon.non_proc_msg")
+    def test_no_prename(self, mock_msg, mock_log):
+
+        """Function:  test_no_prename
+
+        Description:  Test with no prename set.
+
+        Arguments:
+
+        """
+
+        mock_msg.return_value = True
+        mock_log.return_value = True
+
+        self.assertFalse(rmq_2_sysmon.process_msg(
+            self.rmq, mock_log, self.cfg10, self.method, self.rawbody))
+
+    @mock.patch("rmq_2_sysmon.gen_libs.write_file",
+                mock.Mock(return_value=True))
+    @mock.patch("rmq_2_sysmon.gen_class.Logger")
+    @mock.patch("rmq_2_sysmon.non_proc_msg")
+    def test_prename(self, mock_msg, mock_log):
+
+        """Function:  test_prename
+
+        Description:  Test with prename set.
+
+        Arguments:
+
+        """
+
+        mock_msg.return_value = True
+        mock_log.return_value = True
+
+        self.assertFalse(rmq_2_sysmon.process_msg(
+            self.rmq, mock_log, self.cfg6, self.method, self.rawbody))
+
+    @mock.patch("rmq_2_sysmon.gen_libs.write_file",
+                mock.Mock(return_value=True))
+    @mock.patch("rmq_2_sysmon.gen_class.Logger")
+    @mock.patch("rmq_2_sysmon.non_proc_msg")
+    def test_date_true(self, mock_msg, mock_log):
+
+        """Function:  test_date_true
+
+        Description:  Test with date set to True.
+
+        Arguments:
+
+        """
+
+        mock_msg.return_value = True
+        mock_log.return_value = True
+
+        self.assertFalse(rmq_2_sysmon.process_msg(
+            self.rmq, mock_log, self.cfg9, self.method, self.rawbody))
+
+    @mock.patch("rmq_2_sysmon.gen_libs.write_file",
+                mock.Mock(return_value=True))
+    @mock.patch("rmq_2_sysmon.gen_class.Logger")
+    @mock.patch("rmq_2_sysmon.non_proc_msg")
+    def test_date_false(self, mock_msg, mock_log):
+
+        """Function:  test_date_false
+
+        Description:  Test with date set to False.
+
+        Arguments:
+
+        """
+
+        mock_msg.return_value = True
+        mock_log.return_value = True
+
+        self.assertFalse(rmq_2_sysmon.process_msg(
+            self.rmq, mock_log, self.cfg6, self.method, self.rawbody))
+
+    @mock.patch("rmq_2_sysmon.gen_libs.write_file",
+                mock.Mock(return_value=True))
+    @mock.patch("rmq_2_sysmon.gen_class.Logger")
+    @mock.patch("rmq_2_sysmon.non_proc_msg")
+    def test_dtg_true(self, mock_msg, mock_log):
+
+        """Function:  test_dtg_true
+
+        Description:  Test with dtg set to True.
+
+        Arguments:
+
+        """
+
+        mock_msg.return_value = True
+        mock_log.return_value = True
+
+        self.assertFalse(rmq_2_sysmon.process_msg(
+            self.rmq, mock_log, self.cfg8, self.method, self.rawbody))
+
+    @mock.patch("rmq_2_sysmon.gen_libs.write_file",
+                mock.Mock(return_value=True))
+    @mock.patch("rmq_2_sysmon.gen_class.Logger")
+    @mock.patch("rmq_2_sysmon.non_proc_msg")
+    def test_dtg_false(self, mock_msg, mock_log):
+
+        """Function:  test_dtg_false
+
+        Description:  Test with dtg set to False.
+
+        Arguments:
+
+        """
+
+        mock_msg.return_value = True
+        mock_log.return_value = True
+
+        self.assertFalse(rmq_2_sysmon.process_msg(
+            self.rmq, mock_log, self.cfg6, self.method, self.rawbody))
+
+    @mock.patch("rmq_2_sysmon.gen_libs.write_file",
+                mock.Mock(return_value=True))
+    @mock.patch("rmq_2_sysmon.gen_class.Logger")
+    @mock.patch("rmq_2_sysmon.non_proc_msg")
+    def test_flatten_false(self, mock_msg, mock_log):
+
+        """Function:  test_flatten_false
+
+        Description:  Test with flatten set to False.
+
+        Arguments:
+
+        """
+
+        mock_msg.return_value = True
+        mock_log.return_value = True
+
+        self.assertFalse(rmq_2_sysmon.process_msg(
+            self.rmq, mock_log, self.cfg7, self.method, self.rawbody))
+
+    @mock.patch("rmq_2_sysmon.gen_libs.write_file",
+                mock.Mock(return_value=True))
+    @mock.patch("rmq_2_sysmon.gen_class.Logger")
+    @mock.patch("rmq_2_sysmon.non_proc_msg")
+    def test_flatten_true(self, mock_msg, mock_log):
+
+        """Function:  test_flatten_true
+
+        Description:  Test with flatten set to True.
+
+        Arguments:
+
+        """
+
+        mock_msg.return_value = True
+        mock_log.return_value = True
+
+        self.assertFalse(rmq_2_sysmon.process_msg(
+            self.rmq, mock_log, self.cfg6, self.method, self.rawbody))
+
+    @mock.patch("rmq_2_sysmon.gen_libs.write_file",
+                mock.Mock(return_value=True))
+    @mock.patch("rmq_2_sysmon.gen_class.Logger")
+    @mock.patch("rmq_2_sysmon.non_proc_msg")
+    def test_ext_set(self, mock_msg, mock_log):
+
+        """Function:  test_ext_set
+
+        Description:  Test with ext set.
+
+        Arguments:
+
+        """
+
+        mock_msg.return_value = True
+        mock_log.return_value = True
+
+        self.assertFalse(rmq_2_sysmon.process_msg(
+            self.rmq, mock_log, self.cfg6, self.method, self.rawbody))
+
+    @mock.patch("rmq_2_sysmon.gen_libs.write_file",
+                mock.Mock(return_value=True))
+    @mock.patch("rmq_2_sysmon.gen_class.Logger")
+    @mock.patch("rmq_2_sysmon.non_proc_msg")
+    def test_no_dict_key_set(self, mock_msg, mock_log):
+
+        """Function:  test_no_dict_key_set
+
+        Description:  Test with dict_key not set.
+
+        Arguments:
+
+        """
+
+        mock_msg.return_value = True
+        mock_log.return_value = True
+
+        self.assertFalse(rmq_2_sysmon.process_msg(
+            self.rmq, mock_log, self.cfg5, self.method, self.rawbody))
+
+    @mock.patch("rmq_2_sysmon.gen_libs.write_file",
+                mock.Mock(return_value=True))
+    @mock.patch("rmq_2_sysmon.gen_class.Logger")
+    @mock.patch("rmq_2_sysmon.non_proc_msg")
+    def test_no_dict_key_pass(self, mock_msg, mock_log):
+
+        """Function:  test_no_dict_key_pass
+
+        Description:  Test with no dictionary key in dictionary.
+
+        Arguments:
+
+        """
+
+        mock_msg.return_value = True
+        mock_log.return_value = True
+
+        self.assertFalse(rmq_2_sysmon.process_msg(
+            self.rmq, mock_log, self.cfg, self.method, self.rawbody2))
+
+    @mock.patch("rmq_2_sysmon.gen_libs.write_file",
+                mock.Mock(return_value=True))
+    @mock.patch("rmq_2_sysmon.gen_class.Logger")
+    @mock.patch("rmq_2_sysmon.non_proc_msg")
+    def test_any_pass(self, mock_msg, mock_log):
+
+        """Function:  test_any_pass
+
+        Description:  Test with any set for message type.
+
+        Arguments:
+
+        """
+
+        mock_msg.return_value = True
+        mock_log.return_value = True
+
+        self.assertFalse(rmq_2_sysmon.process_msg(
+            self.rmq, mock_log, self.cfg4, self.method, self.rawbody3))
+
+    @mock.patch("rmq_2_sysmon.gen_libs.write_file",
+                mock.Mock(return_value=True))
+    @mock.patch("rmq_2_sysmon.gen_class.Logger")
+    @mock.patch("rmq_2_sysmon.non_proc_msg")
+    def test_str_pass(self, mock_msg, mock_log):
+
+        """Function:  test_str_pass
+
+        Description:  Test with string passed.
+
+        Arguments:
+
+        """
+
+        mock_msg.return_value = True
+        mock_log.return_value = True
+
+        self.assertFalse(rmq_2_sysmon.process_msg(
+            self.rmq, mock_log, self.cfg3, self.method, self.rawbody3))
+
+    @mock.patch("rmq_2_sysmon.gen_libs.write_file",
+                mock.Mock(return_value=True))
+    @mock.patch("rmq_2_sysmon.gen_class.Logger")
+    @mock.patch("rmq_2_sysmon.non_proc_msg")
+    def test_list_pass(self, mock_msg, mock_log):
+
+        """Function:  test_list_pass
+
+        Description:  Test with list passed.
+
+        Arguments:
+
+        """
+
+        mock_msg.return_value = True
+        mock_log.return_value = True
+
+        self.assertFalse(rmq_2_sysmon.process_msg(
+            self.rmq, mock_log, self.cfg2, self.method, self.rawbody4))
 
     @mock.patch("rmq_2_sysmon.gen_class.Logger")
     @mock.patch("rmq_2_sysmon.non_proc_msg")
@@ -136,6 +544,8 @@ class UnitTest(unittest.TestCase):
         self.assertFalse(rmq_2_sysmon.process_msg(self.rmq, mock_log, self.cfg,
                                                   self.method, self.rawbody3))
 
+    @mock.patch("rmq_2_sysmon.gen_libs.write_file",
+                mock.Mock(return_value=True))
     @mock.patch("rmq_2_sysmon.gen_class.Logger")
     @mock.patch("rmq_2_sysmon.non_proc_msg")
     def test_dict_convert_pass(self, mock_msg, mock_log):
@@ -190,14 +600,16 @@ class UnitTest(unittest.TestCase):
         self.assertFalse(rmq_2_sysmon.process_msg(self.rmq, mock_log, self.cfg,
                                                   self.method, self.body2))
 
+    @mock.patch("rmq_2_sysmon.gen_libs.write_file",
+                mock.Mock(return_value=True))
     @mock.patch("rmq_2_sysmon.non_proc_msg")
     @mock.patch("rmq_2_sysmon.gen_class.Logger")
     @mock.patch("rmq_2_sysmon.ast.literal_eval")
     def test_key_not_in_dict(self, mock_json, mock_log, mock_msg):
 
-        """Function:  test_create_json_fail
+        """Function:  test_key_not_in_dict
 
-        Description:  Test if the body is unable to convert to JSON.
+        Description:  Test with no dictionary key found.
 
         Arguments:
 
