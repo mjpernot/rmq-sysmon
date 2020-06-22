@@ -359,9 +359,11 @@ def monitor_queue(cfg, log, **kwargs):
 
         """
 
-        log.log_info("callback:  Processing message...")
+        log.log_info("callback:  Processing message with Routing Key: %s" %
+                     (method.routing_key))
         process_msg(rmq, log, cfg, method, body)
-        log.log_info("Deleting message from RabbitMQ")
+        log.log_info("Deleting message with Routing Key: %s" %
+                     (method.routing_key))
         rmq.ack(method.delivery_tag)
 
     log.log_info("monitor_queue:  Start monitoring queue...")
