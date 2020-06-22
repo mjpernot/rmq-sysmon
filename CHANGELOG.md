@@ -10,6 +10,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - Added multiple routing keys to a single queue for monitoring.
 
 ### Changed
+- validate_create_settings:  Validate each directory setting for each queue.
 - run_program:  Added loop for log information to log all queue name/routing key combinations.
 - run_program:  Changed program lock flavor id to the new configuration settings.
 - config/rabbitmq.py.TEMPLATE:  Changed format to allow for multiple queues.

@@ -183,20 +183,20 @@ def validate_create_settings(cfg, **kwargs):
 
     if status:
         base_name, ext_name = os.path.splitext(cfg.log_file)
-        log_name = base_name + "_" + cfg.exchange_name + "_" + cfg.queue_name \
-            + ext_name
+        log_name = base_name + "_" + cfg.exchange_name + ext_name
         cfg.log_file = os.path.join(cfg.log_dir, log_name)
 
     else:
         err_msg = err_msg + msg
         status_flag = False
 
-    status, msg = gen_libs.chk_crt_dir(cfg.sysmon_dir, write=True, read=True,
-                                       no_print=True)
+    for queue in cfg.queue_list:
+        status, msg = gen_libs.chk_crt_dir(queue["directory"], write=True,
+                                           read=True, no_print=True)
 
-    if not status:
-        err_msg = err_msg + msg
-        status_flag = False
+        if not status:
+            err_msg = err_msg + msg
+            status_flag = False
 
     return cfg, status_flag, err_msg
 
