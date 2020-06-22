@@ -63,7 +63,8 @@ class UnitTest(unittest.TestCase):
         self.cfg.log_file = os.path.join(log_path, self.cfg.log_file)
         self.cfg.message_dir = os.path.join(self.test_path,
                                             self.cfg.message_dir)
-        self.cfg.sysmon_dir = os.path.join(self.test_path, self.cfg.sysmon_dir)
+        self.cfg.queue_list[0]["directory"] = os.path.join(
+            self.test_path, self.cfg.queue_list[0]["directory"])
         self.connect_true = "Connected to RabbitMQ node"
         self.args_array = {"-M": True, "-c": "rabbitmq", "-d": "config"}
         self.func_dict = {"-M": rmq_2_sysmon.monitor_queue}
@@ -105,7 +106,8 @@ class UnitTest(unittest.TestCase):
         """
 
         os.remove(self.cfg.log_file)
-        rmq_cleanup.rmq_cleanup(self.cfg, self.cfg.queue_name, True)
+        rmq_cleanup.rmq_cleanup(self.cfg, self.cfg.queue_list[0]["queue"],
+                                True)
 
 
 if __name__ == "__main__":
