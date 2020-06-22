@@ -93,7 +93,7 @@ def main():
     rmq = blackbox_libs.create_rq_pub(cfg)
 
     if rmq:
-        test_1(rmq, file_path, cfg.sysmon_dir)
+        test_1(rmq, file_path, cfg.queue_list[0]["directory"])
 
     else:
         print("Error:  Failed to create RabbitMQ Publisher instance")
