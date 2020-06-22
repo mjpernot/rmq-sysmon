@@ -366,11 +366,42 @@ def monitor_queue(cfg, log, **kwargs):
                      (method.routing_key))
         rmq.ack(method.delivery_tag)
 
+    log.log_info("monitor_queue:  Initialize monitoring of queues...")
+
+    for queue in cfg.queue_list:
+        rmq = rabbitmq_class.RabbitMQCon(
+            cfg.user, cfg.passwd, cfg.host, cfg.port,
+            exchange_name=cfg.exchange_name, exchange_type=cfg.exchange_type,
+            queue_name=queue["queue"], routing_key=queue["routing_key"],
+            x_durable=cfg.x_durable, q_durable=cfg.q_durable,
+            auto_delete=cfg.auto_delete)
+
+        log.log_info("Initializing:  Queue: %s, Routing Key: %s" %
+                     (queue["queue"], queue["routing_key"]))
+        connect_status, err_msg = rmq.create_connection()
+
+        if connect_status and rmq.channel.is_open:
+            log.log_info("Initialized RabbitMQ node: %s" % (queue["queue"]))
+
+        else:
+            log.log_err("Initialization failed RabbuitMQ: %s -> Msg: %s" %
+                        (queue["queue"], err_msg))
+
+        rmq.drop_connection()
+
     log.log_info("monitor_queue:  Start monitoring queue...")
+#    rmq = rabbitmq_class.RabbitMQCon(
+#        cfg.user, cfg.passwd, cfg.host, cfg.port,
+#        exchange_name=cfg.exchange_name, exchange_type=cfg.exchange_type,
+#        queue_name=cfg.queue_name, routing_key=cfg.queue_name,
+#        x_durable=cfg.x_durable, q_durable=cfg.q_durable,
+#        auto_delete=cfg.auto_delete)
+    # Connect to first queue as only one connection required.
     rmq = rabbitmq_class.RabbitMQCon(
         cfg.user, cfg.passwd, cfg.host, cfg.port,
         exchange_name=cfg.exchange_name, exchange_type=cfg.exchange_type,
-        queue_name=cfg.queue_name, routing_key=cfg.queue_name,
+        queue_name=cfg.queue_list[0]["queue"],
+        routing_key=cfg.queue_list[0]["routing_key"],
         x_durable=cfg.x_durable, q_durable=cfg.q_durable,
         auto_delete=cfg.auto_delete)
 
@@ -380,9 +411,13 @@ def monitor_queue(cfg, log, **kwargs):
     if connect_status and rmq.channel.is_open:
         log.log_info("Connected to RabbitMQ node")
 
-        # Setup the RabbitMQ Consume callback and start monitoring.
-        rmq.consume(callback)
-        rmq.start_loop()
+        # Setup the RabbitMQ Consume callback on multiple queues.
+        for queue in cfg.queue_list:
+            log.log_info("Monitoring RabbitMQ Queue: %s, Routing Key: %s" %
+                         (queue["queue"], queue["routing_key"]))
+            rmq.consume(callback, queue=queue["queue"])
+#        rmq.consume(callback)
+#        rmq.start_loop()
 
     else:
         log.log_err("Failed to connnect to RabbuitMQ -> Msg: %s" % (err_msg))

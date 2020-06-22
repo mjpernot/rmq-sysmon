@@ -12,6 +12,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - Added multiple routing keys to a single queue for monitoring.
 
 ### Changed
+- monitor_queue:  Refactored function to initialize and monitor multiple queues.
 - callback:  Added routing key information to log entries.
 - process_msg:  Refactored function to handle multiple queues and also multiple data types in the message body.
 - non_proc_msg:  Added routing key to parameter list.
