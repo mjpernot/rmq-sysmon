@@ -117,6 +117,7 @@ import sys
 import os
 import socket
 import getpass
+import datetime
 
 # Third-party
 import ast
@@ -201,7 +202,7 @@ def validate_create_settings(cfg, **kwargs):
     return cfg, status_flag, err_msg
 
 
-def non_proc_msg(rmq, log, cfg, data, subj, **kwargs):
+def non_proc_msg(rmq, log, cfg, data, subj, r_key, **kwargs):
 
     """Function:  non_proc_msg
 
@@ -213,13 +214,21 @@ def non_proc_msg(rmq, log, cfg, data, subj, **kwargs):
         (input) cfg -> Configuration settings module for the program.
         (input) data -> Body of message that was not processed.
         (input) subj -> Email subject line.
+        (input) r_key -> Routing key for message.
 
     """
 
-    log.log_info("non_proc_msg:  Processing non-processed message...")
+#    log.log_info("non_proc_msg:  Processing non-processed message...")
+    log.log_info(
+        "non_proc_msg:  Processing failed message from Routing Key: %s" %
+        (r_key))
     frm_line = getpass.getuser() + "@" + socket.gethostname()
-    f_name = rmq.exchange + "_" + rmq.queue_name + "_" + gen_libs.get_date() \
-        + "_" + gen_libs.get_time() + ".txt"
+#    f_name = rmq.exchange + "_" + rmq.queue_name + "_" + gen_libs.get_date() \
+#        + "_" + gen_libs.get_time() + ".txt"
+    rdtg = datetime.datetime.now()
+    msecs = str(rdtg.microsecond / 1000)
+    dtg = datetime.datetime.strftime(rdtg,"%Y-%m-%d_%H:%M:%S") + "." + msecs
+    f_name = rmq.exchange + "_" + r_key + "_" + dtg + ".txt"
     f_path = os.path.join(cfg.message_dir, f_name)
     subj = "rmq_2_sysmon: " + subj
 
@@ -232,10 +241,13 @@ def non_proc_msg(rmq, log, cfg, data, subj, **kwargs):
     else:
         log.log_warn("No email being sent as TO line is empty.")
 
-    log.log_err("Message was not processed due to: %s" % (subj))
+#    log.log_err("Message was not processed due to: %s" % (subj))
+    log.log_err("RabbitMQ message was not processed due to: %s" % (subj))
     log.log_info("Saving message to: %s" % (f_path))
-    gen_libs.write_file(f_path, data="Exchange: %s, Queue: %s"
-                        % (rmq.exchange, rmq.queue_name))
+#    gen_libs.write_file(f_path, data="Exchange: %s, Queue: %s"
+#                        % (rmq.exchange, rmq.queue_name))
+    gen_libs.write_file(f_path, data="Exchange: %s, Routing Key: %s"
+                        % (rmq.exchange, r_key))
     gen_libs.write_file(f_path, data=data)
 
 

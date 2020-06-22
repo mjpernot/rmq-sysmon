@@ -5,11 +5,15 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 
 ## [2.0.0] - 2020-06-19
+- Breaking Change.
+
 - Added ability to monitor multiple RabbitMQ queues with a single run.
 - Allow multiple data types within the message body.
 - Added multiple routing keys to a single queue for monitoring.
 
 ### Changed
+- non_proc_msg:  Added routing key to parameter list.
+- non_proc_msg:  Replaced queue name with routing key to make it unique for message being processed.
 - validate_create_settings:  Validate each directory setting for each queue.
 - run_program:  Added loop for log information to log all queue name/routing key combinations.
 - run_program:  Changed program lock flavor id to the new configuration settings.
