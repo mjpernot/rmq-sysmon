@@ -66,10 +66,14 @@ class UnitTest(unittest.TestCase):
         self.cfg = gen_libs.load_module("rabbitmq", self.config_path)
         log_path = os.path.join(self.test_path, self.cfg.log_dir)
         self.cfg.log_file = os.path.join(log_path, self.cfg.log_file)
-        self.cfg.sysmon_dir = os.path.join(self.test_path, self.cfg.sysmon_dir)
+        #self.cfg.sysmon_dir = os.path.join(self.test_path, self.cfg.sysmon_dir)
+        self.cfg.queue_list[0]["directory"] = \
+            os.path.join(self.test_path, self.cfg.queue_list[0]["directory"])
         self.message_dir = os.path.join(self.test_path, self.cfg.message_dir)
         self.log_dir = os.path.join(self.test_path, self.cfg.log_dir)
-        self.sysmon_dir = os.path.join(self.test_path, self.cfg.sysmon_dir)
+        #self.sysmon_dir = os.path.join(self.test_path, self.cfg.sysmon_dir)
+        self.sysmon_dir = os.path.join(self.test_path,
+                                       self.cfg.queue_list[0]["directory"])
         self.msg = " does not exist."
         self.msg2 = "Error: Directory: "
 
@@ -85,12 +89,12 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_base.return_value = self.test_path
-        self.cfg.sysmon_dir = os.path.join(self.test_path,
-                                           self.cfg.sysmon_dir + "FALSE")
+        self.cfg.queue_list[0]["directory"] = os.path.join(
+            self.test_path, self.cfg.queue_list[0]["directory"] + "FALSE")
         self.cfg, status, msg = rmq_2_sysmon.validate_create_settings(self.cfg)
-        t_msg = self.msg2 + self.cfg.sysmon_dir + self.msg
+        t_msg = self.msg2 + self.cfg.queue_list[0]["directory"] + self.msg
 
-        self.assertEqual((self.cfg.sysmon_dir, status, msg),
+        self.assertEqual((self.cfg.queue_list[0]["directory"], status, msg),
                          (self.sysmon_dir + "FALSE", False, t_msg))
 
     @mock.patch("rmq_2_sysmon.gen_libs.get_base_dir")
@@ -148,7 +152,7 @@ class UnitTest(unittest.TestCase):
         mock_base.return_value = self.test_path
         self.cfg, status, msg = rmq_2_sysmon.validate_create_settings(self.cfg)
 
-        self.assertEqual((self.cfg.sysmon_dir, status, msg),
+        self.assertEqual((self.cfg.queue_list[0]["directory"], status, msg),
                          (self.sysmon_dir, True, ""))
 
     @mock.patch("rmq_2_sysmon.gen_libs.get_base_dir")
