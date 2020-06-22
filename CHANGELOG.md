@@ -12,6 +12,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - Added multiple routing keys to a single queue for monitoring.
 
 ### Changed
+- process_msg:  Refactored function to handle multiple queues and also multiple data types in the message body.
 - non_proc_msg:  Added routing key to parameter list.
 - non_proc_msg:  Replaced queue name with routing key to make it unique for message being processed.
 - validate_create_settings:  Validate each directory setting for each queue.

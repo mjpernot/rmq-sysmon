@@ -266,29 +266,71 @@ def process_msg(rmq, log, cfg, method, body, **kwargs):
 
     """
 
-    log.log_info("process_msg:  Processing body of message...")
+    r_key = method.routing_key
+    log.log_info(
+        "process_msg:  Processing message body from Routing Key: %s" %(r_key))
 
     try:
         data = ast.literal_eval(body)
 
-        if isinstance(data, dict):
+        queue = None
 
-            if cfg.key in data:
-                f_name = os.path.join(cfg.sysmon_dir, cfg.prename +
-                                      str(data[cfg.key].split(".")[0]) +
-                                      cfg.postname + ".json")
-                gen_libs.write_file(fname=f_name, mode="w",
-                                    data=json.dumps(data, indent=4))
+        for item in cfg.queue_list:
+            if item["routing_key"] == r_key:
+                queue = item
+                break
+
+        if queue:
+
+            k_name = ""
+            ext = ""
+            indent = 4
+            dtg = ""
+
+            if queue["stype"] == "any" \
+               or (queue["stype"] == "dict" and isinstance(data, dict)) \
+               or (queue["stype"] == "list" and isinstance(data, list)) \
+               or (queue["stype"] == "str" and isinstance(data, str)):
+
+                if queue["key"] and queue["key"] in data:
+                    k_name = str(data[queue["key"]].split(".")[0])
+
+                if queue["ext"]:
+                    ext = "." + queue["ext"]
+
+                if queue["flatten"]:
+                    indent = None
+
+                if queue["dtg"]:
+                    dtg = datetime.datetime.strftime(datetime.datetime.now(),
+                                                     "%Y%m%d_%H%M%S")
+
+                elif queue["date"]:
+                    dtg = datetime.datetime.strftime(datetime.datetime.now(),
+                                                     "%Y%m%d")
+
+                if isinstance(data, dict):
+                    data=json.dumps(data, indent=indent)
+
+                f_name = queue["prename"] + k_name + queue["postname"] + dtg
+
+                if not f_name:
+                    f_name = "Default_" + cfg.exchange_name + "_" + r_key
+
+                f_name = os.path.join(queue["directory"], f_name + ext)
+
+                gen_libs.write_file(fname=f_name, mode=queue["mode"],
+                                    data=data)
 
             else:
-                non_proc_msg(rmq, log, cfg, data,
-                             "Dictionary does not contain key")
+                msg = "Incorrect type detected: %s" % (type(data))
+                non_proc_msg(rmq, log, cfg, body, "Incorrect type", r_key)
 
         else:
-            non_proc_msg(rmq, log, cfg, body, "Non-dictionary format")
+            non_proc_msg(rmq, log, cfg, body, "No queue detected", r_key)
 
     except (ValueError, SyntaxError) as err:
-        non_proc_msg(rmq, log, cfg, body, str(err))
+        non_proc_msg(rmq, log, cfg, body, str(err), r_key)
 
 
 def monitor_queue(cfg, log, **kwargs):
