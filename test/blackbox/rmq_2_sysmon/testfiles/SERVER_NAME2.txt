@@ -1,6 +1,4 @@
-{
-    "Asof": "2018-08-29 08:01:02", 
-    "Update_Packages": [
+[
         {
             "Repo": "dia-updates", 
             "Arch": "x86_64", 
@@ -37,7 +35,4 @@
             "Ver": "2.6.32", 
             "Package": "kernel-firmware"
         }
-    ], 
-    "OS_Release": "CentOS 6.10", 
-    "not-server": "SERVER_NAME.dodiis.ic.gov"
-}
+] 
