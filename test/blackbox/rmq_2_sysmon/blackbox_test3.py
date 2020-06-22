@@ -46,11 +46,11 @@ def test_1(rmq, file_path, message_dir, log_dir):
 
     """
 
-    print("\tTest 1:  Process non-sysmon report.")
+    print("\tTest 1:  Process non-type report.")
     f_name = "SERVER_NAME2"
-    key = "Server"
-    msg = "Dictionary does not contain key"
-    f_filter = "blackbox-test_blackbox-test*.txt"
+    msg = "Incorrect type"
+    #f_filter = "blackbox-test_blackbox-test*.txt"
+    f_filter = "blackbox-test_blackbox-test"
     f_filter2 = "rmq_2_sysmon*.log"
     status, err_msg = blackbox_libs.publish_msg(rmq,
                                                 os.path.join(file_path,
@@ -58,18 +58,14 @@ def test_1(rmq, file_path, message_dir, log_dir):
     time.sleep(1)
 
     if status:
-        for f_file in glob.glob(os.path.join(message_dir, f_filter)):
-            with open(f_file, "r") as f_hldr:
-                body = f_hldr.read()
-
-            data = ast.literal_eval(body.splitlines()[1])
-            break
+        f_file = gen_libs.dir_file_match(message_dir, f_filter,
+                                         add_path=True)[0]
 
         for f_file in glob.glob(os.path.join(log_dir, f_filter2)):
             with open(f_file, "r") as f_hldr:
                 msg_body = f_hldr.read()
 
-        if key not in data and msg in msg_body:
+        if os.path.isfile(f_file) and msg in msg_body:
             print("\tTest successful\n")
 
         else:
