@@ -286,7 +286,8 @@ def process_msg(rmq, log, cfg, method, body, **kwargs):
                or (queue["stype"] == "list" and isinstance(data, list)) \
                or (queue["stype"] == "str" and isinstance(data, str)):
 
-                if queue["key"] and queue["key"] in data:
+                if queue["key"] and queue["key"] in data \
+                   and queue["stype"] == "dict":
                     k_name = str(data[queue["key"]].split(".")[0])
 
                 if queue["ext"]:
