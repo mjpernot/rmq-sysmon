@@ -80,11 +80,14 @@ class UnitTest(unittest.TestCase):
                 """
 
                 self.exchange = "test_exchange"
-                self.queue_name = "test_queue"
+                #self.queue_name = "test_queue"
                 self.to_line = ""
                 self.message_dir = "message_dir"
 
         self.cfg = CfgTest()
+        self.r_key = "Routing Key"
+        self.data = "Line"
+        self.subj = "Test_Subject"
 
     @mock.patch("rmq_2_sysmon.gen_class.Mail")
     @mock.patch("rmq_2_sysmon.gen_libs.write_file")
@@ -104,7 +107,7 @@ class UnitTest(unittest.TestCase):
         mock_mail.send_mail.return_value = True
 
         self.assertFalse(rmq_2_sysmon.non_proc_msg(
-            self.cfg, mock_log, self.cfg, "Line", "Test_Subject"))
+            self.cfg, mock_log, self.cfg, self.data, self.subj, self.r_key))
 
     @mock.patch("rmq_2_sysmon.gen_class.Mail")
     @mock.patch("rmq_2_sysmon.gen_libs.write_file")
@@ -126,7 +129,7 @@ class UnitTest(unittest.TestCase):
         self.cfg.to_line = "Test_Email@email.domain"
 
         self.assertFalse(rmq_2_sysmon.non_proc_msg(
-            self.cfg, mock_log, self.cfg, "Line", "Test_Subject"))
+            self.cfg, mock_log, self.cfg, self.data, self.subj, self.r_key))
 
     def tearDown(self):
 
