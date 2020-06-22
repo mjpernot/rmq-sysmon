@@ -218,13 +218,10 @@ def non_proc_msg(rmq, log, cfg, data, subj, r_key, **kwargs):
 
     """
 
-#    log.log_info("non_proc_msg:  Processing non-processed message...")
     log.log_info(
         "non_proc_msg:  Processing failed message from Routing Key: %s" %
         (r_key))
     frm_line = getpass.getuser() + "@" + socket.gethostname()
-#    f_name = rmq.exchange + "_" + rmq.queue_name + "_" + gen_libs.get_date() \
-#        + "_" + gen_libs.get_time() + ".txt"
     rdtg = datetime.datetime.now()
     msecs = str(rdtg.microsecond / 1000)
     dtg = datetime.datetime.strftime(rdtg,"%Y-%m-%d_%H:%M:%S") + "." + msecs
@@ -241,11 +238,8 @@ def non_proc_msg(rmq, log, cfg, data, subj, r_key, **kwargs):
     else:
         log.log_warn("No email being sent as TO line is empty.")
 
-#    log.log_err("Message was not processed due to: %s" % (subj))
     log.log_err("RabbitMQ message was not processed due to: %s" % (subj))
     log.log_info("Saving message to: %s" % (f_path))
-#    gen_libs.write_file(f_path, data="Exchange: %s, Queue: %s"
-#                        % (rmq.exchange, rmq.queue_name))
     gen_libs.write_file(f_path, data="Exchange: %s, Routing Key: %s"
                         % (rmq.exchange, r_key))
     gen_libs.write_file(f_path, data=data)
