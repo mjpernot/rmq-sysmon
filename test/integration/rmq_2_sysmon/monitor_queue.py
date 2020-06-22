@@ -105,7 +105,8 @@ class UnitTest(unittest.TestCase):
         """
 
         os.remove(self.cfg.log_file)
-        rmq_cleanup.rmq_cleanup(self.cfg, self.cfg.queue_name, True)
+        rmq_cleanup.rmq_cleanup(self.cfg, self.cfg.queue_list[0]["queue"],
+                                True)
 
 
 if __name__ == "__main__":
