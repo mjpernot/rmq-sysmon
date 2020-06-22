@@ -66,12 +66,10 @@ class UnitTest(unittest.TestCase):
         self.cfg = gen_libs.load_module("rabbitmq", self.config_path)
         log_path = os.path.join(self.test_path, self.cfg.log_dir)
         self.cfg.log_file = os.path.join(log_path, self.cfg.log_file)
-        #self.cfg.sysmon_dir = os.path.join(self.test_path, self.cfg.sysmon_dir)
         self.cfg.queue_list[0]["directory"] = \
             os.path.join(self.test_path, self.cfg.queue_list[0]["directory"])
         self.message_dir = os.path.join(self.test_path, self.cfg.message_dir)
         self.log_dir = os.path.join(self.test_path, self.cfg.log_dir)
-        #self.sysmon_dir = os.path.join(self.test_path, self.cfg.sysmon_dir)
         self.sysmon_dir = os.path.join(self.test_path,
                                        self.cfg.queue_list[0]["directory"])
         self.msg = " does not exist."
