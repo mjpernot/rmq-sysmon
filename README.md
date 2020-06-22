@@ -405,6 +405,8 @@ Make the appropriate changes to the RabbitMQ environment.
     - "directory":                                -> Change value to:  "{PYTHON_PROJECT}/test/blackbox/rmq_2_sysmon/sysmon"
     - "key":                                      -> Change value to:  "Server"
     - "postname":                                 -> Change value to:  "\_pkgs"
+    - "ext":                                      -> Change value to:  "json"
+    - "stype":                                    -> Change value to:  "dict"
 
 ```
 vim rabbitmq.py
