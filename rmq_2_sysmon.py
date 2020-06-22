@@ -390,12 +390,7 @@ def monitor_queue(cfg, log, **kwargs):
         rmq.drop_connection()
 
     log.log_info("monitor_queue:  Start monitoring queue...")
-#    rmq = rabbitmq_class.RabbitMQCon(
-#        cfg.user, cfg.passwd, cfg.host, cfg.port,
-#        exchange_name=cfg.exchange_name, exchange_type=cfg.exchange_type,
-#        queue_name=cfg.queue_name, routing_key=cfg.queue_name,
-#        x_durable=cfg.x_durable, q_durable=cfg.q_durable,
-#        auto_delete=cfg.auto_delete)
+
     # Connect to first queue as only one connection required.
     rmq = rabbitmq_class.RabbitMQCon(
         cfg.user, cfg.passwd, cfg.host, cfg.port,
@@ -416,8 +411,8 @@ def monitor_queue(cfg, log, **kwargs):
             log.log_info("Monitoring RabbitMQ Queue: %s, Routing Key: %s" %
                          (queue["queue"], queue["routing_key"]))
             rmq.consume(callback, queue=queue["queue"])
-#        rmq.consume(callback)
-#        rmq.start_loop()
+
+        rmq.start_loop()
 
     else:
         log.log_err("Failed to connnect to RabbuitMQ -> Msg: %s" % (err_msg))
