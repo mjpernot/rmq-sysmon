@@ -36,7 +36,7 @@ def test_1(rmq, file_path, message_dir, log_dir):
 
     """Function:  test_1
 
-    Description:  Process a single properly formatted message.
+    Description:  Process a non-type report.
 
     Arguments:
         (input) rmq -> RabbitMQ Publisher instance
@@ -49,12 +49,10 @@ def test_1(rmq, file_path, message_dir, log_dir):
     print("\tTest 1:  Process non-type report.")
     f_name = "SERVER_NAME2"
     msg = "Incorrect type"
-    #f_filter = "blackbox-test_blackbox-test*.txt"
     f_filter = "blackbox-test_blackbox-test"
     f_filter2 = "rmq_2_sysmon*.log"
-    status, err_msg = blackbox_libs.publish_msg(rmq,
-                                                os.path.join(file_path,
-                                                             f_name + ".txt"))
+    status, err_msg = blackbox_libs.publish_msg(
+        rmq, os.path.join(file_path, f_name + ".txt"))
     time.sleep(1)
 
     if status:
