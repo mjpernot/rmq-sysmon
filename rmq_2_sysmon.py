@@ -319,7 +319,7 @@ def process_msg(rmq, log, cfg, method, body, **kwargs):
 
             else:
                 msg = "Incorrect type detected: %s" % (type(data))
-                non_proc_msg(rmq, log, cfg, body, "Incorrect type", r_key)
+                non_proc_msg(rmq, log, cfg, body, msg, r_key)
 
         else:
             non_proc_msg(rmq, log, cfg, body, "No queue detected", r_key)
