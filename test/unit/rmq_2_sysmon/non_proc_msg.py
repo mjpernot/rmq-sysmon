@@ -80,7 +80,6 @@ class UnitTest(unittest.TestCase):
                 """
 
                 self.exchange = "test_exchange"
-                #self.queue_name = "test_queue"
                 self.to_line = ""
                 self.message_dir = "message_dir"
 
