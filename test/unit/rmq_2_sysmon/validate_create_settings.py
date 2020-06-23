@@ -102,22 +102,22 @@ class UnitTest(unittest.TestCase):
                 self.queue_list = [
                     {"queue": "rmq_2_isse_unit_test",
                      "routing_key": "ROUTING_KEY",
-                     "directory":  "/SYSMON_DIR_PATH"}]
+                     "directory": "/SYSMON_DIR_PATH"}]
 
         self.cfg = CfgTest()
         self.cfg2 = CfgTest()
         self.cfg2.queue_list.append({
             "queue": "rmq_2_isse_unit_test",
             "routing_key": "ROUTING_KEY",
-            "directory":  "/DIR_PATH"})
+            "directory": "/DIR_PATH"})
         self.base_dir = "/BASE_DIR_PATH"
         self.err_msg1 = "Missing Message Dir "
         self.err_msg2 = "Missing Log Dir "
         self.err_msg3 = "Missing Sysmon Dir "
         self.err_msg4 = "Error Queue Dir"
         base_name, ext_name = os.path.splitext(self.cfg.log_file)
-        self.log_name = base_name + "_" + self.cfg.exchange_name + "_" \
-                        + ext_name
+        self.log_name = \
+            base_name + "_" + self.cfg.exchange_name + "_" + ext_name
 
     @mock.patch("rmq_2_sysmon.gen_libs")
     def test_multi_queues_two_fail(self, mock_lib):
@@ -131,7 +131,7 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_lib.chk_crt_dir.side_effect = [
-            (True, None), (True, None),(False, self.err_msg4),
+            (True, None), (True, None), (False, self.err_msg4),
             (False, self.err_msg4)]
         _, status_flag, err_msg = \
             rmq_2_sysmon.validate_create_settings(self.cfg2)
@@ -151,7 +151,7 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_lib.chk_crt_dir.side_effect = [
-            (True, None), (True, None),(True, None), (False, self.err_msg4)]
+            (True, None), (True, None), (True, None), (False, self.err_msg4)]
         _, status_flag, err_msg = \
             rmq_2_sysmon.validate_create_settings(self.cfg2)
 
