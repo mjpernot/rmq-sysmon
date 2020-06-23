@@ -276,16 +276,21 @@ def process_msg(rmq, log, cfg, method, body, **kwargs):
 
         if queue:
 
+            """
             k_name = ""
             ext = ""
             indent = 4
             dtg = ""
+            """
 
             if queue["stype"] == "any" \
                or (queue["stype"] == "dict" and isinstance(data, dict)) \
                or (queue["stype"] == "list" and isinstance(data, list)) \
                or (queue["stype"] == "str" and isinstance(data, str)):
 
+                _process_queue(queue, data, r_key, cfg.exchange_name)
+
+                """
                 if queue["key"] and queue["key"] in data \
                    and queue["stype"] == "dict":
                     k_name = str(data[queue["key"]].split(".")[0])
@@ -316,6 +321,7 @@ def process_msg(rmq, log, cfg, method, body, **kwargs):
 
                 gen_libs.write_file(fname=f_name, mode=queue["mode"],
                                     data=data)
+                """
 
             else:
                 msg = "Incorrect type detected: %s" % (type(data))
@@ -326,6 +332,54 @@ def process_msg(rmq, log, cfg, method, body, **kwargs):
 
     except (ValueError, SyntaxError) as err:
         non_proc_msg(rmq, log, cfg, body, str(err), r_key)
+
+
+def _process_queue(queue, data, r_key, x_name, **kwargs):
+
+    """Function:  _process_queue
+
+    Description:  Private function to process message queue.
+
+    Arguments:
+        (input) queue -> RabbitMQ queue.
+        (input) data -> Converted message body.
+        (input) r_key -> Routing key.
+        (input) x_name -> Exchange name.
+
+    """
+
+    k_name = ""
+    ext = ""
+    indent = 4
+    dtg = ""
+
+    if queue["key"] and queue["key"] in data and queue["stype"] == "dict":
+        k_name = str(data[queue["key"]].split(".")[0])
+
+    if queue["ext"]:
+        ext = "." + queue["ext"]
+
+    if queue["flatten"]:
+        indent = None
+
+    if queue["dtg"]:
+        dtg = datetime.datetime.strftime(datetime.datetime.now(),
+                                         "%Y%m%d_%H%M%S")
+
+    elif queue["date"]:
+        dtg = datetime.datetime.strftime(datetime.datetime.now(), "%Y%m%d")
+
+    if isinstance(data, dict):
+        data = json.dumps(data, indent=indent)
+
+    f_name = queue["prename"] + k_name + queue["postname"] + dtg
+
+    if not f_name:
+        f_name = "Default_" + x_name + "_" + r_key
+
+    f_name = os.path.join(queue["directory"], f_name + ext)
+
+    gen_libs.write_file(fname=f_name, mode=queue["mode"], data=data)
 
 
 def monitor_queue(cfg, log, **kwargs):
