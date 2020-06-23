@@ -148,7 +148,7 @@ class UnitTest(unittest.TestCase):
                      "mode": "a",
                      "ext": "",
                      "dtg": False,
-                     "date":  False,
+                     "date": False,
                      "stype": "dict",
                      "flatten": True}]
 
