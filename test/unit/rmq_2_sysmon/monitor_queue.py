@@ -43,7 +43,7 @@ class UnitTest(unittest.TestCase):
     Methods:
         setUp -> Initialize testing environment.
         test_two_queue_partial2 -> Test with two queues w/ first queue failure.
-        test_two_queue_partial -> Test with two queues with one queue failure. 
+        test_two_queue_partial -> Test with two queues with one queue failure.
         test_two_queue_fail -> Test with two queues fails to initialize.
         test_two_queue_success -> Test with two queues initialized & monitored.
         test_one_queue_fail -> Test with one queue fails to initialize.
@@ -107,7 +107,7 @@ class UnitTest(unittest.TestCase):
                      "mode": "a",
                      "ext": "",
                      "dtg": False,
-                     "date":  False,
+                     "date": False,
                      "stype": "dict",
                      "flatten": True}]
 
