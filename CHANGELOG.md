@@ -15,6 +15,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - \_process_queue:  Private function to process message queue.
 
 ### Changed
+- process_msg:  Replaced a section of code with call to \_process_queue function.
 - monitor_queue:  Refactored function to initialize and monitor multiple queues.
 - callback:  Added routing key information to log entries.
 - process_msg:  Refactored function to handle multiple queues and also multiple data types in the message body.
