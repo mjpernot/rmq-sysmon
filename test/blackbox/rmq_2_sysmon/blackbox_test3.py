@@ -21,7 +21,6 @@ import time
 
 # Third-party
 import glob
-import ast
 
 # Local
 sys.path.append(os.getcwd())
@@ -59,8 +58,8 @@ def test_1(rmq, file_path, message_dir, log_dir):
         f_file = gen_libs.dir_file_match(message_dir, f_filter,
                                          add_path=True)[0]
 
-        for file in glob.glob(os.path.join(log_dir, f_filter2)):
-            with open(file, "r") as f_hldr:
+        for item in glob.glob(os.path.join(log_dir, f_filter2)):
+            with open(item, "r") as f_hldr:
                 msg_body = f_hldr.read()
 
         if os.path.isfile(f_file) and msg in msg_body:
