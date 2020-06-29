@@ -275,36 +275,6 @@ def process_msg(rmq, log, cfg, method, body, **kwargs):
 
         _convert_data(rmq, log, cfg, queue, body, r_key)
 
-        #Remove code.
-        """
-        try:
-            data = ast.literal_eval(body)
-
-            if queue["stype"] == "any" \
-               or (queue["stype"] == "dict" and isinstance(data, dict)) \
-               or (queue["stype"] == "list" and isinstance(data, list)) \
-               or (queue["stype"] == "str" and isinstance(data, str)):
-
-                _process_queue(queue, data, r_key, cfg.exchange_name)
-
-            else:
-                msg = "Incorrect type detected: %s" % (type(data))
-                non_proc_msg(rmq, log, cfg, body, msg, r_key)
-
-        except (SyntaxError) as err:
-
-            if isinstance(body, str) and (queue["stype"] == "any" or
-                                          queue["stype"] == "str"):
-
-                _process_queue(queue, body, r_key, cfg.exchange_name)
-
-            else:
-                non_proc_msg(rmq, log, cfg, body, str(err), r_key)
-
-        except (ValueError) as err:
-            non_proc_msg(rmq, log, cfg, body, str(err), r_key)
-        """
-
     else:
         non_proc_msg(rmq, log, cfg, body, "No queue detected", r_key)
 
