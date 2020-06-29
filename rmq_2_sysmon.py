@@ -273,6 +273,10 @@ def process_msg(rmq, log, cfg, method, body, **kwargs):
 
     if queue:
 
+        _convert_data(rmq, log, cfg, queue, body, r_key)
+
+        #Remove code.
+        """
         try:
             data = ast.literal_eval(body)
 
@@ -299,9 +303,54 @@ def process_msg(rmq, log, cfg, method, body, **kwargs):
 
         except (ValueError) as err:
             non_proc_msg(rmq, log, cfg, body, str(err), r_key)
+        """
 
     else:
         non_proc_msg(rmq, log, cfg, body, "No queue detected", r_key)
+
+
+def _convert_data(rmq, log, cfg, queue, body, r_key, **kwargs):
+
+    """Function:  _process_queue
+
+    Description:  Private function to process message queue.
+
+    Arguments:
+        (input) rmq -> RabbitMQ class instance.
+        (input) log -> Log class instance.
+        (input) cfg -> Configuration settings module for the program.
+        (input) queue -> RabbitMQ queue.
+        (input) body -> Message body.
+        (input) r_key -> Routing key.
+
+    """
+
+    try:
+        data = ast.literal_eval(body)
+
+        if queue["stype"] == "any" \
+           or (queue["stype"] == "dict" and isinstance(data, dict)) \
+           or (queue["stype"] == "list" and isinstance(data, list)) \
+           or (queue["stype"] == "str" and isinstance(data, str)):
+
+            _process_queue(queue, data, r_key, cfg.exchange_name)
+
+        else:
+            msg = "Incorrect type detected: %s" % (type(data))
+            non_proc_msg(rmq, log, cfg, body, msg, r_key)
+
+    except (SyntaxError) as err:
+
+        if isinstance(body, str) and (queue["stype"] == "any" or
+                                      queue["stype"] == "str"):
+
+            _process_queue(queue, body, r_key, cfg.exchange_name)
+
+        else:
+            non_proc_msg(rmq, log, cfg, body, str(err), r_key)
+
+    except (ValueError) as err:
+        non_proc_msg(rmq, log, cfg, body, str(err), r_key)
 
 
 def _process_queue(queue, data, r_key, x_name, **kwargs):
