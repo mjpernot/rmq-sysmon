@@ -6,6 +6,7 @@
 
 echo ""
 echo "Unit test:  rmq_2_sysmon.py"
+test/unit/rmq_2_sysmon/_convert_data.py
 test/unit/rmq_2_sysmon/_process_queue.py
 test/unit/rmq_2_sysmon/help_message.py
 test/unit/rmq_2_sysmon/validate_create_settings.py
