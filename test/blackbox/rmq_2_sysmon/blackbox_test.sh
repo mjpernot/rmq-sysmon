@@ -1,4 +1,4 @@
-!/bin/bash
+#!/bin/bash
 # Blackbox testing program for the rmq_2_sysmon.py program.
 
 BASE_PATH=$PWD
