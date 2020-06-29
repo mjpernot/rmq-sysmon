@@ -266,7 +266,6 @@ def process_msg(rmq, log, cfg, method, body, **kwargs):
 
     try:
         data = ast.literal_eval(body)
-
         queue = None
 
         for item in cfg.queue_list:
