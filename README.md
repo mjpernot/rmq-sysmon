@@ -321,8 +321,8 @@ Make the appropriate changes to the RabbitMQ environment.
     - "queue_name":                               -> Change value to:  "intr-test"
     - "routing_key":                              -> Change value to:  "intr-test"
     - "directory":                                -> Change value to:  "sysmon"
-    - "key":                                      -> Change value to:  "Server"
     - "postname":                                 -> Change value to:  "\_pkgs"
+    - "key":                                      -> Change value to:  "Server"
     - "ext":                                      -> Change value to:  "json"
     - "stype":                                    -> Change value to:  "dict"
 
