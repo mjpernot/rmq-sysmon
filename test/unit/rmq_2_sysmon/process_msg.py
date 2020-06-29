@@ -62,6 +62,7 @@ class UnitTest(unittest.TestCase):
         test_list_pass -> Test with list passed.
         test_str_convert_pass -> Test with ast.literal_eval pass for string.
         test_dict_convert_pass -> Test with ast.literal_eval pass for dict.
+        test_convert_fails_type_pass-> Test convert fails, but passes for type.
         test_str_convert_fails -> Test with ast.literal_eval fails for string.
         test_dict_convert_fails -> Test with ast.literal_eval fails for dict.
         test_key_not_in_dict -> Test if key is not in dictionary.
@@ -69,7 +70,6 @@ class UnitTest(unittest.TestCase):
         test_create_json -> Test if the body is converted to JSON.
         test_is_dict -> Test if the body is a dictionary.
         test_is_not_dict -> Test if the body is not a dictionary.
-        tearDown -> Clean up of testing environment.
 
     """
 
@@ -608,6 +608,26 @@ class UnitTest(unittest.TestCase):
         self.assertFalse(rmq_2_sysmon.process_msg(self.rmq, mock_log, self.cfg,
                                                   self.method, self.rawbody2))
 
+    @mock.patch("rmq_2_sysmon.gen_libs.write_file",
+                mock.Mock(return_value=True))
+    @mock.patch("rmq_2_sysmon.gen_class.Logger")
+    @mock.patch("rmq_2_sysmon.non_proc_msg")
+    def test_convert_fails_type_pass(self, mock_msg, mock_log):
+
+        """Function:  test_convert_fails_type_pass
+
+        Description:  Test literal_eval fails for string, but passes for type.
+
+        Arguments:
+
+        """
+
+        mock_msg.return_value = True
+        mock_log.return_value = True
+
+        self.assertFalse(rmq_2_sysmon.process_msg(
+            self.rmq, mock_log, self.cfg3, self.method, self.body3))
+
     @mock.patch("rmq_2_sysmon.gen_class.Logger")
     @mock.patch("rmq_2_sysmon.non_proc_msg")
     def test_str_convert_fails(self, mock_msg, mock_log):
@@ -747,18 +767,6 @@ class UnitTest(unittest.TestCase):
 
         self.assertFalse(rmq_2_sysmon.process_msg(self.rmq, mock_log, self.cfg,
                                                   self.method, self.body))
-
-    def tearDown(self):
-
-        """Function:  tearDown
-
-        Description:  Clean up of unit testing.
-
-        Arguments:
-
-        """
-
-        pass
 
 
 if __name__ == "__main__":
