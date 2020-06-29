@@ -261,19 +261,20 @@ def process_msg(rmq, log, cfg, method, body, **kwargs):
     """
 
     r_key = method.routing_key
+    queue = None
     log.log_info(
         "process_msg:  Processing message body from Routing Key: %s" % (r_key))
 
-    try:
-        data = ast.literal_eval(body)
-        queue = None
+    for item in cfg.queue_list:
 
-        for item in cfg.queue_list:
-            if item["routing_key"] == r_key:
-                queue = item
-                break
+        if item["routing_key"] == r_key:
+            queue = item
+            break
 
-        if queue:
+    if queue:
+
+        try:
+            data = ast.literal_eval(body)
 
             if queue["stype"] == "any" \
                or (queue["stype"] == "dict" and isinstance(data, dict)) \
@@ -286,11 +287,21 @@ def process_msg(rmq, log, cfg, method, body, **kwargs):
                 msg = "Incorrect type detected: %s" % (type(data))
                 non_proc_msg(rmq, log, cfg, body, msg, r_key)
 
-        else:
-            non_proc_msg(rmq, log, cfg, body, "No queue detected", r_key)
+        except (SyntaxError) as err:
 
-    except (ValueError, SyntaxError) as err:
-        non_proc_msg(rmq, log, cfg, body, str(err), r_key)
+            if isinstance(body, str) and (queue["stype"] == "any" or
+                                          queue["stype"] == "str"):
+
+                _process_queue(queue, body, r_key, cfg.exchange_name)
+
+            else:
+                non_proc_msg(rmq, log, cfg, body, str(err), r_key)
+
+        except (ValueError) as err:
+            non_proc_msg(rmq, log, cfg, body, str(err), r_key)
+
+    else:
+        non_proc_msg(rmq, log, cfg, body, "No queue detected", r_key)
 
 
 def _process_queue(queue, data, r_key, x_name, **kwargs):
