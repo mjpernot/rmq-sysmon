@@ -8,6 +8,7 @@ coverage erase
 
 echo ""
 echo "Running unit test modules in conjunction with coverage"
+coverage run -a --source=rmq_2_sysmon test/unit/rmq_2_sysmon/_convert_data.py
 coverage run -a --source=rmq_2_sysmon test/unit/rmq_2_sysmon/_process_queue.py
 coverage run -a --source=rmq_2_sysmon test/unit/rmq_2_sysmon/help_message.py 
 coverage run -a --source=rmq_2_sysmon test/unit/rmq_2_sysmon/validate_create_settings.py
