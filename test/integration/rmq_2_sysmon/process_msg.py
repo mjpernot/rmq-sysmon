@@ -130,13 +130,7 @@ class UnitTest(unittest.TestCase):
                                  self.body2)
         self.log.log_close()
 
-        if self.non_proc_msg in open(self.cfg.log_file).read():
-            status = True
-
-        else:
-            status = False
-
-        self.assertTrue(status)
+        self.assertTrue(self.non_proc_msg in open(self.cfg.log_file).read())
 
     def test_body_dict_true(self):
 
@@ -152,14 +146,8 @@ class UnitTest(unittest.TestCase):
                                  self.body)
         self.log.log_close()
 
-        if self.log_chk in open(self.cfg.log_file).read() and \
-           os.path.isfile(self.sysmon_file):
-            status = True
-
-        else:
-            status = False
-
-        self.assertTrue(status)
+        self.assertTrue(self.log_chk in open(self.cfg.log_file).read() and \
+                        os.path.isfile(self.sysmon_file))
 
     def tearDown(self):
 
