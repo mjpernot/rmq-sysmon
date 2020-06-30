@@ -2,7 +2,7 @@
 # Classification (U)
 
 # Description:
-  Python program that processes Admin Monitoring emails in RabbitMQ, will process a number of different data types in the report, and will save the report to a specified directory.
+  Python program that processes administration monitoring emails in RabbitMQ.  The program will process a number of different data types in the report, and will be able to save the report to a specified directory.
 
 
 ###  This README file is broken down into the following sections:
@@ -83,9 +83,9 @@ Make the appropriate changes to the RabbitMQ environment.
       -> Name of the exchange that will be monitored.
     - to_line = "EMAIL_ADDRESS"|None
       -> Is the email address/email alias to the RabbitMQ administrator(s) or None if no emails required.
-    - message_dir = "/DIRECTORY_PATH/message_dir"
+    - message_dir = "DIRECTORY_PATH/message_dir"
       -> Is where failed reports/messages are written to.
-    - log_dir = "/DIRECTORY_PATH/logs"
+    - log_dir = "DIRECTORY_PATH/logs"
       -> Is where failed log files are written to.
   * Do not change these unless you are familar with RabbitMQ.
     - port = 5672
@@ -99,7 +99,7 @@ Make the appropriate changes to the RabbitMQ environment.
     - "routing_key": "ROUTING_KEY"
       -> Name of the routing key for the queue.
       -> NOTE:  A single queue can have multiple routing keys, but each routing key will have it's own dictionary entry.
-    - "directory": "/DIRECTORY_PATH"
+    - "directory": "DIRECTORY_PATH"
       -> Directory path to where a report will be written to.
     - "prename": ""
       -> A static pre-file name string.
@@ -313,18 +313,18 @@ Make the appropriate changes to the RabbitMQ environment.
     - user = "USER"
     - passwd = "PASSWORD"
     - host = "HOSTNAME"
-    - exchange_name = "EXCHANGE_NAME"             -> Change to:  exchange_name = "intr-test"
-    - to_line = "EMAIL_ADDRESS"                   -> Change to:  to_line = None
-    - message_dir = "/DIRECTORY_PATH/message_dir" -> Change to:  message_dir = "message_dir"
-    - log_dir = "/DIRECTORY_PATH/logs"            -> Change to:  log_dir = "logs"
+    - exchange_name = "EXCHANGE_NAME"            -> Change to:  exchange_name = "intr-test"
+    - to_line = "EMAIL_ADDRESS"                  -> Change to:  to_line = None
+    - message_dir = "DIRECTORY_PATH/message_dir" -> Change to:  message_dir = "message_dir"
+    - log_dir = "DIRECTORY_PATH/logs"            -> Change to:  log_dir = "logs"
   * Have one entry in the queue_list list:
-    - "queue_name":                               -> Change value to:  "intr-test"
-    - "routing_key":                              -> Change value to:  "intr-test"
-    - "directory":                                -> Change value to:  "sysmon"
-    - "postname":                                 -> Change value to:  "\_pkgs"
-    - "key":                                      -> Change value to:  "Server"
-    - "ext":                                      -> Change value to:  "json"
-    - "stype":                                    -> Change value to:  "dict"
+    - "queue_name":                              -> Change value to:  "intr-test"
+    - "routing_key":                             -> Change value to:  "intr-test"
+    - "directory":                               -> Change value to:  "sysmon"
+    - "postname":                                -> Change value to:  "\_pkgs"
+    - "key":                                     -> Change value to:  "Server"
+    - "ext":                                     -> Change value to:  "json"
+    - "stype":                                   -> Change value to:  "dict"
 
 ```
 vim rabbitmq.py
@@ -395,18 +395,18 @@ Make the appropriate changes to the RabbitMQ environment.
     - user = "USER"
     - passwd = "PASSWORD"
     - host = "HOSTNAME"
-    - exchange_name = "EXCHANGE_NAME"             -> Change to:  exchange_name = "blackbox-test"
-    - to_line = "EMAIL_ADDRESS@DOMAIN_NAME"       -> Change to:  to_line = None
-    - message_dir = "/DIRECTORY_PATH/message_dir" -> Change to:  message_dir = "{PYTHON_PROJECT}/test/blackbox/rmq_2_sysmon/message_dir"
-    - log_dir = "/DIRECTORY_PATH/logs"            -> Change to:  log_dir = "{PYTHON_PROJECT}/test/blackbox/rmq_2_sysmon/logs"
+    - exchange_name = "EXCHANGE_NAME"            -> Change to:  exchange_name = "blackbox-test"
+    - to_line = "EMAIL_ADDRESS@DOMAIN_NAME"      -> Change to:  to_line = None
+    - message_dir = "DIRECTORY_PATH/message_dir" -> Change to:  message_dir = "{PYTHON_PROJECT}/test/blackbox/rmq_2_sysmon/message_dir"
+    - log_dir = "DIRECTORY_PATH/logs"            -> Change to:  log_dir = "{PYTHON_PROJECT}/test/blackbox/rmq_2_sysmon/logs"
   * Have one entry in the queue_list list:
-    - "queue_name":                               -> Change value to:  "blackbox-test"
-    - "routing_key":                              -> Change value to:  "blackbox-test"
-    - "directory":                                -> Change value to:  "{PYTHON_PROJECT}/test/blackbox/rmq_2_sysmon/sysmon"
-    - "key":                                      -> Change value to:  "Server"
-    - "postname":                                 -> Change value to:  "\_pkgs"
-    - "ext":                                      -> Change value to:  "json"
-    - "stype":                                    -> Change value to:  "dict"
+    - "queue_name":                              -> Change value to:  "blackbox-test"
+    - "routing_key":                             -> Change value to:  "blackbox-test"
+    - "directory":                               -> Change value to:  "{PYTHON_PROJECT}/test/blackbox/rmq_2_sysmon/sysmon"
+    - "key":                                     -> Change value to:  "Server"
+    - "postname":                                -> Change value to:  "\_pkgs"
+    - "ext":                                     -> Change value to:  "json"
+    - "stype":                                   -> Change value to:  "dict"
 
 ```
 vim rabbitmq.py
