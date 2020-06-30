@@ -3,15 +3,19 @@
 
 """Program:  rmq_2_sysmon.py
 
-    Description:  Process Package Admin emails in RabbitMQ, convert the email
-        to a JSON report, and write the JSON report to the sysmon directory.
+    Description:  Processes administration monitoring emails in RabbitMQ.  The
+        program will process a number of different data types in the report,
+        and will be able to save the report to a specified directory.
 
     Usage:
-        rmq_2_sysmon.py -c file -d dir_path {-M} [-v | -h]
+        rmq_2_sysmon.py -c config_file -d dir_path {-M}
+            [-v | -h]
 
     Arguments:
-        -c file => RabbitMQ configuration file.  Required argument.
-        -d dir_path => Directory path for option '-c'.  Required argument.
+        -c config_file => RabbitMQ configuration file.
+            Required argument.
+        -d dir_path => Directory path for option '-c'.
+            Required argument.
         -M => Monitor and process messages from a RabbitMQ queue.
         -v => Display version of this program.
         -h => Help and usage message.
@@ -20,8 +24,8 @@
 
     Notes:
         The option to monitor the RabbitMQ is setup to run in an infinite loop
-        and can only be killed with a CTRL-C on the command line or shutdown of
-        the service.
+        and can only be killed with a CTRL-C on the command line, stopping the
+        daemon, or shutting down of the service.
 
         RabbitMQ configuration file format (config/rabbitmq.py.TEMPLATE).
 
@@ -45,9 +49,9 @@
             # Queues automatically delete message after processing: True|False
             auto_delete = False
             # Archive directory name for non-processed messages.
-            message_dir = "/DIRECTORY_PATH/message_dir"
+            message_dir = "DIRECTORY_PATH/message_dir"
             # Directory name for log files.
-            log_dir = "/DIRECTORY_PATH/logs"
+            log_dir = "DIRECTORY_PATH/logs"
             # File name to program log.
             log_file = "rmq_2_sysmon.log"
             # List of queues to monitor.
@@ -72,7 +76,7 @@
             queue_list = [
                     {"queue": "QUEUE_NAME",
                      "routing_key": "ROUTING_KEY",
-                     "directory": "/DIR_PATH",
+                     "directory": "DIR_PATH",
                      "prename": "",
                      "postname": "",
                      "key": "",
@@ -85,7 +89,7 @@
                     },
                     {"queue": "QUEUE_NAME",
                      "routing_key": "ROUTING_KEY",
-                     "directory": "/DIR_PATH",
+                     "directory": "DIR_PATH",
                      "prename": "",
                      "postname": "",
                      "key": "",
