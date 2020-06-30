@@ -103,14 +103,8 @@ class UnitTest(unittest.TestCase):
         self.test_file = gen_libs.dir_file_match(self.cfg.message_dir,
                                                  self.rmq.exchange)[0]
 
-        if self.line in open(os.path.join(self.cfg.message_dir,
-                                          self.test_file)).read():
-            status = True
-
-        else:
-            status = False
-
-        self.assertTrue(status)
+        self.assertTrue(self.line in open(os.path.join(self.cfg.message_dir,
+                                                       self.test_file)).read())
 
     def tearDown(self):
 
