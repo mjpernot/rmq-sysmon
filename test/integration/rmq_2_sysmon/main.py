@@ -91,13 +91,7 @@ class UnitTest(unittest.TestCase):
         mock_base.return_value = self.test_path
         rmq_2_sysmon.main(argv_list=self.argv_list)
 
-        if self.connect_true in open(self.cfg.log_file).read():
-            status = True
-
-        else:
-            status = False
-
-        self.assertTrue(status)
+        self.assertTrue(self.connect_true in open(self.cfg.log_file).read())
 
     def tearDown(self):
 
