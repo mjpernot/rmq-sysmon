@@ -20,9 +20,9 @@ q_durable = True
 # Queues automatically delete message after processing: True|False
 auto_delete = False
 # Archive directory name for non-processed messages.
-message_dir = "/DIRECTORY_PATH/message_dir"
+message_dir = "DIRECTORY_PATH/message_dir"
 # Directory name for log files.
-log_dir = "/DIRECTORY_PATH/logs"
+log_dir = "DIRECTORY_PATH/logs"
 # File name to program log.
 log_file = "rmq_2_sysmon.log"
 # List of queues to monitor.
@@ -42,7 +42,7 @@ log_file = "rmq_2_sysmon.log"
 queue_list = [
         {"queue": "QUEUE_NAME",
          "routing_key": "ROUTING_KEY",
-         "directory": "/DIR_PATH",
+         "directory": "DIR_PATH",
          "prename": "",
          "postname": "",
          "key": "",
@@ -55,7 +55,7 @@ queue_list = [
         },
         {"queue": "QUEUE_NAME",
          "routing_key": "ROUTING_KEY",
-         "directory": "/DIR_PATH",
+         "directory": "DIR_PATH",
          "prename": "",
          "postname": "",
          "key": "",
