@@ -44,7 +44,8 @@ def create_rq_pub(cfg, **kwargs):
     rmq = rabbitmq_class.RabbitMQPub(
         cfg.user, cfg.passwd, cfg.host, cfg.port,
         exchange_name=cfg.exchange_name, exchange_type=cfg.exchange_type,
-        queue_name=cfg.queue_name, routing_key=cfg.queue_name,
+        queue_name=cfg.queue_list[0]["queue"],
+        routing_key=cfg.queue_list[0]["routing_key"],
         x_durable=cfg.x_durable, q_durable=cfg.q_durable,
         auto_delete=cfg.auto_delete)
     connect_status, err_msg = rmq.create_connection()

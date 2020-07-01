@@ -21,7 +21,6 @@ import time
 
 # Third-party
 import glob
-import ast
 
 # Local
 sys.path.append(os.getcwd())
@@ -36,7 +35,7 @@ def test_1(rmq, file_path, message_dir, log_dir):
 
     """Function:  test_1
 
-    Description:  Process a single properly formatted message.
+    Description:  Process a non-type report.
 
     Arguments:
         (input) rmq -> RabbitMQ Publisher instance
@@ -46,30 +45,24 @@ def test_1(rmq, file_path, message_dir, log_dir):
 
     """
 
-    print("\tTest 1:  Process non-sysmon report.")
+    print("\tTest 1:  Process non-type report.")
     f_name = "SERVER_NAME2"
-    key = "Server"
-    msg = "Dictionary does not contain key"
-    f_filter = "blackbox-test_blackbox-test*.txt"
+    msg = "Incorrect type"
+    f_filter = "blackbox-test_blackbox-test"
     f_filter2 = "rmq_2_sysmon*.log"
-    status, err_msg = blackbox_libs.publish_msg(rmq,
-                                                os.path.join(file_path,
-                                                             f_name + ".txt"))
+    status, err_msg = blackbox_libs.publish_msg(
+        rmq, os.path.join(file_path, f_name + ".txt"))
     time.sleep(1)
 
     if status:
-        for f_file in glob.glob(os.path.join(message_dir, f_filter)):
-            with open(f_file, "r") as f_hldr:
-                body = f_hldr.read()
+        f_file = gen_libs.dir_file_match(message_dir, f_filter,
+                                         add_path=True)[0]
 
-            data = ast.literal_eval(body.splitlines()[1])
-            break
-
-        for f_file in glob.glob(os.path.join(log_dir, f_filter2)):
-            with open(f_file, "r") as f_hldr:
+        for item in glob.glob(os.path.join(log_dir, f_filter2)):
+            with open(item, "r") as f_hldr:
                 msg_body = f_hldr.read()
 
-        if key not in data and msg in msg_body:
+        if os.path.isfile(f_file) and msg in msg_body:
             print("\tTest successful\n")
 
         else:

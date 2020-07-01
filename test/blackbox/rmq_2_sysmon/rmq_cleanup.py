@@ -152,7 +152,7 @@ def main():
     test_path = os.path.join(os.getcwd(), base_dir)
     config_path = os.path.join(test_path, "config")
     cfg = gen_libs.load_module("rabbitmq", config_path)
-    rmq_cleanup(cfg, cfg.queue_name, True)
+    rmq_cleanup(cfg, cfg.queue_list[0]["queue"], True)
 
 
 if __name__ == "__main__":

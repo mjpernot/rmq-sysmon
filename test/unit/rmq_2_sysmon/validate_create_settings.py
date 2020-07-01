@@ -42,8 +42,12 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Initialize testing environment.
+        test_multi_queues_two_fail -> Test with multi queues and two failure.
+        test_multi_queues_one_fail -> Test with multi queues and one failure.
+        test_multiple_queues -> Test with multiple queues.
         test_multiple_false2 -> Test if multiple checks return False.
         test_multiple_false -> Test if multiple checks return False.
+        test_sysmon_dir_false -> Test if sysmon_dir check returns False.
         test_sysmon_dir_true -> Test if sysmon_dir check returns True.
         test_log_dir_false -> Test if log_dir check returns False.
         test_log_dir_true -> Test if log_dir check returns True.
@@ -85,13 +89,8 @@ class UnitTest(unittest.TestCase):
                 """
 
                 self.host = "HOSTNAME"
-                self.sysmon_dir = "/SYSMON_DIR_PATH"
                 self.exchange_name = "rmq_2_isse_unit_test"
-                self.queue_name = "rmq_2_isse_unit_test"
                 self.to_line = None
-                self.transfer_dir = "/TRANSFER_DIR_PATH"
-                self.isse_dir = "/ISSE_DIR_PATH"
-                self.delta_month = 6
                 self.port = 5672
                 self.exchange_type = "direct"
                 self.x_durable = True
@@ -100,17 +99,81 @@ class UnitTest(unittest.TestCase):
                 self.message_dir = "message_dir"
                 self.log_dir = "logs"
                 self.log_file = "rmq_2_isse.log"
-                self.proc_file = "files_processed"
-                self.ignore_ext = ["_kmz.64.txt", "_pptx.64.txt"]
+                self.queue_list = [
+                    {"queue": "rmq_2_isse_unit_test",
+                     "routing_key": "ROUTING_KEY",
+                     "directory": "/SYSMON_DIR_PATH"}]
 
         self.cfg = CfgTest()
+        self.cfg2 = CfgTest()
+        self.cfg2.queue_list.append({
+            "queue": "rmq_2_isse_unit_test",
+            "routing_key": "ROUTING_KEY",
+            "directory": "/DIR_PATH"})
         self.base_dir = "/BASE_DIR_PATH"
         self.err_msg1 = "Missing Message Dir "
         self.err_msg2 = "Missing Log Dir "
         self.err_msg3 = "Missing Sysmon Dir "
+        self.err_msg4 = "Error Queue Dir"
         base_name, ext_name = os.path.splitext(self.cfg.log_file)
-        self.log_name = base_name + "_" + self.cfg.exchange_name + "_" \
-            + self.cfg.queue_name + ext_name
+        self.log_name = \
+            base_name + "_" + self.cfg.exchange_name + "_" + ext_name
+
+    @mock.patch("rmq_2_sysmon.gen_libs")
+    def test_multi_queues_two_fail(self, mock_lib):
+
+        """Function:  test_multi_queues_two_fail
+
+        Description:  Test with multi queues and two failure.
+
+        Arguments:
+
+        """
+
+        mock_lib.chk_crt_dir.side_effect = [
+            (True, None), (True, None), (False, self.err_msg4),
+            (False, self.err_msg4)]
+        _, status_flag, err_msg = \
+            rmq_2_sysmon.validate_create_settings(self.cfg2)
+
+        self.assertEqual((status_flag, err_msg),
+                         (False, self.err_msg4 + self.err_msg4))
+
+    @mock.patch("rmq_2_sysmon.gen_libs")
+    def test_multi_queues_one_fail(self, mock_lib):
+
+        """Function:  test_multi_queues_one_fail
+
+        Description:  Test with multi queues and one failure.
+
+        Arguments:
+
+        """
+
+        mock_lib.chk_crt_dir.side_effect = [
+            (True, None), (True, None), (True, None), (False, self.err_msg4)]
+        _, status_flag, err_msg = \
+            rmq_2_sysmon.validate_create_settings(self.cfg2)
+
+        self.assertEqual((status_flag, err_msg), (False, self.err_msg4))
+
+    @mock.patch("rmq_2_sysmon.gen_libs")
+    def test_multiple_queues(self, mock_lib):
+
+        """Function:  test_multiple_queues
+
+        Description:  Test with multiple queues.
+
+        Arguments:
+
+        """
+
+        mock_lib.chk_crt_dir.side_effect = [
+            (True, None), (True, None), (True, None), (True, None)]
+        _, status_flag, err_msg = \
+            rmq_2_sysmon.validate_create_settings(self.cfg)
+
+        self.assertEqual((status_flag, err_msg), (True, ""))
 
     @mock.patch("rmq_2_sysmon.gen_libs")
     def test_multiple_false2(self, mock_lib):
