@@ -17,7 +17,11 @@
 # Standard
 import sys
 import os
-import unittest
+
+if sys.version_info < (2, 7):
+    import unittest2 as unittest
+else:
+    import unittest
 
 # Third-party
 import mock
@@ -72,20 +76,16 @@ class UnitTest(unittest.TestCase):
             self.cfg.user, self.cfg.passwd, self.cfg.host, self.cfg.port,
             exchange_name=self.cfg.exchange_name,
             exchange_type=self.cfg.exchange_type,
-            queue_name=self.cfg.queue_name, routing_key=self.cfg.queue_name,
+            queue_name=self.cfg.queue_list[0]["queue"],
+            routing_key=self.cfg.queue_list[0]["routing_key"],
             x_durable=self.cfg.x_durable, q_durable=self.cfg.q_durable,
             auto_delete=self.cfg.auto_delete)
         self.line = "Test_Me_File"
         self.subj = "Test_Me"
-        self.test_date = "2018-01-01"
-        self.test_time = "10:00:00"
-        self.test_file = self.rmq.exchange + "_" + self.rmq.queue_name + "_" \
-            + self.test_date + "_" + self.test_time + ".txt"
+        self.test_file = None
 
     @mock.patch("rmq_2_sysmon.gen_class.Mail")
-    @mock.patch("rmq_2_sysmon.gen_libs.get_time")
-    @mock.patch("rmq_2_sysmon.gen_libs.get_date")
-    def test_write_file(self, mock_date, mock_time, mock_mail):
+    def test_write_file(self, mock_mail):
 
         """Function:  test_write_file
 
@@ -95,21 +95,16 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_date.return_value = self.test_date
-        mock_time.return_value = self.test_time
         mock_mail.send_mail.return_value = True
         rmq_2_sysmon.non_proc_msg(self.rmq, self.log, self.cfg, self.line,
-                                  self.subj)
+                                  self.subj, self.rmq.routing_key)
         self.log.log_close()
 
-        if self.line in open(os.path.join(self.cfg.message_dir,
-                                          self.test_file)).read():
-            status = True
+        self.test_file = gen_libs.dir_file_match(self.cfg.message_dir,
+                                                 self.rmq.exchange)[0]
 
-        else:
-            status = False
-
-        self.assertTrue(status)
+        self.assertTrue(self.line in open(os.path.join(self.cfg.message_dir,
+                                                       self.test_file)).read())
 
     def tearDown(self):
 

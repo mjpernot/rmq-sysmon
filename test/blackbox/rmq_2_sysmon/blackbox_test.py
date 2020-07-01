@@ -45,15 +45,14 @@ def test_1(rmq, file_path, sysmon_dir):
 
     print("\tTest 1:  Process formatted sysmon report.")
     f_name = "SERVER_NAME"
-    status, err_msg = blackbox_libs.publish_msg(rmq,
-                                                os.path.join(file_path,
-                                                             f_name + ".txt"))
+    status, err_msg = blackbox_libs.publish_msg(
+        rmq, os.path.join(file_path, f_name + ".txt"))
     time.sleep(1)
 
     if status:
         status, err_msg = \
-            blackbox_libs.file_test(os.path.join(sysmon_dir,
-                                                 f_name + "_pkgs.json"))
+            blackbox_libs.file_test(os.path.join(
+                sysmon_dir, f_name + "_pkgs.json"))
 
         if status:
             print("\tTest successful\n")
@@ -93,7 +92,7 @@ def main():
     rmq = blackbox_libs.create_rq_pub(cfg)
 
     if rmq:
-        test_1(rmq, file_path, cfg.sysmon_dir)
+        test_1(rmq, file_path, cfg.queue_list[0]["directory"])
 
     else:
         print("Error:  Failed to create RabbitMQ Publisher instance")

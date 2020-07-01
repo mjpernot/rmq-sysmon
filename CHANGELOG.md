@@ -4,6 +4,32 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [2.0.0] - 2020-06-19
+- Breaking Change.
+
+- Added ability to monitor multiple RabbitMQ queues with a single run.
+- Allow multiple data types within the message body.
+- Added multiple routing keys to a single queue for monitoring.
+
+### Added
+- \_convert_data:  Private function to convert data.
+- \_process_queue:  Private function to process message queue.
+
+### Changed
+- process_msg:  Replaced a section of code with call to \_convert_data function.
+- \_convert_data:  Replaced a section of code with call to \_process_queue function.
+- monitor_queue:  Refactored function to initialize and monitor multiple queues.
+- callback:  Added routing key information to log entries.
+- process_msg:  Refactored function to handle multiple queues and also multiple data types in the message body.
+- non_proc_msg:  Added routing key to parameter list.
+- non_proc_msg:  Replaced queue name with routing key to make it unique for message being processed.
+- validate_create_settings:  Validate each directory setting for each queue.
+- run_program:  Added loop for log information to log all queue name/routing key combinations.
+- run_program:  Changed program lock flavor id to the new configuration settings.
+- config/rabbitmq.py.TEMPLATE:  Changed format to allow for multiple queues.
+- Documentation updates.
+
+
 ## [1.0.1] - 2020-05-29
 ### Fixed
 - daemon_rmq_2_sysmon.main:  Fixed handling command line arguments from SonarQube scan finding.

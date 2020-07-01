@@ -77,7 +77,7 @@ def main():
     test_path = os.path.join(os.getcwd(), base_dir)
     config_path = os.path.join(test_path, "config")
     cfg = gen_libs.load_module("rabbitmq", config_path)
-    test_1(cfg.sysmon_dir)
+    test_1(cfg.queue_list[0]["directory"])
 
 
 if __name__ == "__main__":

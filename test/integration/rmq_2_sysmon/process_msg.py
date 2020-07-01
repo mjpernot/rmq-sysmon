@@ -17,7 +17,11 @@
 # Standard
 import sys
 import os
-import unittest
+
+if sys.version_info < (2, 7):
+    import unittest2 as unittest
+else:
+    import unittest
 
 # Third-party
 import mock
@@ -57,6 +61,30 @@ class UnitTest(unittest.TestCase):
 
         """
 
+        class MethodTest(object):
+
+            """Class:  MethodTest
+
+            Description:  Class which is a representation of a method module.
+
+            Methods:
+                __init__ -> Initialize configuration environment.
+
+            """
+
+            def __init__(self):
+
+                """Method:  __init__
+
+                Description:  Initialization instance of the CfgTest class.
+
+                Arguments:
+
+                """
+
+                self.routing_key = "intr-test"
+
+        self.method = MethodTest()
         self.base_dir = "test/integration/rmq_2_sysmon"
         self.test_path = os.path.join(os.getcwd(), self.base_dir)
         self.config_path = os.path.join(self.test_path, "config")
@@ -65,7 +93,8 @@ class UnitTest(unittest.TestCase):
         self.cfg.log_file = os.path.join(log_path, self.cfg.log_file)
         self.cfg.message_dir = os.path.join(self.test_path,
                                             self.cfg.message_dir)
-        self.cfg.sysmon_dir = os.path.join(self.test_path, self.cfg.sysmon_dir)
+        self.cfg.queue_list[0]["directory"] = os.path.join(
+            self.test_path, self.cfg.queue_list[0]["directory"])
         self.log = gen_class.Logger(self.cfg.log_file, self.cfg.log_file,
                                     "INFO",
                                     "%(asctime)s %(levelname)s %(message)s",
@@ -74,16 +103,16 @@ class UnitTest(unittest.TestCase):
             self.cfg.user, self.cfg.passwd, self.cfg.host, self.cfg.port,
             exchange_name=self.cfg.exchange_name,
             exchange_type=self.cfg.exchange_type,
-            queue_name=self.cfg.queue_name, routing_key=self.cfg.queue_name,
+            queue_name=self.cfg.queue_list[0]["queue"],
+            routing_key=self.cfg.queue_list[0]["routing_key"],
             x_durable=self.cfg.x_durable, q_durable=self.cfg.q_durable,
             auto_delete=self.cfg.auto_delete)
-        self.method = "Method_Properties"
         self.body = '{"Server": "SERVER_NAME.domain.name"}'
         self.body2 = '["Server", "SERVER_NAME.domain.name"]'
-        self.sysmon_file = os.path.join(self.cfg.sysmon_dir,
+        self.sysmon_file = os.path.join(self.cfg.queue_list[0]["directory"],
                                         "SERVER_NAME_pkgs.json")
-        self.log_chk = "process_msg:  Processing body of message"
-        self.non_proc_msg = "Non-dictionary format"
+        self.log_chk = "process_msg:  Processing message body from Routing Key"
+        self.non_proc_msg = "Incorrect type"
 
     @mock.patch("rmq_2_sysmon.gen_class.Mail")
     def test_non_proc_msg(self, mock_mail):
@@ -101,13 +130,7 @@ class UnitTest(unittest.TestCase):
                                  self.body2)
         self.log.log_close()
 
-        if self.non_proc_msg in open(self.cfg.log_file).read():
-            status = True
-
-        else:
-            status = False
-
-        self.assertTrue(status)
+        self.assertTrue(self.non_proc_msg in open(self.cfg.log_file).read())
 
     def test_body_dict_true(self):
 
@@ -123,14 +146,8 @@ class UnitTest(unittest.TestCase):
                                  self.body)
         self.log.log_close()
 
-        if self.log_chk in open(self.cfg.log_file).read() and \
-           os.path.isfile(self.sysmon_file):
-            status = True
-
-        else:
-            status = False
-
-        self.assertTrue(status)
+        self.assertTrue(self.log_chk in open(self.cfg.log_file).read() and \
+                        os.path.isfile(self.sysmon_file))
 
     def tearDown(self):
 

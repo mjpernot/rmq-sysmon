@@ -1,12 +1,12 @@
 #!/usr/bin/python
 # Classification (U)
 
-"""Program:  process_msg.py
+"""Program:  _convert_data.py
 
-    Description:  Unit testing of process_msg in rmq_2_sysmon.py.
+    Description:  Unit testing of _convert_data in rmq_2_sysmon.py.
 
     Usage:
-        test/unit/rmq_2_sysmon/process_msg.py
+        test/unit/rmq_2_sysmon/_convert_data.py
 
     Arguments:
 
@@ -42,7 +42,6 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Initialize testing environment.
-        test_no_routing_key -> Test with no routing key detected.
         test_default_name -> Test for default file name.
         test_no_postname -> Test with no postname set.
         test_postname -> Test with postname set.
@@ -194,26 +193,6 @@ class UnitTest(unittest.TestCase):
                 mock.Mock(return_value=True))
     @mock.patch("rmq_2_sysmon.gen_class.Logger")
     @mock.patch("rmq_2_sysmon.non_proc_msg")
-    def test_no_routing_key(self, mock_msg, mock_log):
-
-        """Function:  test_no_routing_key
-
-        Description:  Test with no routing key detected.
-
-        Arguments:
-
-        """
-
-        mock_msg.return_value = True
-        mock_log.return_value = True
-
-        self.assertFalse(rmq_2_sysmon.process_msg(
-            self.rmq, mock_log, self.cfg13, self.method, self.rawbody))
-
-    @mock.patch("rmq_2_sysmon.gen_libs.write_file",
-                mock.Mock(return_value=True))
-    @mock.patch("rmq_2_sysmon.gen_class.Logger")
-    @mock.patch("rmq_2_sysmon.non_proc_msg")
     def test_default_name(self, mock_msg, mock_log):
 
         """Function:  test_default_name
@@ -227,8 +206,9 @@ class UnitTest(unittest.TestCase):
         mock_msg.return_value = True
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon.process_msg(
-            self.rmq, mock_log, self.cfg12, self.method, self.rawbody))
+        self.assertFalse(rmq_2_sysmon._convert_data(
+            self.rmq, mock_log, self.cfg12, self.cfg12.queue_list[0],
+            self.rawbody, self.cfg12.queue_list[0]["key"]))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
                 mock.Mock(return_value=True))
@@ -247,8 +227,9 @@ class UnitTest(unittest.TestCase):
         mock_msg.return_value = True
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon.process_msg(
-            self.rmq, mock_log, self.cfg11, self.method, self.rawbody))
+        self.assertFalse(rmq_2_sysmon._convert_data(
+            self.rmq, mock_log, self.cfg11, self.cfg11.queue_list[0],
+            self.rawbody, self.cfg11.queue_list[0]["key"]))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
                 mock.Mock(return_value=True))
@@ -267,8 +248,9 @@ class UnitTest(unittest.TestCase):
         mock_msg.return_value = True
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon.process_msg(
-            self.rmq, mock_log, self.cfg, self.method, self.rawbody))
+        self.assertFalse(rmq_2_sysmon._convert_data(
+            self.rmq, mock_log, self.cfg, self.cfg.queue_list[0],
+            self.rawbody, self.cfg.queue_list[0]["key"]))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
                 mock.Mock(return_value=True))
@@ -287,8 +269,9 @@ class UnitTest(unittest.TestCase):
         mock_msg.return_value = True
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon.process_msg(
-            self.rmq, mock_log, self.cfg10, self.method, self.rawbody))
+        self.assertFalse(rmq_2_sysmon._convert_data(
+            self.rmq, mock_log, self.cfg10, self.cfg10.queue_list[0],
+            self.rawbody, self.cfg10.queue_list[0]["key"]))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
                 mock.Mock(return_value=True))
@@ -307,8 +290,9 @@ class UnitTest(unittest.TestCase):
         mock_msg.return_value = True
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon.process_msg(
-            self.rmq, mock_log, self.cfg, self.method, self.rawbody))
+        self.assertFalse(rmq_2_sysmon._convert_data(
+            self.rmq, mock_log, self.cfg, self.cfg.queue_list[0],
+            self.rawbody, self.cfg.queue_list[0]["key"]))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
                 mock.Mock(return_value=True))
@@ -327,8 +311,9 @@ class UnitTest(unittest.TestCase):
         mock_msg.return_value = True
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon.process_msg(
-            self.rmq, mock_log, self.cfg9, self.method, self.rawbody))
+        self.assertFalse(rmq_2_sysmon._convert_data(
+            self.rmq, mock_log, self.cfg9, self.cfg9.queue_list[0],
+            self.rawbody, self.cfg9.queue_list[0]["key"]))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
                 mock.Mock(return_value=True))
@@ -347,8 +332,9 @@ class UnitTest(unittest.TestCase):
         mock_msg.return_value = True
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon.process_msg(
-            self.rmq, mock_log, self.cfg, self.method, self.rawbody))
+        self.assertFalse(rmq_2_sysmon._convert_data(
+            self.rmq, mock_log, self.cfg, self.cfg.queue_list[0],
+            self.rawbody, self.cfg.queue_list[0]["key"]))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
                 mock.Mock(return_value=True))
@@ -367,8 +353,9 @@ class UnitTest(unittest.TestCase):
         mock_msg.return_value = True
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon.process_msg(
-            self.rmq, mock_log, self.cfg8, self.method, self.rawbody))
+        self.assertFalse(rmq_2_sysmon._convert_data(
+            self.rmq, mock_log, self.cfg8, self.cfg8.queue_list[0],
+            self.rawbody, self.cfg8.queue_list[0]["key"]))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
                 mock.Mock(return_value=True))
@@ -387,8 +374,9 @@ class UnitTest(unittest.TestCase):
         mock_msg.return_value = True
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon.process_msg(
-            self.rmq, mock_log, self.cfg, self.method, self.rawbody))
+        self.assertFalse(rmq_2_sysmon._convert_data(
+            self.rmq, mock_log, self.cfg, self.cfg.queue_list[0],
+            self.rawbody, self.cfg.queue_list[0]["key"]))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
                 mock.Mock(return_value=True))
@@ -407,8 +395,9 @@ class UnitTest(unittest.TestCase):
         mock_msg.return_value = True
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon.process_msg(
-            self.rmq, mock_log, self.cfg7, self.method, self.rawbody))
+        self.assertFalse(rmq_2_sysmon._convert_data(
+            self.rmq, mock_log, self.cfg7, self.cfg7.queue_list[0],
+            self.rawbody, self.cfg7.queue_list[0]["key"]))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
                 mock.Mock(return_value=True))
@@ -427,8 +416,9 @@ class UnitTest(unittest.TestCase):
         mock_msg.return_value = True
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon.process_msg(
-            self.rmq, mock_log, self.cfg, self.method, self.rawbody))
+        self.assertFalse(rmq_2_sysmon._convert_data(
+            self.rmq, mock_log, self.cfg, self.cfg.queue_list[0],
+            self.rawbody, self.cfg.queue_list[0]["key"]))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
                 mock.Mock(return_value=True))
@@ -447,8 +437,9 @@ class UnitTest(unittest.TestCase):
         mock_msg.return_value = True
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon.process_msg(
-            self.rmq, mock_log, self.cfg6, self.method, self.rawbody))
+        self.assertFalse(rmq_2_sysmon._convert_data(
+            self.rmq, mock_log, self.cfg6, self.cfg6.queue_list[0],
+            self.rawbody, self.cfg6.queue_list[0]["key"]))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
                 mock.Mock(return_value=True))
@@ -467,8 +458,9 @@ class UnitTest(unittest.TestCase):
         mock_msg.return_value = True
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon.process_msg(
-            self.rmq, mock_log, self.cfg, self.method, self.rawbody))
+        self.assertFalse(rmq_2_sysmon._convert_data(
+            self.rmq, mock_log, self.cfg, self.cfg.queue_list[0],
+            self.rawbody, self.cfg.queue_list[0]["key"]))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
                 mock.Mock(return_value=True))
@@ -487,8 +479,9 @@ class UnitTest(unittest.TestCase):
         mock_msg.return_value = True
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon.process_msg(
-            self.rmq, mock_log, self.cfg5, self.method, self.rawbody))
+        self.assertFalse(rmq_2_sysmon._convert_data(
+            self.rmq, mock_log, self.cfg5, self.cfg5.queue_list[0],
+            self.rawbody, self.cfg5.queue_list[0]["key"]))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
                 mock.Mock(return_value=True))
@@ -507,8 +500,9 @@ class UnitTest(unittest.TestCase):
         mock_msg.return_value = True
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon.process_msg(
-            self.rmq, mock_log, self.cfg, self.method, self.rawbody2))
+        self.assertFalse(rmq_2_sysmon._convert_data(
+            self.rmq, mock_log, self.cfg, self.cfg.queue_list[0],
+            self.rawbody2, self.cfg.queue_list[0]["key"]))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
                 mock.Mock(return_value=True))
@@ -527,8 +521,9 @@ class UnitTest(unittest.TestCase):
         mock_msg.return_value = True
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon.process_msg(
-            self.rmq, mock_log, self.cfg4, self.method, self.rawbody3))
+        self.assertFalse(rmq_2_sysmon._convert_data(
+            self.rmq, mock_log, self.cfg4, self.cfg4.queue_list[0],
+            self.rawbody3, self.cfg4.queue_list[0]["key"]))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
                 mock.Mock(return_value=True))
@@ -547,8 +542,9 @@ class UnitTest(unittest.TestCase):
         mock_msg.return_value = True
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon.process_msg(
-            self.rmq, mock_log, self.cfg3, self.method, self.rawbody3))
+        self.assertFalse(rmq_2_sysmon._convert_data(
+            self.rmq, mock_log, self.cfg3, self.cfg3.queue_list[0],
+            self.rawbody3, self.cfg3.queue_list[0]["key"]))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
                 mock.Mock(return_value=True))
@@ -567,8 +563,9 @@ class UnitTest(unittest.TestCase):
         mock_msg.return_value = True
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon.process_msg(
-            self.rmq, mock_log, self.cfg2, self.method, self.rawbody4))
+        self.assertFalse(rmq_2_sysmon._convert_data(
+            self.rmq, mock_log, self.cfg2, self.cfg2.queue_list[0],
+            self.rawbody4, self.cfg2.queue_list[0]["key"]))
 
     @mock.patch("rmq_2_sysmon.gen_class.Logger")
     @mock.patch("rmq_2_sysmon.non_proc_msg")
@@ -585,8 +582,9 @@ class UnitTest(unittest.TestCase):
         mock_msg.return_value = True
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon.process_msg(self.rmq, mock_log, self.cfg,
-                                                  self.method, self.rawbody3))
+        self.assertFalse(rmq_2_sysmon._convert_data(
+            self.rmq, mock_log, self.cfg, self.cfg.queue_list[0],
+            self.rawbody3, self.cfg.queue_list[0]["key"]))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
                 mock.Mock(return_value=True))
@@ -605,8 +603,9 @@ class UnitTest(unittest.TestCase):
         mock_msg.return_value = True
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon.process_msg(self.rmq, mock_log, self.cfg,
-                                                  self.method, self.rawbody2))
+        self.assertFalse(rmq_2_sysmon._convert_data(
+            self.rmq, mock_log, self.cfg, self.cfg.queue_list[0],
+            self.rawbody2, self.cfg.queue_list[0]["key"]))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
                 mock.Mock(return_value=True))
@@ -625,8 +624,9 @@ class UnitTest(unittest.TestCase):
         mock_msg.return_value = True
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon.process_msg(
-            self.rmq, mock_log, self.cfg3, self.method, self.body3))
+        self.assertFalse(rmq_2_sysmon._convert_data(
+            self.rmq, mock_log, self.cfg3, self.cfg3.queue_list[0],
+            self.body3, self.cfg3.queue_list[0]["key"]))
 
     @mock.patch("rmq_2_sysmon.gen_class.Logger")
     @mock.patch("rmq_2_sysmon.non_proc_msg")
@@ -643,8 +643,9 @@ class UnitTest(unittest.TestCase):
         mock_msg.return_value = True
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon.process_msg(self.rmq, mock_log, self.cfg,
-                                                  self.method, self.body3))
+        self.assertFalse(rmq_2_sysmon._convert_data(
+            self.rmq, mock_log, self.cfg, self.cfg.queue_list[0],
+            self.body3, self.cfg.queue_list[0]["key"]))
 
     @mock.patch("rmq_2_sysmon.gen_class.Logger")
     @mock.patch("rmq_2_sysmon.non_proc_msg")
@@ -661,8 +662,9 @@ class UnitTest(unittest.TestCase):
         mock_msg.return_value = True
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon.process_msg(self.rmq, mock_log, self.cfg,
-                                                  self.method, self.body2))
+        self.assertFalse(rmq_2_sysmon._convert_data(
+            self.rmq, mock_log, self.cfg, self.cfg.queue_list[0],
+            self.body2, self.cfg.queue_list[0]["key"]))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
                 mock.Mock(return_value=True))
@@ -683,8 +685,9 @@ class UnitTest(unittest.TestCase):
         mock_log.return_value = True
         mock_msg.return_value = True
 
-        self.assertFalse(rmq_2_sysmon.process_msg(self.rmq, mock_log, self.cfg,
-                                                  self.method, self.body2))
+        self.assertFalse(rmq_2_sysmon._convert_data(
+            self.rmq, mock_log, self.cfg, self.cfg.queue_list[0],
+            self.body2, self.cfg.queue_list[0]["key"]))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
                 mock.Mock(return_value=True))
@@ -705,8 +708,9 @@ class UnitTest(unittest.TestCase):
         mock_log.return_value = True
         mock_msg.return_value = True
 
-        self.assertFalse(rmq_2_sysmon.process_msg(self.rmq, mock_log, self.cfg,
-                                                  self.method, self.body))
+        self.assertFalse(rmq_2_sysmon._convert_data(
+            self.rmq, mock_log, self.cfg, self.cfg.queue_list[0],
+            self.body, self.cfg.queue_list[0]["key"]))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
                 mock.Mock(return_value=True))
@@ -725,8 +729,9 @@ class UnitTest(unittest.TestCase):
         mock_json.return_value = self.body
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon.process_msg(self.rmq, mock_log, self.cfg,
-                                                  self.method, self.body))
+        self.assertFalse(rmq_2_sysmon._convert_data(
+            self.rmq, mock_log, self.cfg, self.cfg.queue_list[0],
+            self.body, self.cfg.queue_list[0]["key"]))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
                 mock.Mock(return_value=True))
@@ -745,8 +750,9 @@ class UnitTest(unittest.TestCase):
         mock_json.return_value = self.body
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon.process_msg(self.rmq, mock_log, self.cfg,
-                                                  self.method, self.body))
+        self.assertFalse(rmq_2_sysmon._convert_data(
+            self.rmq, mock_log, self.cfg, self.cfg.queue_list[0],
+            self.body, self.cfg.queue_list[0]["key"]))
 
     @mock.patch("rmq_2_sysmon.gen_class.Logger")
     @mock.patch("rmq_2_sysmon.non_proc_msg")
@@ -765,8 +771,9 @@ class UnitTest(unittest.TestCase):
         mock_msg.return_value = True
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon.process_msg(self.rmq, mock_log, self.cfg,
-                                                  self.method, self.body))
+        self.assertFalse(rmq_2_sysmon._convert_data(
+            self.rmq, mock_log, self.cfg, self.cfg.queue_list[0],
+            self.body, self.cfg.queue_list[0]["key"]))
 
 
 if __name__ == "__main__":

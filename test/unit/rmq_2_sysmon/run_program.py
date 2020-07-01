@@ -131,9 +131,11 @@ class UnitTest(unittest.TestCase):
 
                 self.host = "SERVER_NAME"
                 self.exchange_name = "EXCHANGE_NAME"
-                self.queue_name = "QUEUE_NAME"
                 self.log_file = "LOG_FILE"
                 self.to_line = "TO_LINE"
+                self.queue_list = [
+                    {"queue": "QUEUE_NAME",
+                     "routing_key": "ROUTING_KEY"}]
 
         self.cfg = CfgTest()
         self.proglock = ProgramLock(["cmdline"], "FlavorID")

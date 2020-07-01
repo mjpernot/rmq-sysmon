@@ -3,24 +3,22 @@
 
 """Program:  daemon_rmq_2_sysmon.py
 
-    Description:  Runs the rmq_2_sysmon program as a daemon/service.
+    Description:  Run the rmq_2_sysmon program as a daemon.
 
     Usage:
-        daemon_rmq_2_sysmon.py -a {start|stop|restart} {rmq_2_sysmon_options}
+        daemon_rmq_2_sysmon.py -a {start|stop|restart}
+            -c config_file -d dir_path -M
 
     Arguments:
         -a {start|stop|restart} => start, stop, restart rmq_2_sysmon daemon.
-        rmq_2_sysmon_options => See rmq_2_sysmon for all options.
-            -c module option from rmq_2_sysmon is required to make the daemon
-                pidfile unique for running multiple instances.
-            -d full_absolute_directory_path => Directory path for option '-c'.
-            -M => Monitor and process messages from a RabbitMQ queue.
-
-        NOTE:  -d option requires the full absolute path the configuration
-            directory.  The daemon cannot use a relative path.
+        -c config_file => RabbitMQ configuration file.
+        -d dir_path => Directory path for option '-c'.
+            NOTE:  This is the absolute path to the directory containing the
+                config file.  Relative path will not work.
+        -M => Monitor and process messages from a RabbitMQ queue.
 
     Example:
-        daemon_rmq_2_sysmon.py -a start -c rabbitmq -d /full/path/config -M
+        daemon_rmq_2_sysmon.py -a start -c rabbitmq -d /path/config -M
 
 """
 
@@ -48,7 +46,8 @@ class Rmq2SysmonDaemon(gen_class.Daemon):
 
     """Class:  Rmq2SysmonDaemon
 
-    Description:
+    Description:  Class that uses the gen_class.Daemon to run the rmq_2_sysmon
+        program as a daemon.
 
     Methods:
         run -> Daemon instance will execute this code when called.
@@ -109,8 +108,7 @@ def main():
     """Function:  main
 
     Description:  Initializes program-wide variables, processes command line
-        arguments, sets up pidfile, and contols the running of the
-        service/daemon.
+        arguments, sets up pidfile, and contols the running of the daemon.
 
     Variables:
         opt_req_list -> contains options that are required for the program.

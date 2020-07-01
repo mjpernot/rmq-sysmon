@@ -55,7 +55,7 @@ def main():
     blackbox_cleanup.delete_files(message_dir,
                                   "blackbox-test_blackbox-test_*.txt")
     blackbox_cleanup.delete_files(sysmon_dir, "*.json")
-    rmq_cleanup.rmq_cleanup(cfg, cfg.queue_name, True)
+    rmq_cleanup.rmq_cleanup(cfg, cfg.queue_list[0]["queue"], True)
 
 
 if __name__ == "__main__":

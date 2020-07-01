@@ -17,7 +17,11 @@
 # Standard
 import sys
 import os
-import unittest
+
+if sys.version_info < (2, 7):
+    import unittest2 as unittest
+else:
+    import unittest
 
 # Third-party
 import mock
@@ -63,7 +67,8 @@ class UnitTest(unittest.TestCase):
         self.cfg.log_file = os.path.join(log_path, self.cfg.log_file)
         self.cfg.message_dir = os.path.join(self.test_path,
                                             self.cfg.message_dir)
-        self.cfg.sysmon_dir = os.path.join(self.test_path, self.cfg.sysmon_dir)
+        self.cfg.queue_list[0]["directory"] = os.path.join(
+            self.test_path, self.cfg.queue_list[0]["directory"])
         self.connect_true = "Connected to RabbitMQ node"
         self.args_array = {"-M": True, "-c": "rabbitmq", "-d": "config"}
         self.func_dict = {"-M": rmq_2_sysmon.monitor_queue}
@@ -86,13 +91,7 @@ class UnitTest(unittest.TestCase):
         mock_base.return_value = self.test_path
         rmq_2_sysmon.run_program(self.args_array, self.func_dict)
 
-        if self.connect_true in open(self.cfg.log_file).read():
-            status = True
-
-        else:
-            status = False
-
-        self.assertTrue(status)
+        self.assertTrue(self.connect_true in open(self.cfg.log_file).read())
 
     def tearDown(self):
 
@@ -105,7 +104,8 @@ class UnitTest(unittest.TestCase):
         """
 
         os.remove(self.cfg.log_file)
-        rmq_cleanup.rmq_cleanup(self.cfg, self.cfg.queue_name, True)
+        rmq_cleanup.rmq_cleanup(self.cfg, self.cfg.queue_list[0]["queue"],
+                                True)
 
 
 if __name__ == "__main__":

@@ -35,7 +35,7 @@ def test_1(rmq, file_path, log_dir):
 
     """Function:  test_1
 
-    Description:  Process a single properly formatted message.
+    Description:  Process an empty message.
 
     Arguments:
         (input) rmq -> RabbitMQ Publisher instance
@@ -46,11 +46,10 @@ def test_1(rmq, file_path, log_dir):
 
     print("\tTest 1:  Process non-sysmon report.")
     f_name = "SERVER_NAME3"
-    msg = "Dictionary does not contain key"
+    msg = "Incorrect type"
     f_filter2 = "rmq_2_sysmon*.log"
-    status, err_msg = blackbox_libs.publish_msg(rmq,
-                                                os.path.join(file_path,
-                                                             f_name + ".txt"))
+    status, err_msg = blackbox_libs.publish_msg(
+        rmq, os.path.join(file_path, f_name + ".txt"))
     time.sleep(1)
 
     if status:
