@@ -44,9 +44,9 @@ class UnitTest(unittest.TestCase):
     Description:  Class which is a representation of a unit testing.
 
     Methods:
-        setUp -> Initialize testing environment.
-        test_rabbitmq_class -> Test of rabbitmq_class.RabbitMQCon class.
-        tearDown -> Clean up of testing environment.
+        setUp
+        test_rabbitmq_class
+        tearDown
 
     """
 
