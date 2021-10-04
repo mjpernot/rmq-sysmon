@@ -21,7 +21,7 @@ pipeline {
                 virtualenv test_env
                 source test_env/bin/activate
                 pip2 install mock==2.0.0 --user
-                pip2 install pika==0.11.0 --user
+                pip2 install pika==1.2.0 --user
                 ./test/unit/rmq_2_sysmon/_convert_data.py
                 ./test/unit/rmq_2_sysmon/_process_queue.py
                 ./test/unit/rmq_2_sysmon/help_message.py
@@ -87,6 +87,11 @@ pipeline {
                     server.upload(uploadSpec)
                 }
             }
+        }
+    }
+    post {
+        always {
+            cleanWs disableDeferredWipeout: true
         }
     }
 }
