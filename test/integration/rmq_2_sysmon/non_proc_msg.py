@@ -44,9 +44,9 @@ class UnitTest(unittest.TestCase):
     Description:  Class which is a representation of a unit testing.
 
     Methods:
-        setUp -> Initialize testing environment.
-        test_write_file -> Test of gen_libs.write_file call.
-        tearDown -> Clean up of testing environment.
+        setUp
+        test_write_file
+        tearDown
 
     """
 
