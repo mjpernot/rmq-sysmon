@@ -34,6 +34,7 @@
             user = "USER"
             japd = "PSWORD"
             host = "HOSTNAME"
+            host_list = []
             exchange_name = "EXCHANGE_NAME"
             to_line = None
             port = 5672
@@ -41,6 +42,7 @@
             x_durable = True
             q_durable = True
             auto_delete = False
+            heartbeat = 60
             message_dir = "DIRECTORY_PATH/message_dir"
             log_dir = "DIRECTORY_PATH/logs"
             log_file = "rmq_2_sysmon.log"
