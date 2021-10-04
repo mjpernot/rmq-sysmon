@@ -34,6 +34,53 @@ import version
 __version__ = version.__version__
 
 
+class CfgTest(object):
+
+    """Class:  CfgTest
+
+    Description:  Class which is a representation of a cfg module.
+
+    Methods:
+        __init__
+
+    """
+
+    def __init__(self):
+
+        """Method:  __init__
+
+        Description:  Initialization instance of the CfgTest class.
+
+        Arguments:
+
+        """
+
+        self.user = "USER"
+        self.passwd = ""
+        self.host = "SERVER_NAME"
+        self.host_list = []
+        self.port = 5672
+        self.exchange_name = "EXCHANGE_NAME"
+        self.exchange_type = "EXCHANGE_TYPE"
+        self.x_durable = True
+        self.q_durable = True
+        self.auto_delete = False
+        self.heartbeat = 60
+        self.queue_list = [
+            {"queue": "rmq_2_isse_unit_test",
+             "routing_key": "ROUTING_KEY",
+             "directory": "/SYSMON_DIR_PATH",
+             "prename": "Pre-filename",
+             "postname": "Post-filename",
+             "key": "Server",
+             "mode": "a",
+             "ext": "",
+             "dtg": False,
+             "date": False,
+             "stype": "dict",
+             "flatten": True}]
+
+
 class UnitTest(unittest.TestCase):
 
     """Class:  UnitTest
@@ -67,49 +114,6 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        class CfgTest(object):
-
-            """Class:  CfgTest
-
-            Description:  Class which is a representation of a cfg module.
-
-            Methods:
-                __init__ -> Initialize configuration environment.
-
-            """
-
-            def __init__(self):
-
-                """Method:  __init__
-
-                Description:  Initialization instance of the CfgTest class.
-
-                Arguments:
-
-                """
-
-                self.user = "USER"
-                self.passwd = ""
-                self.host = "SERVER_NAME"
-                self.port = 5672
-                self.exchange_name = "EXCHANGE_NAME"
-                self.exchange_type = "EXCHANGE_TYPE"
-                self.x_durable = True
-                self.q_durable = True
-                self.auto_delete = False
-                self.queue_list = [
-                    {"queue": "rmq_2_isse_unit_test",
-                     "routing_key": "ROUTING_KEY",
-                     "directory": "/SYSMON_DIR_PATH",
-                     "prename": "Pre-filename",
-                     "postname": "Post-filename",
-                     "key": "Server",
-                     "mode": "a",
-                     "ext": "",
-                     "dtg": False,
-                     "date": False,
-                     "stype": "dict",
-                     "flatten": True}]
 
         self.cfg = CfgTest()
 
