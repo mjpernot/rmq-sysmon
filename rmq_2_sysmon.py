@@ -390,7 +390,8 @@ def monitor_queue(cfg, log):
             exchange_name=cfg.exchange_name, exchange_type=cfg.exchange_type,
             queue_name=queue["queue"], routing_key=queue["routing_key"],
             x_durable=cfg.x_durable, q_durable=cfg.q_durable,
-            auto_delete=cfg.auto_delete)
+            auto_delete=cfg.auto_delete, heartbeat=cfg.heartbeat,
+            host_list=cfg.host_list)
 
         log.log_info("Initializing:  Queue: %s, Routing Key: %s" %
                      (queue["queue"], queue["routing_key"]))
@@ -414,7 +415,8 @@ def monitor_queue(cfg, log):
         queue_name=cfg.queue_list[0]["queue"],
         routing_key=cfg.queue_list[0]["routing_key"],
         x_durable=cfg.x_durable, q_durable=cfg.q_durable,
-        auto_delete=cfg.auto_delete)
+        auto_delete=cfg.auto_delete, heartbeat=cfg.heartbeat,
+        host_list=cfg.host_list)
 
     log.log_info("Connection info: %s->%s" % (cfg.host, cfg.exchange_name))
     connect_status, err_msg = rmq.create_connection()
