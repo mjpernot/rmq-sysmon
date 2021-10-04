@@ -109,7 +109,7 @@ import version
 __version__ = version.__version__
 
 
-def help_message(**kwargs):
+def help_message():
 
     """Function:  help_message
 
@@ -123,7 +123,7 @@ def help_message(**kwargs):
     print(__doc__)
 
 
-def validate_create_settings(cfg, **kwargs):
+def validate_create_settings(cfg):
 
     """Function:  validate_create_settings
 
@@ -178,7 +178,7 @@ def validate_create_settings(cfg, **kwargs):
     return cfg, status_flag, err_msg
 
 
-def non_proc_msg(rmq, log, cfg, data, subj, r_key, **kwargs):
+def non_proc_msg(rmq, log, cfg, data, subj, r_key):
 
     """Function:  non_proc_msg
 
@@ -221,7 +221,7 @@ def non_proc_msg(rmq, log, cfg, data, subj, r_key, **kwargs):
     gen_libs.write_file(f_path, data=data)
 
 
-def process_msg(rmq, log, cfg, method, body, **kwargs):
+def process_msg(rmq, log, cfg, method, body):
 
     """Function:  process_msg
 
@@ -255,7 +255,7 @@ def process_msg(rmq, log, cfg, method, body, **kwargs):
         non_proc_msg(rmq, log, cfg, body, "No queue detected", r_key)
 
 
-def _convert_data(rmq, log, cfg, queue, body, r_key, **kwargs):
+def _convert_data(rmq, log, cfg, queue, body, r_key):
 
     """Function:  _process_queue
 
@@ -299,7 +299,7 @@ def _convert_data(rmq, log, cfg, queue, body, r_key, **kwargs):
         non_proc_msg(rmq, log, cfg, body, str(err), r_key)
 
 
-def _process_queue(queue, data, r_key, x_name, **kwargs):
+def _process_queue(queue, data, r_key, x_name):
 
     """Function:  _process_queue
 
@@ -347,7 +347,7 @@ def _process_queue(queue, data, r_key, x_name, **kwargs):
     gen_libs.write_file(fname=f_name, mode=queue["mode"], data=data)
 
 
-def monitor_queue(cfg, log, **kwargs):
+def monitor_queue(cfg, log):
 
     """Function:  monitor_queue
 
@@ -432,7 +432,7 @@ def monitor_queue(cfg, log, **kwargs):
         log.log_err("Failed to connnect to RabbuitMQ -> Msg: %s" % (err_msg))
 
 
-def run_program(args_array, func_dict, **kwargs):
+def run_program(args_array, func_dict):
 
     """Function:  run_program
 
@@ -474,7 +474,7 @@ def run_program(args_array, func_dict, **kwargs):
 
             # Intersect args_array & func_dict to find which functions to call.
             for opt in set(args_array.keys()) & set(func_dict.keys()):
-                func_dict[opt](cfg, log, **kwargs)
+                func_dict[opt](cfg, log)
 
             del prog_lock
 
