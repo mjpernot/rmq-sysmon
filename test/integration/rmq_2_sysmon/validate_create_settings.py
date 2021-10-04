@@ -43,14 +43,14 @@ class UnitTest(unittest.TestCase):
     Description:  Class which is a representation of a unit testing.
 
     Methods:
-        setUp -> Initialize testing environment.
-        test_sysmon_dir_chk_false -> Test chk_crt_dir(sysmon_dir) is False.
-        test_log_dir_chk_false -> Test chk_crt_dir(log_dir) is False.
-        test_msg_dir_chk_false -> Test chk_crt_dir(message_dir) is False.
-        test_sysmon_dir_chk_true -> Test chk_crt_dir(sysmon_dir) is True.
-        test_log_dir_chk_true -> Test chk_crt_dir(log_dir) is True.
-        test_msg_dir_chk_true -> Test chk_crt_dir(message_dir) is True.
-        tearDown -> Clean up of testing environment.
+        setUp
+        test_sysmon_dir_chk_false
+        test_log_dir_chk_false
+        test_msg_dir_chk_false
+        test_sysmon_dir_chk_true
+        test_log_dir_chk_true
+        test_msg_dir_chk_true
+        tearDown
 
     """
 
