@@ -68,7 +68,7 @@ class UnitTest(unittest.TestCase):
             Description:  Class which is a representation of a method module.
 
             Methods:
-                __init__ -> Initialize configuration environment.
+                __init__
 
             """
 
@@ -106,7 +106,8 @@ class UnitTest(unittest.TestCase):
             queue_name=self.cfg.queue_list[0]["queue"],
             routing_key=self.cfg.queue_list[0]["routing_key"],
             x_durable=self.cfg.x_durable, q_durable=self.cfg.q_durable,
-            auto_delete=self.cfg.auto_delete)
+            auto_delete=self.cfg.auto_delete, heartbeat=self.cfg.heartbeat,
+            host_list=self.cfg.host_list)
         self.body = '{"Server": "SERVER_NAME.domain.name"}'
         self.body2 = '["Server", "SERVER_NAME.domain.name"]'
         self.sysmon_file = os.path.join(self.cfg.queue_list[0]["directory"],
