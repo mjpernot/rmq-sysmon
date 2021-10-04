@@ -257,7 +257,7 @@ def process_msg(rmq, log, cfg, method, body):
 
 def _convert_data(rmq, log, cfg, queue, body, r_key):
 
-    """Function:  _process_queue
+    """Function:  _convert_data
 
     Description:  Private function to process message queue.
 
