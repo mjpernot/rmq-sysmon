@@ -8,15 +8,16 @@
         and will be able to save the report to a specified directory.
 
     Usage:
-        rmq_2_sysmon.py -c config_file -d dir_path {-M}
+        rmq_2_sysmon.py -c config_file -d dir_path
+            {-M}
             [-v | -h]
 
     Arguments:
-        -c config_file => RabbitMQ configuration file.
-            Required argument.
-        -d dir_path => Directory path for option '-c'.
-            Required argument.
+        -c config_file => RabbitMQ configuration file.  Required argument.
+        -d dir_path => Directory path for option '-c'.  Required argument.
+
         -M => Monitor and process messages from a RabbitMQ queue.
+
         -v => Display version of this program.
         -h => Help and usage message.
 
