@@ -41,19 +41,19 @@ class UnitTest(unittest.TestCase):
     Description:  Class which is a representation of a unit testing.
 
     Methods:
-        setUp -> Initialize testing environment.
-        test_multi_queues_two_fail -> Test with multi queues and two failure.
-        test_multi_queues_one_fail -> Test with multi queues and one failure.
-        test_multiple_queues -> Test with multiple queues.
-        test_multiple_false2 -> Test if multiple checks return False.
-        test_multiple_false -> Test if multiple checks return False.
-        test_sysmon_dir_false -> Test if sysmon_dir check returns False.
-        test_sysmon_dir_true -> Test if sysmon_dir check returns True.
-        test_log_dir_false -> Test if log_dir check returns False.
-        test_log_dir_true -> Test if log_dir check returns True.
-        test_message_dir_false -> Test if message_dir check returns False.
-        test_message_dir_true -> Test if message_dir check returns True.
-        tearDown -> Clean up of testing environment.
+        setUp
+        test_multi_queues_two_fail
+        test_multi_queues_one_fail
+        test_multiple_queues
+        test_multiple_false2
+        test_multiple_false
+        test_sysmon_dir_false
+        test_sysmon_dir_true
+        test_log_dir_false
+        test_log_dir_true
+        test_message_dir_false
+        test_message_dir_true
+        tearDown
 
     """
 
