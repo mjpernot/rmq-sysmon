@@ -41,35 +41,35 @@ class UnitTest(unittest.TestCase):
     Description:  Class which is a representation of a unit testing.
 
     Methods:
-        setUp -> Initialize testing environment.
-        test_no_routing_key -> Test with no routing key detected.
-        test_default_name -> Test for default file name.
-        test_no_postname -> Test with no postname set.
-        test_postname -> Test with postname set.
-        test_no_prename -> Test with no prename set.
-        test_prename -> Test with prename set.
-        test_date_true -> Test with date set to True.
-        test_date_false -> Test with date set to False.
-        test_dtg_true -> Test with dtg set to True.
-        test_dtg_false -> Test with dtg set to False.
-        test_flatten_false -> Test with flatten set to False.
-        test_flatten_true -> Test with flatten set to True.
-        test_ext_set -> Test with ext set.
-        test_no_dict_key_set -> Test with dict_key not set.
-        test_no_dict_key_pass -> Test with no dictionary key in dictionary.
-        test_any_pass -> Test with any set for message type.
-        test_str_pass -> Test with string passed.
-        test_list_pass -> Test with list passed.
-        test_str_convert_pass -> Test with ast.literal_eval pass for string.
-        test_dict_convert_pass -> Test with ast.literal_eval pass for dict.
-        test_convert_fails_type_pass-> Test convert fails, but passes for type.
-        test_str_convert_fails -> Test with ast.literal_eval fails for string.
-        test_dict_convert_fails -> Test with ast.literal_eval fails for dict.
-        test_key_not_in_dict -> Test if key is not in dictionary.
-        test_create_json_fail -> Test if the body is unable to convert to JSON.
-        test_create_json -> Test if the body is converted to JSON.
-        test_is_dict -> Test if the body is a dictionary.
-        test_is_not_dict -> Test if the body is not a dictionary.
+        setUp
+        test_no_routing_key
+        test_default_name
+        test_no_postname
+        test_postname
+        test_no_prename
+        test_prename
+        test_date_true
+        test_date_false
+        test_dtg_true
+        test_dtg_false
+        test_flatten_false
+        test_flatten_true
+        test_ext_set
+        test_no_dict_key_set
+        test_no_dict_key_pass
+        test_any_pass
+        test_str_pass
+        test_list_pass
+        test_str_convert_pass
+        test_dict_convert_pass
+        test_convert_fails_type_pass
+        test_str_convert_fails
+        test_dict_convert_fails
+        test_key_not_in_dict
+        test_create_json_fail
+        test_create_json
+        test_is_dict
+        test_is_not_dict
 
     """
 
