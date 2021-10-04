@@ -77,11 +77,12 @@ Make the appropriate changes to the RabbitMQ environment.
     - user = "USER"
     - japd = "PSWORD"
     - host = "HOSTNAME"
+    - host_list = []
     - exchange_name = "EXCHANGE_NAME"
     - to_line = None
     - message_dir = "DIRECTORY_PATH/message_dir"
     - log_dir = "DIRECTORY_PATH/logs"
-    - log_file = "rmq_2_sysmon.log"
+    - log_fale = "rmq_2_sysmon.log"
 
   * Do not change these unless you are familar with RabbitMQ.
     - port = 5672
@@ -89,6 +90,7 @@ Make the appropriate changes to the RabbitMQ environment.
     - x_durable = True
     - q_durable = True
     - auto_delete = False
+    - heartbeat = 60
 
   * The next entry is the queue_list, which is the list of queues to monitor.  The queue_list is setup as a list of dictionaries with each dictionary contains an unique combination of queue name and routing key.  Make a copy of the dictionary for each combination and modify it for that queue/routing key setup.
   * Below is a break out of the dictionary.
