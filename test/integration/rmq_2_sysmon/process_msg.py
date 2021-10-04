@@ -44,10 +44,10 @@ class UnitTest(unittest.TestCase):
     Description:  Class which is a representation of a unit testing.
 
     Methods:
-        setUp -> Initialize testing environment.
-        test_non_proc_msg -> Test of non_proc_msg function call.
-        test_body_dict_true -> Test of json.loads function.
-        tearDown -> Clean up of testing environment.
+        setUp
+        test_non_proc_msg
+        test_body_dict_true
+        tearDown
 
     """
 
