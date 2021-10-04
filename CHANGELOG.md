@@ -7,8 +7,10 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 ## [2.1.0] - 2021-10-04
 - Update to work with Pika 1.2.0
 - Update to work with RabbitMQ 3.8.2
+- Added ability to handle connecting to multiple node cluster
 
 ### Changed
+- config/rabbitmq.py.TEMPLATE:  Added heartbeat and host_list entries.
 - Removed unnecessary \*\*kwargs in function argument list.
 - Documentation updates.
 
