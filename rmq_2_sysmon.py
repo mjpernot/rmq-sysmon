@@ -330,8 +330,9 @@ def _process_queue(queue, data, r_key, x_name):
         indent = None
 
     if queue["dtg"]:
-        dtg = datetime.datetime.strftime(datetime.datetime.now(),
-                                         "%Y%m%d_%H%M%S")
+        rdtg = datetime.datetime.now()
+        dtg = datetime.datetime.strftime(rdtg, "%Y%m%d_%H%M%S") \
+              + str(rdtg.microsecond / 1000)
 
     elif queue["date"]:
         dtg = datetime.datetime.strftime(datetime.datetime.now(), "%Y%m%d")
