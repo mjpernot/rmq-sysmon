@@ -147,8 +147,9 @@ class UnitTest(unittest.TestCase):
                                  self.body)
         self.log.log_close()
 
-        self.assertTrue(self.log_chk in open(self.cfg.log_file).read() and \
-                        os.path.isfile(self.sysmon_file))
+        self.assertTrue(
+            self.log_chk in open(
+                self.cfg.log_file).read() and os.path.isfile(self.sysmon_file))
 
     def tearDown(self):
 
