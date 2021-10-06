@@ -63,8 +63,8 @@ class CfgTest(object):
         self.x_durable = True
         self.q_durable = True
         self.auto_delete = False
-        self.message_dir = "message_dir"
-        self.log_dir = "logs"
+        self.message_dir = "/data/message_dir"
+        self.log_dir = "/data/logs"
         self.log_file = "rmq_2_isse.log"
         self.queue_list = [
             {"queue": "rmq_2_isse_unit_test",
@@ -80,6 +80,10 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp
+        test_message_dir_not_abs_path
+        test_message_dir_abs_path
+        test_log_dir_not_abs_path
+        test_log_dir_abs_path
         test_multi_queues_two_fail
         test_multi_queues_one_fail
         test_multiple_queues
@@ -91,7 +95,6 @@ class UnitTest(unittest.TestCase):
         test_log_dir_true
         test_message_dir_false
         test_message_dir_true
-        tearDown
 
     """
 
@@ -119,8 +122,90 @@ class UnitTest(unittest.TestCase):
         base_name, ext_name = os.path.splitext(self.cfg.log_file)
         self.log_name = \
             base_name + "_" + self.cfg.exchange_name + ext_name
+        self.bad_log_dir = "data/logs"
+        self.err_msg = "Log_Dir: %s is not an absolute path." \
+                       % (self.bad_log_dir)
+        self.bad_message_dir = "data/message_dir"
+        self.err_msg2 = "Message_Dir: %s is not an absolute path." \
+                        % (self.bad_message_dir)
 
-    @mock.patch("rmq_2_sysmon.gen_libs")
+    @mock.patch("rmq_2_sysmon.gen_libs.chk_crt_dir")
+    def test_message_dir_not_abs_path(self, mock_lib):
+
+        """Function:  test_message_not_dir_abs_path
+
+        Description:  Test with message_dir is not absolute path.
+
+        Arguments:
+
+        """
+
+        mock_lib.side_effect = [(True, None), (True, None), (True, None)]
+
+        self.cfg.message_dir = self.bad_message_dir
+        _, status_flag, err_msg = \
+            rmq_2_sysmon.validate_create_settings(self.cfg)
+
+        self.assertEqual((status_flag, err_msg), (False, self.err_msg2))
+
+    @mock.patch("rmq_2_sysmon.gen_libs.chk_crt_dir")
+    def test_message_dir_abs_path(self, mock_lib):
+
+        """Function:  test_message_dir_abs_path
+
+        Description:  Test with message_dir is absolute path.
+
+        Arguments:
+
+        """
+
+        mock_lib.side_effect = [(True, None), (True, None), (True, None)]
+
+        _, status_flag, err_msg = \
+            rmq_2_sysmon.validate_create_settings(self.cfg)
+
+        self.assertEqual((status_flag, err_msg), (True, ""))
+
+    @mock.patch("rmq_2_sysmon.gen_libs.chk_crt_dir")
+    def test_log_dir_not_abs_path(self, mock_lib):
+
+        """Function:  test_log_dir_not_abs_path
+
+        Description:  Test with log_dir is not absolute path.
+
+        Arguments:
+
+        """
+
+        mock_lib.side_effect = [(True, None), (True, None)]
+
+        self.cfg.log_dir = self.bad_log_dir
+        cfg_mod, status_flag, err_msg = \
+            rmq_2_sysmon.validate_create_settings(self.cfg)
+
+        self.assertEqual((status_flag, err_msg), (False, self.err_msg))
+
+    @mock.patch("rmq_2_sysmon.gen_libs.chk_crt_dir")
+    def test_log_dir_abs_path(self, mock_lib):
+
+        """Function:  test_log_dir_abs_path
+
+        Description:  Test with log_dir is absolute path.
+
+        Arguments:
+
+        """
+
+        mock_lib.side_effect = [(True, None), (True, None), (True, None)]
+
+        cfg_mod, status_flag, err_msg = \
+            rmq_2_sysmon.validate_create_settings(self.cfg)
+
+        self.assertEqual((status_flag, err_msg, cfg_mod.log_file),
+                         (True, "", os.path.join(self.cfg.log_dir,
+                                                 self.log_name)))
+
+    @mock.patch("rmq_2_sysmon.gen_libs.chk_crt_dir")
     def test_multi_queues_two_fail(self, mock_lib):
 
         """Function:  test_multi_queues_two_fail
@@ -131,16 +216,16 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_lib.chk_crt_dir.side_effect = [
-            (True, None), (True, None), (False, self.err_msg4),
-            (False, self.err_msg4)]
+        mock_lib.side_effect = [(True, None), (True, None),
+                                (False, self.err_msg4), (False, self.err_msg4)]
+
         _, status_flag, err_msg = \
             rmq_2_sysmon.validate_create_settings(self.cfg2)
 
         self.assertEqual((status_flag, err_msg),
                          (False, self.err_msg4 + self.err_msg4))
 
-    @mock.patch("rmq_2_sysmon.gen_libs")
+    @mock.patch("rmq_2_sysmon.gen_libs.chk_crt_dir")
     def test_multi_queues_one_fail(self, mock_lib):
 
         """Function:  test_multi_queues_one_fail
@@ -151,14 +236,15 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_lib.chk_crt_dir.side_effect = [
-            (True, None), (True, None), (True, None), (False, self.err_msg4)]
+        mock_lib.side_effect = [(True, None), (True, None), (True, None),
+                                (False, self.err_msg4)]
+
         _, status_flag, err_msg = \
             rmq_2_sysmon.validate_create_settings(self.cfg2)
 
         self.assertEqual((status_flag, err_msg), (False, self.err_msg4))
 
-    @mock.patch("rmq_2_sysmon.gen_libs")
+    @mock.patch("rmq_2_sysmon.gen_libs.chk_crt_dir")
     def test_multiple_queues(self, mock_lib):
 
         """Function:  test_multiple_queues
@@ -169,14 +255,15 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_lib.chk_crt_dir.side_effect = [
-            (True, None), (True, None), (True, None), (True, None)]
+        mock_lib.side_effect = [(True, None), (True, None), (True, None),
+                                (True, None)]
+
         _, status_flag, err_msg = \
             rmq_2_sysmon.validate_create_settings(self.cfg)
 
         self.assertEqual((status_flag, err_msg), (True, ""))
 
-    @mock.patch("rmq_2_sysmon.gen_libs")
+    @mock.patch("rmq_2_sysmon.gen_libs.chk_crt_dir")
     def test_multiple_false2(self, mock_lib):
 
         """Function:  test_multiple_false
@@ -187,9 +274,9 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_lib.chk_crt_dir.side_effect = [(False, self.err_msg1),
-                                            (False, self.err_msg2),
-                                            (False, self.err_msg3)]
+        mock_lib.side_effect = [(False, self.err_msg1), (False, self.err_msg2),
+                                (False, self.err_msg3)]
+
         _, status_flag, err_msg = \
             rmq_2_sysmon.validate_create_settings(self.cfg)
 
@@ -197,7 +284,7 @@ class UnitTest(unittest.TestCase):
                          (False,
                           self.err_msg1 + self.err_msg2 + self.err_msg3))
 
-    @mock.patch("rmq_2_sysmon.gen_libs")
+    @mock.patch("rmq_2_sysmon.gen_libs.chk_crt_dir")
     def test_multiple_false(self, mock_lib):
 
         """Function:  test_multiple_false
@@ -208,16 +295,16 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_lib.chk_crt_dir.side_effect = [(False, self.err_msg1),
-                                            (False, self.err_msg2),
-                                            (True, None)]
+        mock_lib.side_effect = [(False, self.err_msg1), (False, self.err_msg2),
+                                (True, None)]
+
         _, status_flag, err_msg = \
             rmq_2_sysmon.validate_create_settings(self.cfg)
 
         self.assertEqual((status_flag, err_msg),
                          (False, self.err_msg1 + self.err_msg2))
 
-    @mock.patch("rmq_2_sysmon.gen_libs")
+    @mock.patch("rmq_2_sysmon.gen_libs.chk_crt_dir")
     def test_sysmon_dir_false(self, mock_lib):
 
         """Function:  test_sysmon_dir_false
@@ -228,15 +315,15 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_lib.chk_crt_dir.side_effect = [(True, None),
-                                            (False, self.err_msg3),
-                                            (True, None)]
+        mock_lib.side_effect = [(True, None), (False, self.err_msg3),
+                                (True, None)]
+
         _, status_flag, err_msg = \
             rmq_2_sysmon.validate_create_settings(self.cfg)
 
         self.assertEqual((status_flag, err_msg), (False, self.err_msg3))
 
-    @mock.patch("rmq_2_sysmon.gen_libs")
+    @mock.patch("rmq_2_sysmon.gen_libs.chk_crt_dir")
     def test_sysmon_dir_true(self, mock_lib):
 
         """Function:  test_sysmon_dir_true
@@ -247,14 +334,14 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_lib.chk_crt_dir.side_effect = [(True, None), (True, None),
-                                            (True, None)]
+        mock_lib.side_effect = [(True, None), (True, None), (True, None)]
+
         _, status_flag, err_msg = \
             rmq_2_sysmon.validate_create_settings(self.cfg)
 
         self.assertEqual((status_flag, err_msg), (True, ""))
 
-    @mock.patch("rmq_2_sysmon.gen_libs")
+    @mock.patch("rmq_2_sysmon.gen_libs.chk_crt_dir")
     def test_log_dir_false(self, mock_lib):
 
         """Function:  test_log_dir_false
@@ -265,9 +352,9 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_lib.chk_crt_dir.side_effect = [(True, None),
-                                            (False, self.err_msg2),
-                                            (True, None)]
+        mock_lib.side_effect = [(True, None), (False, self.err_msg2),
+                                (True, None)]
+
         _, status_flag, err_msg = \
             rmq_2_sysmon.validate_create_settings(self.cfg)
 
@@ -285,6 +372,7 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_lib.side_effect = [(True, None), (True, None), (True, None)]
+
         cfg_mod, status_flag, err_msg = \
             rmq_2_sysmon.validate_create_settings(self.cfg)
 
@@ -292,7 +380,7 @@ class UnitTest(unittest.TestCase):
                          (True, "", os.path.join(self.cfg.log_dir,
                                                  self.log_name)))
 
-    @mock.patch("rmq_2_sysmon.gen_libs")
+    @mock.patch("rmq_2_sysmon.gen_libs.chk_crt_dir")
     def test_message_dir_false(self, mock_lib):
 
         """Function:  test_message_dir_false
@@ -303,14 +391,15 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_lib.chk_crt_dir.side_effect = [(False, self.err_msg1),
-                                            (True, None), (True, None)]
+        mock_lib.side_effect = [(False, self.err_msg1),
+                                (True, None), (True, None)]
+
         _, status_flag, err_msg = \
             rmq_2_sysmon.validate_create_settings(self.cfg)
 
         self.assertEqual((status_flag, err_msg), (False, self.err_msg1))
 
-    @mock.patch("rmq_2_sysmon.gen_libs")
+    @mock.patch("rmq_2_sysmon.gen_libs.chk_crt_dir")
     def test_message_dir_true(self, mock_lib):
 
         """Function:  test_message_dir_true
@@ -321,24 +410,12 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_lib.chk_crt_dir.side_effect = [(True, None), (True, None),
-                                            (True, None)]
+        mock_lib.side_effect = [(True, None), (True, None), (True, None)]
+
         _, status_flag, err_msg = \
             rmq_2_sysmon.validate_create_settings(self.cfg)
 
         self.assertEqual((status_flag, err_msg), (True, ""))
-
-    def tearDown(self):
-
-        """Function:  tearDown
-
-        Description:  Clean up of unit testing.
-
-        Arguments:
-
-        """
-
-        pass
 
 
 if __name__ == "__main__":
