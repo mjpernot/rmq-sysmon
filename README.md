@@ -68,7 +68,6 @@ pip install -r requirements-rabbitmq-lib.txt --target rabbit_lib --trusted-host 
 Create RabbitMQ configuration file.
 
 ```
-chmod 777 logs message_dir tmp
 cd config
 cp rabbitmq.py.TEMPLATE rabbitmq.py
 ```
