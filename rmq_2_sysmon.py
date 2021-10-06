@@ -142,23 +142,36 @@ def validate_create_settings(cfg):
 
     err_msg = ""
     status_flag = True
-    status, msg = gen_libs.chk_crt_dir(cfg.message_dir, write=True, read=True,
-                                       no_print=True)
 
-    if not status:
-        err_msg = err_msg + msg
-        status_flag = False
+    if os.path.isabs(cfg.message_dir):
+        status, msg = gen_libs.chk_crt_dir(cfg.message_dir, write=True,
+                                           read=True, no_print=True)
 
-    status, msg = gen_libs.chk_crt_dir(cfg.log_dir, write=True, read=True,
-                                       no_print=True)
-
-    if status:
-        base_name, ext_name = os.path.splitext(cfg.log_file)
-        log_name = base_name + "_" + cfg.exchange_name + ext_name
-        cfg.log_file = os.path.join(cfg.log_dir, log_name)
+        if not status:
+            err_msg = err_msg + msg
+            status_flag = False
 
     else:
-        err_msg = err_msg + msg
+        err_msg = err_msg + "Message_Dir: %s is not an absolute path." \
+                  % (cfg.message_dir)
+        status_flag = False
+
+    if os.path.isabs(cfg.log_dir):
+        status, msg = gen_libs.chk_crt_dir(cfg.log_dir, write=True, read=True,
+                                           no_print=True)
+
+        if status:
+            base_name, ext_name = os.path.splitext(cfg.log_file)
+            log_name = base_name + "_" + cfg.exchange_name + ext_name
+            cfg.log_file = os.path.join(cfg.log_dir, log_name)
+
+        else:
+            err_msg = err_msg + msg
+            status_flag = False
+
+    else:
+        err_msg = err_msg + "Log_Dir: %s is not an absolute path." \
+                  % (cfg.log_dir)
         status_flag = False
 
     for queue in cfg.queue_list:

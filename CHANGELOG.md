@@ -10,7 +10,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - Added ability to handle connecting to multiple node cluster
 
 ### Changed
-- validate_create_settings:  Removed the absolute path check on message_dir and log_dir.
+- validate_create_settings:  Removed setting message_dir or log_dir to base directory of program directory.
 - \_process_queue:  Added microseconds to the datetime group.
 - monitor_queue:  Setup heartbeat and host_list parameters for rabbitmq_class.RabbitMQCon.
 - config/rabbitmq.py.TEMPLATE:  Added heartbeat and host_list entries.
