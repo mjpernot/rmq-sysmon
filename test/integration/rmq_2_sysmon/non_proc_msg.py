@@ -79,7 +79,7 @@ class UnitTest(unittest.TestCase):
             routing_key=self.cfg.queue_list[0]["routing_key"],
             x_durable=self.cfg.x_durable, q_durable=self.cfg.q_durable,
             auto_delete=self.cfg.auto_delete, heartbeat=self.cfg.heartbeat,
-            host_list=selfcfg.host_list)
+            host_list=self.cfg.host_list)
         self.line = "Test_Me_File"
         self.subj = "Test_Me"
         self.test_file = None
