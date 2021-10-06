@@ -114,7 +114,6 @@ class UnitTest(unittest.TestCase):
 
         """
 
-
         self.cfg = CfgTest()
 
     @mock.patch("rmq_2_sysmon.rabbitmq_class.RabbitMQCon")
