@@ -180,7 +180,7 @@ class UnitTest(unittest.TestCase):
         mock_lib.side_effect = [(True, None), (True, None)]
 
         self.cfg.log_dir = self.bad_log_dir
-        cfg_mod, status_flag, err_msg = \
+        _, status_flag, err_msg = \
             rmq_2_sysmon.validate_create_settings(self.cfg)
 
         self.assertEqual((status_flag, err_msg), (False, self.err_msg))
