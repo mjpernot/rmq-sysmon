@@ -142,14 +142,6 @@ def validate_create_settings(cfg):
 
     err_msg = ""
     status_flag = True
-    base_dir = gen_libs.get_base_dir(__file__)
-
-    if not os.path.isabs(cfg.message_dir):
-        cfg.message_dir = os.path.join(base_dir, cfg.message_dir)
-
-    if not os.path.isabs(cfg.log_dir):
-        cfg.log_dir = os.path.join(base_dir, cfg.log_dir)
-
     status, msg = gen_libs.chk_crt_dir(cfg.message_dir, write=True, read=True,
                                        no_print=True)
 
