@@ -392,7 +392,7 @@ def monitor_queue(cfg, log):
 
     for queue in cfg.queue_list:
         rmq = rabbitmq_class.RabbitMQCon(
-            cfg.user, cfg.passwd, cfg.host, cfg.port,
+            cfg.user, cfg.japd, cfg.host, cfg.port,
             exchange_name=cfg.exchange_name, exchange_type=cfg.exchange_type,
             queue_name=queue["queue"], routing_key=queue["routing_key"],
             x_durable=cfg.x_durable, q_durable=cfg.q_durable,
@@ -416,7 +416,7 @@ def monitor_queue(cfg, log):
 
     # Connect to first queue as only one connection required.
     rmq = rabbitmq_class.RabbitMQCon(
-        cfg.user, cfg.passwd, cfg.host, cfg.port,
+        cfg.user, cfg.japd, cfg.host, cfg.port,
         exchange_name=cfg.exchange_name, exchange_type=cfg.exchange_type,
         queue_name=cfg.queue_list[0]["queue"],
         routing_key=cfg.queue_list[0]["routing_key"],
