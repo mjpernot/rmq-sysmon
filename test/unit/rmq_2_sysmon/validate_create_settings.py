@@ -34,6 +34,44 @@ import version
 __version__ = version.__version__
 
 
+class CfgTest(object):
+
+    """Class:  CfgTest
+
+    Description:  Class which is a representation of a cfg module.
+
+    Methods:
+        __init__ -> Initialize configuration environment.
+
+    """
+
+    def __init__(self):
+
+        """Method:  __init__
+
+        Description:  Initialization instance of the CfgTest class.
+
+        Arguments:
+
+        """
+
+        self.host = "HOSTNAME"
+        self.exchange_name = "rmq_2_isse_unit_test"
+        self.to_line = None
+        self.port = 5672
+        self.exchange_type = "direct"
+        self.x_durable = True
+        self.q_durable = True
+        self.auto_delete = False
+        self.message_dir = "message_dir"
+        self.log_dir = "logs"
+        self.log_file = "rmq_2_isse.log"
+        self.queue_list = [
+            {"queue": "rmq_2_isse_unit_test",
+             "routing_key": "ROUTING_KEY",
+             "directory": "/SYSMON_DIR_PATH"}]
+
+
 class UnitTest(unittest.TestCase):
 
     """Class:  UnitTest
@@ -67,43 +105,6 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        class CfgTest(object):
-
-            """Class:  CfgTest
-
-            Description:  Class which is a representation of a cfg module.
-
-            Methods:
-                __init__ -> Initialize configuration environment.
-
-            """
-
-            def __init__(self):
-
-                """Method:  __init__
-
-                Description:  Initialization instance of the CfgTest class.
-
-                Arguments:
-
-                """
-
-                self.host = "HOSTNAME"
-                self.exchange_name = "rmq_2_isse_unit_test"
-                self.to_line = None
-                self.port = 5672
-                self.exchange_type = "direct"
-                self.x_durable = True
-                self.q_durable = True
-                self.auto_delete = False
-                self.message_dir = "message_dir"
-                self.log_dir = "logs"
-                self.log_file = "rmq_2_isse.log"
-                self.queue_list = [
-                    {"queue": "rmq_2_isse_unit_test",
-                     "routing_key": "ROUTING_KEY",
-                     "directory": "/SYSMON_DIR_PATH"}]
-
         self.cfg = CfgTest()
         self.cfg2 = CfgTest()
         self.cfg2.queue_list.append({
@@ -117,7 +118,7 @@ class UnitTest(unittest.TestCase):
         self.err_msg4 = "Error Queue Dir"
         base_name, ext_name = os.path.splitext(self.cfg.log_file)
         self.log_name = \
-            base_name + "_" + self.cfg.exchange_name + "_" + ext_name
+            base_name + "_" + self.cfg.exchange_name + ext_name
 
     @mock.patch("rmq_2_sysmon.gen_libs")
     def test_multi_queues_two_fail(self, mock_lib):
@@ -272,7 +273,7 @@ class UnitTest(unittest.TestCase):
 
         self.assertEqual((status_flag, err_msg), (False, self.err_msg2))
 
-    @mock.patch("rmq_2_sysmon.gen_libs")
+    @mock.patch("rmq_2_sysmon.gen_libs.chk_crt_dir")
     def test_log_dir_true(self, mock_lib):
 
         """Function:  test_log_dir_true
@@ -283,8 +284,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_lib.chk_crt_dir.side_effect = [(True, None), (True, None),
-                                            (True, None)]
+        mock_lib.side_effect = [(True, None), (True, None), (True, None)]
         cfg_mod, status_flag, err_msg = \
             rmq_2_sysmon.validate_create_settings(self.cfg)
 
