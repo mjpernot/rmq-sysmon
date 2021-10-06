@@ -56,7 +56,7 @@ class CfgTest(object):
         """
 
         self.user = "USER"
-        self.passwd = ""
+        self.japd = ""
         self.host = "SERVER_NAME"
         self.host_list = []
         self.port = 5672
