@@ -332,7 +332,7 @@ def _process_queue(queue, data, r_key, x_name):
     if queue["dtg"]:
         rdtg = datetime.datetime.now()
         dtg = datetime.datetime.strftime(rdtg, "%Y%m%d_%H%M%S") \
-              + str(rdtg.microsecond / 1000)
+            + str(rdtg.microsecond / 1000)
 
     elif queue["date"]:
         dtg = datetime.datetime.strftime(datetime.datetime.now(), "%Y%m%d")
