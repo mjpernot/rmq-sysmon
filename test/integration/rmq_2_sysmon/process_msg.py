@@ -95,12 +95,11 @@ class UnitTest(unittest.TestCase):
                                             self.cfg.message_dir)
         self.cfg.queue_list[0]["directory"] = os.path.join(
             self.test_path, self.cfg.queue_list[0]["directory"])
-        self.log = gen_class.Logger(self.cfg.log_file, self.cfg.log_file,
-                                    "INFO",
-                                    "%(asctime)s %(levelname)s %(message)s",
-                                    "%Y-%m-%dT%H:%M:%SZ")
+        self.log = gen_class.Logger(
+            self.cfg.log_file, self.cfg.log_file, "INFO",
+            "%(asctime)s %(levelname)s %(message)s", "%Y-%m-%dT%H:%M:%SZ")
         self.rmq = rabbitmq_class.RabbitMQCon(
-            self.cfg.user, self.cfg.passwd, self.cfg.host, self.cfg.port,
+            self.cfg.user, self.cfg.japd, self.cfg.host, self.cfg.port,
             exchange_name=self.cfg.exchange_name,
             exchange_type=self.cfg.exchange_type,
             queue_name=self.cfg.queue_list[0]["queue"],
