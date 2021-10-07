@@ -160,7 +160,7 @@ vim rmq_2_sysmon_service.sh
 
 Enable program as a service.
 ```
-sudo ln -s PYTHON_PROJECT/rmq-sysmon/rmq_2_sysmon_service.sh /etc/init.d/rmq_2_sysmon
+sudo cp {PYTHON_PROJECT}/rmq-sysmon/rmq_2_sysmon_service.sh /etc/init.d/rmq_2_sysmon
 sudo chkconfig --add rmq_2_sysmon
 sudo chown USER_NAME config/rabbitmq.py
 ```
