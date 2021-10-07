@@ -14,9 +14,9 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - \_process_queue:  Added microseconds to the datetime group.
 
 ### Changed
+- monitor_queue:  Replaced rabbitmq_class.RabbitMQCon with rabbitmq_class.create_rmqcon calls.
 - non_proc_msg:  Removed extranous characters from the date time group.
 - validate_create_settings:  Removed setting message_dir or log_dir to base directory of program directory.
-- monitor_queue:  Setup heartbeat and host_list parameters for rabbitmq_class.RabbitMQCon.
 - config/rabbitmq.py.TEMPLATE:  Added heartbeat and host_list entries.
 - Removed unnecessary \*\*kwargs in function argument list.
 - Documentation updates.

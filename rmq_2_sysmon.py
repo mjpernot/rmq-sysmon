@@ -391,14 +391,8 @@ def monitor_queue(cfg, log):
     log.log_info("monitor_queue:  Initialize monitoring of queues...")
 
     for queue in cfg.queue_list:
-        rmq = rabbitmq_class.RabbitMQCon(
-            cfg.user, cfg.japd, cfg.host, cfg.port,
-            exchange_name=cfg.exchange_name, exchange_type=cfg.exchange_type,
-            queue_name=queue["queue"], routing_key=queue["routing_key"],
-            x_durable=cfg.x_durable, q_durable=cfg.q_durable,
-            auto_delete=cfg.auto_delete, heartbeat=cfg.heartbeat,
-            host_list=cfg.host_list)
-
+        rmq = rabbitmq_class.create_rmqcon(cfg, queue["queue"],
+                                           queue["routing_key"])
         log.log_info("Initializing:  Queue: %s, Routing Key: %s" %
                      (queue["queue"], queue["routing_key"]))
         connect_status, err_msg = rmq.create_connection()
@@ -415,15 +409,8 @@ def monitor_queue(cfg, log):
     log.log_info("monitor_queue:  Start monitoring queue...")
 
     # Connect to first queue as only one connection required.
-    rmq = rabbitmq_class.RabbitMQCon(
-        cfg.user, cfg.japd, cfg.host, cfg.port,
-        exchange_name=cfg.exchange_name, exchange_type=cfg.exchange_type,
-        queue_name=cfg.queue_list[0]["queue"],
-        routing_key=cfg.queue_list[0]["routing_key"],
-        x_durable=cfg.x_durable, q_durable=cfg.q_durable,
-        auto_delete=cfg.auto_delete, heartbeat=cfg.heartbeat,
-        host_list=cfg.host_list)
-
+    rmq = rabbitmq_class.create_rmqcon(cfg, cfg.queue_list[0]["queue"],
+                                       cfg.queue_list[0]["routing_key"])
     log.log_info("Connection info: %s->%s" % (cfg.host, cfg.exchange_name))
     connect_status, err_msg = rmq.create_connection()
 
