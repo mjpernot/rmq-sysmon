@@ -206,8 +206,8 @@ def non_proc_msg(rmq, log, cfg, data, subj, r_key):
         (r_key))
     frm_line = getpass.getuser() + "@" + socket.gethostname()
     rdtg = datetime.datetime.now()
-    msecs = str(rdtg.microsecond / 1000)
-    dtg = datetime.datetime.strftime(rdtg, "%Y-%m-%d_%H:%M:%S") + "." + msecs
+    dtg = datetime.datetime.strftime(
+        rdtg, "%Y%m%d_%H%M%S") + "_" + str(rdtg.microsecond)
     f_name = rmq.exchange + "_" + r_key + "_" + dtg + ".txt"
     f_path = os.path.join(cfg.message_dir, f_name)
     subj = "rmq_2_sysmon: " + subj

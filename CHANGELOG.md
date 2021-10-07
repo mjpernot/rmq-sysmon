@@ -10,9 +10,11 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - Added ability to handle connecting to multiple node cluster
 
 ### Fixed
+- non_proc_msg:  Increased the granularity of microseconds from 2-digits to 6-digits.
 - \_process_queue:  Added microseconds to the datetime group.
 
 ### Changed
+- non_proc_msg:  Removed extranous characters from the date time group.
 - validate_create_settings:  Removed setting message_dir or log_dir to base directory of program directory.
 - monitor_queue:  Setup heartbeat and host_list parameters for rabbitmq_class.RabbitMQCon.
 - config/rabbitmq.py.TEMPLATE:  Added heartbeat and host_list entries.
