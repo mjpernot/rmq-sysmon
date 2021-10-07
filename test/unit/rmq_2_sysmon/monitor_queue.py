@@ -116,7 +116,7 @@ class UnitTest(unittest.TestCase):
 
         self.cfg = CfgTest()
 
-    @mock.patch("rmq_2_sysmon.rabbitmq_class.RabbitMQCon")
+    @mock.patch("rmq_2_sysmon.rabbitmq_class.create_rmqcon")
     @mock.patch("rmq_2_sysmon.gen_class.Logger")
     def test_two_queue_partial2(self, mock_log, mock_rq):
 
@@ -129,7 +129,7 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_log.return_value = True
-        mock_rq.return_value = rmq_2_sysmon.rabbitmq_class.RabbitMQCon
+        mock_rq.return_value = rmq_2_sysmon.rabbitmq_class.create_rmqcon
         mock_rq.create_connection.side_effect = [(False, "Error"), (True, "")]
         mock_rq.channel.is_open.side_effect = [False, True]
         mock_rq.consume.return_value = "RabbitMQ_Tag"
@@ -137,7 +137,7 @@ class UnitTest(unittest.TestCase):
 
         self.assertFalse(rmq_2_sysmon.monitor_queue(self.cfg, mock_log))
 
-    @mock.patch("rmq_2_sysmon.rabbitmq_class.RabbitMQCon")
+    @mock.patch("rmq_2_sysmon.rabbitmq_class.create_rmqcon")
     @mock.patch("rmq_2_sysmon.gen_class.Logger")
     def test_two_queue_partial(self, mock_log, mock_rq):
 
@@ -150,7 +150,7 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_log.return_value = True
-        mock_rq.return_value = rmq_2_sysmon.rabbitmq_class.RabbitMQCon
+        mock_rq.return_value = rmq_2_sysmon.rabbitmq_class.create_rmqcon
         mock_rq.create_connection.side_effect = [(True, ""), (False, "Error")]
         mock_rq.channel.is_open.side_effect = [True, False]
         mock_rq.consume.return_value = "RabbitMQ_Tag"
@@ -158,7 +158,7 @@ class UnitTest(unittest.TestCase):
 
         self.assertFalse(rmq_2_sysmon.monitor_queue(self.cfg, mock_log))
 
-    @mock.patch("rmq_2_sysmon.rabbitmq_class.RabbitMQCon")
+    @mock.patch("rmq_2_sysmon.rabbitmq_class.create_rmqcon")
     @mock.patch("rmq_2_sysmon.gen_class.Logger")
     def test_one_queue_fail(self, mock_log, mock_rq):
 
@@ -171,13 +171,13 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_log.return_value = True
-        mock_rq.return_value = rmq_2_sysmon.rabbitmq_class.RabbitMQCon
+        mock_rq.return_value = rmq_2_sysmon.rabbitmq_class.create_rmqcon
         mock_rq.create_connection.return_value = (False, "Error Message")
         mock_rq.channel.is_open = True
 
         self.assertFalse(rmq_2_sysmon.monitor_queue(self.cfg, mock_log))
 
-    @mock.patch("rmq_2_sysmon.rabbitmq_class.RabbitMQCon")
+    @mock.patch("rmq_2_sysmon.rabbitmq_class.create_rmqcon")
     @mock.patch("rmq_2_sysmon.gen_class.Logger")
     def test_one_queue_success(self, mock_log, mock_rq):
 
@@ -190,7 +190,7 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_log.return_value = True
-        mock_rq.return_value = rmq_2_sysmon.rabbitmq_class.RabbitMQCon
+        mock_rq.return_value = rmq_2_sysmon.rabbitmq_class.create_rmqcon
         mock_rq.create_connection.return_value = (True, "")
         mock_rq.channel.is_open = True
         mock_rq.consume.return_value = "RabbitMQ_Tag"
@@ -198,7 +198,7 @@ class UnitTest(unittest.TestCase):
 
         self.assertFalse(rmq_2_sysmon.monitor_queue(self.cfg, mock_log))
 
-    @mock.patch("rmq_2_sysmon.rabbitmq_class.RabbitMQCon")
+    @mock.patch("rmq_2_sysmon.rabbitmq_class.create_rmqcon")
     @mock.patch("rmq_2_sysmon.gen_class.Logger")
     def test_false_and_data_msg(self, mock_log, mock_rq):
 
@@ -212,12 +212,12 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_log.return_value = True
-        mock_rq.return_value = rmq_2_sysmon.rabbitmq_class.RabbitMQCon
+        mock_rq.return_value = rmq_2_sysmon.rabbitmq_class.create_rmqcon
         mock_rq.create_connection.return_value = (False, "Error_Message")
 
         self.assertFalse(rmq_2_sysmon.monitor_queue(self.cfg, mock_log))
 
-    @mock.patch("rmq_2_sysmon.rabbitmq_class.RabbitMQCon")
+    @mock.patch("rmq_2_sysmon.rabbitmq_class.create_rmqcon")
     @mock.patch("rmq_2_sysmon.gen_class.Logger")
     def test_false_and_false(self, mock_log, mock_rq):
 
@@ -231,13 +231,13 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_log.return_value = True
-        mock_rq.return_value = rmq_2_sysmon.rabbitmq_class.RabbitMQCon
+        mock_rq.return_value = rmq_2_sysmon.rabbitmq_class.create_rmqcon
         mock_rq.create_connection.return_value = (False, "Error_Message")
         mock_rq.channel.is_open = False
 
         self.assertFalse(rmq_2_sysmon.monitor_queue(self.cfg, mock_log))
 
-    @mock.patch("rmq_2_sysmon.rabbitmq_class.RabbitMQCon")
+    @mock.patch("rmq_2_sysmon.rabbitmq_class.create_rmqcon")
     @mock.patch("rmq_2_sysmon.gen_class.Logger")
     def test_true_and_false(self, mock_log, mock_rq):
 
@@ -251,13 +251,13 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_log.return_value = True
-        mock_rq.return_value = rmq_2_sysmon.rabbitmq_class.RabbitMQCon
+        mock_rq.return_value = rmq_2_sysmon.rabbitmq_class.create_rmqcon
         mock_rq.create_connection.return_value = (True, "Error_Message")
         mock_rq.channel.is_open = False
 
         self.assertFalse(rmq_2_sysmon.monitor_queue(self.cfg, mock_log))
 
-    @mock.patch("rmq_2_sysmon.rabbitmq_class.RabbitMQCon")
+    @mock.patch("rmq_2_sysmon.rabbitmq_class.create_rmqcon")
     @mock.patch("rmq_2_sysmon.gen_class.Logger")
     def test_false_and_true(self, mock_log, mock_rq):
 
@@ -271,13 +271,13 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_log.return_value = True
-        mock_rq.return_value = rmq_2_sysmon.rabbitmq_class.RabbitMQCon
+        mock_rq.return_value = rmq_2_sysmon.rabbitmq_class.create_rmqcon
         mock_rq.create_connection.return_value = (False, "Error_Message")
         mock_rq.channel.is_open = True
 
         self.assertFalse(rmq_2_sysmon.monitor_queue(self.cfg, mock_log))
 
-    @mock.patch("rmq_2_sysmon.rabbitmq_class.RabbitMQCon")
+    @mock.patch("rmq_2_sysmon.rabbitmq_class.create_rmqcon")
     @mock.patch("rmq_2_sysmon.gen_class.Logger")
     def test_true_and_true(self, mock_log, mock_rq):
 
@@ -291,7 +291,7 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_log.return_value = True
-        mock_rq.return_value = rmq_2_sysmon.rabbitmq_class.RabbitMQCon
+        mock_rq.return_value = rmq_2_sysmon.rabbitmq_class.create_rmqcon
         mock_rq.create_connection.return_value = (True, "Error_Message")
         mock_rq.channel.is_open = True
         mock_rq.consume.return_value = "RabbitMQ_Tag"
