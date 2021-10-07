@@ -264,13 +264,13 @@ Make the appropriate changes to the RabbitMQ environment.
     - japd = "PSWORD"
     - host = "HOSTNAME"
     - exchange_name = "EXCHANGE_NAME"            -> Change to:  exchange_name = "intr-test"
-    - to_line = None
-    - message_dir = "DIRECTORY_PATH/message_dir" -> Change to:  message_dir = "message_dir"
-    - log_dir = "DIRECTORY_PATH/logs"            -> Change to:  log_dir = "logs"
+    - message_dir = "DIRECTORY_PATH/message_dir" -> Change to:  message_dir = "{Python_Project}/rmq-sysmon/test/integration/rmq_2_sysmon/message_dir"
+    - log_dir = "DIRECTORY_PATH/logs"            -> Change to:  log_dir = "{Python_Project}/rmq-sysmon/test/integration/rmq_2_sysmon/logs"
+
   * Have one entry in the queue_list list:
     - "queue_name":                              -> Change value to:  "intr-test"
     - "routing_key":                             -> Change value to:  "intr-test"
-    - "directory":                               -> Change value to:  "sysmon"
+    - "directory":                               -> Change value to:  "{Python_Project}/rmq-sysmon/test/integration/rmq_2_sysmon/sysmon"
     - "postname":                                -> Change value to:  "\_pkgs"
     - "key":                                     -> Change value to:  "Server"
     - "ext":                                     -> Change value to:  "json"
