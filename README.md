@@ -251,9 +251,7 @@ Install the project using the procedures in the Installation section.
 Create RabbitMQ configuration file.
 
 ```
-chmod 777 tmp
 cd test/integration/rmq_2_sysmon
-chmod 777 logs message_dir sysmon
 cd config
 cp ../../../../config/rabbitmq.py.TEMPLATE rabbitmq.py
 ```
@@ -306,9 +304,7 @@ Install the project using the procedures in the Installation section.
 Create RabbitMQ configuration file.
 
 ```
-chmod 777 tmp
 cd test/blackbox/rmq_2_sysmon
-chmod 777 logs message_dir sysmon
 cd config
 cp ../../../../config/rabbitmq.py.TEMPLATE rabbitmq.py
 ```
