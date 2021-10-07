@@ -9,9 +9,11 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - Update to work with RabbitMQ 3.8.2
 - Added ability to handle connecting to multiple node cluster
 
+### Fixed
+- \_process_queue:  Added microseconds to the datetime group.
+
 ### Changed
 - validate_create_settings:  Removed setting message_dir or log_dir to base directory of program directory.
-- \_process_queue:  Added microseconds to the datetime group.
 - monitor_queue:  Setup heartbeat and host_list parameters for rabbitmq_class.RabbitMQCon.
 - config/rabbitmq.py.TEMPLATE:  Added heartbeat and host_list entries.
 - Removed unnecessary \*\*kwargs in function argument list.
