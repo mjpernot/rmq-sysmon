@@ -44,10 +44,10 @@ class UnitTest(unittest.TestCase):
     Description:  Class which is a representation of a unit testing.
 
     Methods:
-        setUp -> Initialize testing environment.
-        test_non_proc_msg -> Test of non_proc_msg function call.
-        test_body_dict_true -> Test of json.loads function.
-        tearDown -> Clean up of testing environment.
+        setUp
+        test_non_proc_msg
+        test_body_dict_true
+        tearDown
 
     """
 
@@ -68,7 +68,7 @@ class UnitTest(unittest.TestCase):
             Description:  Class which is a representation of a method module.
 
             Methods:
-                __init__ -> Initialize configuration environment.
+                __init__
 
             """
 
@@ -95,18 +95,18 @@ class UnitTest(unittest.TestCase):
                                             self.cfg.message_dir)
         self.cfg.queue_list[0]["directory"] = os.path.join(
             self.test_path, self.cfg.queue_list[0]["directory"])
-        self.log = gen_class.Logger(self.cfg.log_file, self.cfg.log_file,
-                                    "INFO",
-                                    "%(asctime)s %(levelname)s %(message)s",
-                                    "%Y-%m-%dT%H:%M:%SZ")
+        self.log = gen_class.Logger(
+            self.cfg.log_file, self.cfg.log_file, "INFO",
+            "%(asctime)s %(levelname)s %(message)s", "%Y-%m-%dT%H:%M:%SZ")
         self.rmq = rabbitmq_class.RabbitMQCon(
-            self.cfg.user, self.cfg.passwd, self.cfg.host, self.cfg.port,
+            self.cfg.user, self.cfg.japd, self.cfg.host, self.cfg.port,
             exchange_name=self.cfg.exchange_name,
             exchange_type=self.cfg.exchange_type,
             queue_name=self.cfg.queue_list[0]["queue"],
             routing_key=self.cfg.queue_list[0]["routing_key"],
             x_durable=self.cfg.x_durable, q_durable=self.cfg.q_durable,
-            auto_delete=self.cfg.auto_delete)
+            auto_delete=self.cfg.auto_delete, heartbeat=self.cfg.heartbeat,
+            host_list=self.cfg.host_list)
         self.body = '{"Server": "SERVER_NAME.domain.name"}'
         self.body2 = '["Server", "SERVER_NAME.domain.name"]'
         self.sysmon_file = os.path.join(self.cfg.queue_list[0]["directory"],
@@ -146,8 +146,9 @@ class UnitTest(unittest.TestCase):
                                  self.body)
         self.log.log_close()
 
-        self.assertTrue(self.log_chk in open(self.cfg.log_file).read() and \
-                        os.path.isfile(self.sysmon_file))
+        self.assertTrue(
+            self.log_chk in open(
+                self.cfg.log_file).read() and os.path.isfile(self.sysmon_file))
 
     def tearDown(self):
 

@@ -44,9 +44,9 @@ class UnitTest(unittest.TestCase):
     Description:  Class which is a representation of a unit testing.
 
     Methods:
-        setUp -> Initialize testing environment.
-        test_rabbitmq_class -> Test of rabbitmq_class.RabbitMQCon class.
-        tearDown -> Clean up of testing environment.
+        setUp
+        test_rabbitmq_class
+        tearDown
 
     """
 
@@ -68,10 +68,9 @@ class UnitTest(unittest.TestCase):
         self.cfg.log_file = os.path.join(log_path, self.cfg.log_file)
         self.cfg.message_dir = os.path.join(self.test_path,
                                             self.cfg.message_dir)
-        self.log = gen_class.Logger(self.cfg.log_file, self.cfg.log_file,
-                                    "INFO",
-                                    "%(asctime)s %(levelname)s %(message)s",
-                                    "%Y-%m-%dT%H:%M:%SZ")
+        self.log = gen_class.Logger(
+            self.cfg.log_file, self.cfg.log_file, "INFO",
+            "%(asctime)s %(levelname)s %(message)s", "%Y-%m-%dT%H:%M:%SZ")
         self.connect_true = "Connected to RabbitMQ node"
 
     @mock.patch("rmq_2_sysmon.rabbitmq_class.RabbitMQCon.consume")

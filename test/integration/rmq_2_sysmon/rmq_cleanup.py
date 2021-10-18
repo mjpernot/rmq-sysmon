@@ -43,10 +43,7 @@ def rmq_cleanup(cfg, queue_name, drop_exch=False):
 
     """
 
-    rmq = rabbitmq_class.RabbitMQPub(cfg.user, cfg.passwd, cfg.host, cfg.port,
-                                     cfg.exchange_name, cfg.exchange_type,
-                                     queue_name, queue_name, cfg.x_durable,
-                                     cfg.q_durable, cfg.auto_delete)
+    rmq = rabbitmq_class.create_rmqpub(cfg, queue_name, queue_name)
 
     if isinstance(rmq, rabbitmq_class.RabbitMQPub):
         connect_status, err_msg = rmq.connect()

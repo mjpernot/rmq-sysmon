@@ -64,7 +64,6 @@ def main():
         file_path -> Directory path the test files.
 
     Arguments:
-        None
 
     """
 

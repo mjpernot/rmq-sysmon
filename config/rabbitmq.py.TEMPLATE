@@ -2,13 +2,25 @@
 # Classification (U)
 # Unclassified until filled.
 user = "USER"
-passwd = "PASSWORD"
+japd = "PSWORD"
 host = "HOSTNAME"
+# List of hosts along with their ports to a multiple node RabbitMQ cluster.
+# Format of each entry is: "IP:PORT".
+# Example: host_list = ["hostname:5672", "hostname2:5672", "hostname:5673"]
+# Note:  If host_list is set, it will take precedence over the host entry.
+host_list = []
 # RabbitMQ Exchange name being monitored.
 exchange_name = "EXCHANGE_NAME"
 # Email address(es) to send non-processed messages to or None.
 # None state no emails are required to be sent.
-to_line = "EMAIL_ADDRESS"
+# Example: to_line = "NAME@DOMAIN"
+to_line = None
+# Archive directory name for non-processed messages.
+message_dir = "DIRECTORY_PATH/message_dir"
+# Directory name for log files.
+log_dir = "DIRECTORY_PATH/logs"
+# File name to program log.
+log_file = "rmq_2_sysmon.log"
 # RabbitMQ listening port, default is 5672.
 port = 5672
 # Type of exchange:  direct, topic, fanout, headers
@@ -19,17 +31,14 @@ x_durable = True
 q_durable = True
 # Queues automatically delete message after processing: True|False
 auto_delete = False
-# Archive directory name for non-processed messages.
-message_dir = "DIRECTORY_PATH/message_dir"
-# Directory name for log files.
-log_dir = "DIRECTORY_PATH/logs"
-# File name to program log.
-log_file = "rmq_2_sysmon.log"
+# Time in seconds for ensuring connections stays active.
+# If set to 0, will turn the heartbeat off.
+heartbeat = 60
 # List of queues to monitor.
 # Make a copy of the dictionary for each combination of a queue name and routing key.
 # -> queue:  "QUEUE_NAME" - Name of queue to monitor.
 # -> routing_key:  "ROUTING_KEY" - Name of the routing key for the queue.
-# -> directory:  "/DIR_PATH" - Directory path to where a report will be written to.
+# -> directory:  "/DIR_PATH" - Directory path to where the report will be written to.
 # -> prename:  "NAME" - Static pre-file name string.
 # -> postname:  "NAME" - Static post-file name string.
 # -> key:  "DICT_KEY" - Is the name of a key in a dictionary.

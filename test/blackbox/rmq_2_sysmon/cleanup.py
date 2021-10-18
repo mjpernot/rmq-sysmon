@@ -38,7 +38,6 @@ def main():
     Description:  Controls flow of program.
 
     Variables:
-        None
 
     Arguments:
 

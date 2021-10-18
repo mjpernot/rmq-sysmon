@@ -4,6 +4,24 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [2.1.0] - 2021-10-04
+- Update to work with Pika 1.2.0
+- Update to work with RabbitMQ 3.8.2
+- Added ability to handle connecting to multiple node cluster
+
+### Fixed
+- non_proc_msg:  Increased the granularity of microseconds from 2-digits to 6-digits.
+- \_process_queue:  Added microseconds to the datetime group.
+
+### Changed
+- monitor_queue:  Replaced rabbitmq_class.RabbitMQCon with rabbitmq_class.create_rmqcon calls.
+- non_proc_msg:  Removed extranous characters from the date time group.
+- validate_create_settings:  Removed setting message_dir or log_dir to base directory of program directory.
+- config/rabbitmq.py.TEMPLATE:  Added heartbeat and host_list entries.
+- Removed unnecessary \*\*kwargs in function argument list.
+- Documentation updates.
+
+
 ## [2.0.0] - 2020-06-19
 - Breaking Change.
 
@@ -32,9 +50,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 ## [1.0.1] - 2020-05-29
 ### Fixed
-- daemon_rmq_2_sysmon.main:  Fixed handling command line arguments from SonarQube scan finding.
-- run_program: Fixed handling command line arguments from SonarQube scan finding.
-- main: Fixed handling command line arguments from SonarQube scan finding.
+- main, run_program, daemon_rmq_2_sysmon.main: Fixed handling command line arguments.
 - process_msg:  Data to covert can use single or double quotes within the data structure.
 - daemon_rmq_2_sysmon.main:  Start up action to check for existing pid file and process.
 
@@ -43,10 +59,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 ### Changed
 - rmq_2_sysmon_service.sh.TEMPLATE:  Changed format.
-- monitor_queue:  Changed variable name to standard naming convention.
-- callback:  Changed variable name to standard naming convention.
-- process_msg:  Changed variable name to standard naming convention.
-- non_proc_msg:  Changed variable name to standard naming convention.
+- callback, process_msg, non_proc_msg, monitor_queue:  Changed variable name to standard naming convention.
 - config/rabbitmq.py.TEMPLATE:  Changed the format for several of the settings.
 - monitor_queue:  Changed RabbitMQCon call from positional arguments to keyword arguments.
 - process_msg:  Added SyntaxError exception for the data conversion.
@@ -90,12 +103,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 ## [0.2.8] - 2019-03-05
 ### Changed
 - main:  Added list() to prevent modifying mutable default argument.
-- main:  Refactored code to bring into standard convention.
-- non_proc_msg:  Refactored code to bring into standard convention.
-- process_msg:  Refactored code to bring into standard convention.
-- monitor_queue:  Refactored code to bring into standard convention.
-- callback:  Refactored code to bring into standard convention.
-- run_program:  Refactored code to bring into standard convention.
+- process_msg, monitor_queue, callback, run_program, main, non_proc_msg:  Refactored code to bring into standard convention.
 
 
 ## [0.2.7] - 2018-11-05

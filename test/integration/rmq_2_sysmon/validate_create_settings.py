@@ -43,14 +43,14 @@ class UnitTest(unittest.TestCase):
     Description:  Class which is a representation of a unit testing.
 
     Methods:
-        setUp -> Initialize testing environment.
-        test_sysmon_dir_chk_false -> Test chk_crt_dir(sysmon_dir) is False.
-        test_log_dir_chk_false -> Test chk_crt_dir(log_dir) is False.
-        test_msg_dir_chk_false -> Test chk_crt_dir(message_dir) is False.
-        test_sysmon_dir_chk_true -> Test chk_crt_dir(sysmon_dir) is True.
-        test_log_dir_chk_true -> Test chk_crt_dir(log_dir) is True.
-        test_msg_dir_chk_true -> Test chk_crt_dir(message_dir) is True.
-        tearDown -> Clean up of testing environment.
+        setUp
+        test_sysmon_dir_chk_false
+        test_log_dir_chk_false
+        test_msg_dir_chk_false
+        test_sysmon_dir_chk_true
+        test_log_dir_chk_true
+        test_msg_dir_chk_true
+        tearDown
 
     """
 
@@ -78,6 +78,9 @@ class UnitTest(unittest.TestCase):
                                        self.cfg.queue_list[0]["directory"])
         self.msg = " does not exist."
         self.msg2 = "Error: Directory: "
+        self.msg3 = " is not writeable."
+        self.msg4 = " is not readable."
+        self.msg5 = "Error: Directory "
 
     @mock.patch("rmq_2_sysmon.gen_libs.get_base_dir")
     def test_sysmon_dir_chk_false(self, mock_base):
@@ -95,6 +98,10 @@ class UnitTest(unittest.TestCase):
             self.test_path, self.cfg.queue_list[0]["directory"] + "FALSE")
         self.cfg, status, msg = rmq_2_sysmon.validate_create_settings(self.cfg)
         t_msg = self.msg2 + self.cfg.queue_list[0]["directory"] + self.msg
+        t_msg = t_msg + "\n" + self.msg5 \
+            + self.cfg.queue_list[0]["directory"] + self.msg3
+        t_msg = t_msg + "\n" + self.msg5 \
+            + self.cfg.queue_list[0]["directory"] + self.msg4
 
         self.assertEqual((self.cfg.queue_list[0]["directory"], status, msg),
                          (self.sysmon_dir + "FALSE", False, t_msg))
@@ -115,6 +122,8 @@ class UnitTest(unittest.TestCase):
                                         self.cfg.log_dir + "FALSE")
         self.cfg, status, msg = rmq_2_sysmon.validate_create_settings(self.cfg)
         t_msg = self.msg2 + self.cfg.log_dir + self.msg
+        t_msg = t_msg + "\n" + self.msg5 + self.cfg.log_dir + self.msg3
+        t_msg = t_msg + "\n" + self.msg5 + self.cfg.log_dir + self.msg4
 
         self.assertEqual((self.cfg.log_dir, status, msg),
                          (self.log_dir + "FALSE", False, t_msg))
@@ -134,8 +143,9 @@ class UnitTest(unittest.TestCase):
         self.cfg.message_dir = os.path.join(self.test_path,
                                             self.cfg.message_dir + "FALSE")
         self.cfg, status, msg = rmq_2_sysmon.validate_create_settings(self.cfg)
-        t_msg = \
-            self.msg2 + self.cfg.message_dir + self.msg
+        t_msg = self.msg2 + self.cfg.message_dir + self.msg
+        t_msg = t_msg + "\n" + self.msg5 + self.cfg.message_dir + self.msg3
+        t_msg = t_msg + "\n" + self.msg5 + self.cfg.message_dir + self.msg4
 
         self.assertEqual((self.cfg.message_dir, status, msg),
                          (self.message_dir + "FALSE", False, t_msg))

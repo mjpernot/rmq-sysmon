@@ -62,7 +62,7 @@ class ProgramLock(object):
     Description:  Class stub holder for gen_class.ProgramLock class.
 
     Methods:
-        __init__ -> Class initialization.
+        __init__
 
     """
 
@@ -89,12 +89,12 @@ class UnitTest(unittest.TestCase):
     Description:  Class which is a representation of a unit testing.
 
     Methods:
-        setUp -> Initialize testing environment.
-        test_status_false -> Test with status is False.
-        test_status_true -> Test with status is True.
-        test_func_call -> Test with call to function.
-        test_raise_exception -> Test with raising exception.
-        tearDown -> Clean up of testing environment.
+        setUp
+        test_status_false
+        test_status_true
+        test_func_call
+        test_raise_exception
+        tearDown
 
     """
 

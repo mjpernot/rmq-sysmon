@@ -8,15 +8,16 @@
         and will be able to save the report to a specified directory.
 
     Usage:
-        rmq_2_sysmon.py -c config_file -d dir_path {-M}
+        rmq_2_sysmon.py -c config_file -d dir_path
+            {-M}
             [-v | -h]
 
     Arguments:
-        -c config_file => RabbitMQ configuration file.
-            Required argument.
-        -d dir_path => Directory path for option '-c'.
-            Required argument.
+        -c config_file => RabbitMQ configuration file.  Required argument.
+        -d dir_path => Directory path for option '-c'.  Required argument.
+
         -M => Monitor and process messages from a RabbitMQ queue.
+
         -v => Display version of this program.
         -h => Help and usage message.
 
@@ -31,76 +32,49 @@
 
             # RabbitMQ Configuration file
             user = "USER"
-            passwd = "PASSWORD"
+            japd = "PSWORD"
             host = "HOSTNAME"
-            # RabbitMQ Exchange name being monitored.
+            host_list = []
             exchange_name = "EXCHANGE_NAME"
-            # Email address(es) to send non-processed messages to or None.
-            # None state no emails are required to be sent.
-            to_line = "EMAIL_ADDRESS"
-            # RabbitMQ listening port, default is 5672.
+            to_line = None
             port = 5672
-            # Type of exchange:  direct, topic, fanout, headers
             exchange_type = "direct"
-            # Is exchange durable: True|False
             x_durable = True
-            # Are queues durable: True|False
             q_durable = True
-            # Queues automatically delete message after processing: True|False
             auto_delete = False
-            # Archive directory name for non-processed messages.
+            heartbeat = 60
             message_dir = "DIRECTORY_PATH/message_dir"
-            # Directory name for log files.
             log_dir = "DIRECTORY_PATH/logs"
-            # File name to program log.
             log_file = "rmq_2_sysmon.log"
             # List of queues to monitor.
-            # Make a copy of the dictionary for each combination of a queue
-                name and routing key.
-            # -> queue:  "QUEUE_NAME" - Name of queue to monitor.
-            # -> routing_key:  "ROUTING_KEY" - Name of the routing key for the
-                queue.
-            # -> directory:  "/DIR_PATH" - Directory path to where a report
-                will be written to.
-            # -> prename:  "NAME" - Static pre-file name string.
-            # -> postname:  "NAME" - Static post-file name string.
-            # -> key:  "DICT_KEY" - Is the name of a key in a dictionary.
-            # -> mode:  "a"|"w" - Write mode to the file: write or append to a
-                file.
-            # -> ext:  "NAME" - Extension name to the file name.
-            # -> dtg:  True|False - Add a date and time group to the file name.
-            # -> date:  True|False - Add a date to the file name.
-            # -> stype:  "any"|"dict"|"list"|"str" - Format of the messages
-                that are allowed in the message.
-            # -> flatten:  True|False - Flattens a dictionary format.
             queue_list = [
-                    {"queue": "QUEUE_NAME",
-                     "routing_key": "ROUTING_KEY",
-                     "directory": "DIR_PATH",
-                     "prename": "",
-                     "postname": "",
-                     "key": "",
-                     "mode": "a",
-                     "ext": "",
-                     "dtg": False,
-                     "date":  False,
-                     "stype": "any",
-                     "flatten": True
-                    },
-                    {"queue": "QUEUE_NAME",
-                     "routing_key": "ROUTING_KEY",
-                     "directory": "DIR_PATH",
-                     "prename": "",
-                     "postname": "",
-                     "key": "",
-                     "mode": "a",
-                     "ext": "",
-                     "dtg": False,
-                     "date":  False,
-                     "stype": "any",
-                     "flatten": True
-                    }
-                ]
+                {"queue": "QUEUE_NAME",
+                 "routing_key": "ROUTING_KEY",
+                 "directory": "DIR_PATH",
+                 "prename": "",
+                 "postname": "",
+                 "key": "",
+                 "mode": "a",
+                 "ext": "",
+                 "dtg": False,
+                 "date":  False,
+                 "stype": "any",
+                 "flatten": True
+                },
+                {"queue": "QUEUE_NAME",
+                 "routing_key": "ROUTING_KEY",
+                 "directory": "DIR_PATH",
+                 "prename": "",
+                 "postname": "",
+                 "key": "",
+                 "mode": "a",
+                 "ext": "",
+                 "dtg": False,
+                 "date":  False,
+                 "stype": "any",
+                 "flatten": True
+                }
+            ]
 
     Example:
         Command Line:
@@ -137,7 +111,7 @@ import version
 __version__ = version.__version__
 
 
-def help_message(**kwargs):
+def help_message():
 
     """Function:  help_message
 
@@ -151,7 +125,7 @@ def help_message(**kwargs):
     print(__doc__)
 
 
-def validate_create_settings(cfg, **kwargs):
+def validate_create_settings(cfg):
 
     """Function:  validate_create_settings
 
@@ -168,31 +142,36 @@ def validate_create_settings(cfg, **kwargs):
 
     err_msg = ""
     status_flag = True
-    base_dir = gen_libs.get_base_dir(__file__)
 
-    if not os.path.isabs(cfg.message_dir):
-        cfg.message_dir = os.path.join(base_dir, cfg.message_dir)
+    if os.path.isabs(cfg.message_dir):
+        status, msg = gen_libs.chk_crt_dir(cfg.message_dir, write=True,
+                                           read=True, no_print=True)
 
-    if not os.path.isabs(cfg.log_dir):
-        cfg.log_dir = os.path.join(base_dir, cfg.log_dir)
-
-    status, msg = gen_libs.chk_crt_dir(cfg.message_dir, write=True, read=True,
-                                       no_print=True)
-
-    if not status:
-        err_msg = err_msg + msg
-        status_flag = False
-
-    status, msg = gen_libs.chk_crt_dir(cfg.log_dir, write=True, read=True,
-                                       no_print=True)
-
-    if status:
-        base_name, ext_name = os.path.splitext(cfg.log_file)
-        log_name = base_name + "_" + cfg.exchange_name + ext_name
-        cfg.log_file = os.path.join(cfg.log_dir, log_name)
+        if not status:
+            err_msg = err_msg + msg
+            status_flag = False
 
     else:
-        err_msg = err_msg + msg
+        err_msg = err_msg + "Message_Dir: %s is not an absolute path." \
+                  % (cfg.message_dir)
+        status_flag = False
+
+    if os.path.isabs(cfg.log_dir):
+        status, msg = gen_libs.chk_crt_dir(cfg.log_dir, write=True, read=True,
+                                           no_print=True)
+
+        if status:
+            base_name, ext_name = os.path.splitext(cfg.log_file)
+            log_name = base_name + "_" + cfg.exchange_name + ext_name
+            cfg.log_file = os.path.join(cfg.log_dir, log_name)
+
+        else:
+            err_msg = err_msg + msg
+            status_flag = False
+
+    else:
+        err_msg = err_msg + "Log_Dir: %s is not an absolute path." \
+                  % (cfg.log_dir)
         status_flag = False
 
     for queue in cfg.queue_list:
@@ -206,7 +185,7 @@ def validate_create_settings(cfg, **kwargs):
     return cfg, status_flag, err_msg
 
 
-def non_proc_msg(rmq, log, cfg, data, subj, r_key, **kwargs):
+def non_proc_msg(rmq, log, cfg, data, subj, r_key):
 
     """Function:  non_proc_msg
 
@@ -227,8 +206,8 @@ def non_proc_msg(rmq, log, cfg, data, subj, r_key, **kwargs):
         (r_key))
     frm_line = getpass.getuser() + "@" + socket.gethostname()
     rdtg = datetime.datetime.now()
-    msecs = str(rdtg.microsecond / 1000)
-    dtg = datetime.datetime.strftime(rdtg, "%Y-%m-%d_%H:%M:%S") + "." + msecs
+    dtg = datetime.datetime.strftime(
+        rdtg, "%Y%m%d_%H%M%S") + "_" + str(rdtg.microsecond)
     f_name = rmq.exchange + "_" + r_key + "_" + dtg + ".txt"
     f_path = os.path.join(cfg.message_dir, f_name)
     subj = "rmq_2_sysmon: " + subj
@@ -249,7 +228,7 @@ def non_proc_msg(rmq, log, cfg, data, subj, r_key, **kwargs):
     gen_libs.write_file(f_path, data=data)
 
 
-def process_msg(rmq, log, cfg, method, body, **kwargs):
+def process_msg(rmq, log, cfg, method, body):
 
     """Function:  process_msg
 
@@ -283,9 +262,9 @@ def process_msg(rmq, log, cfg, method, body, **kwargs):
         non_proc_msg(rmq, log, cfg, body, "No queue detected", r_key)
 
 
-def _convert_data(rmq, log, cfg, queue, body, r_key, **kwargs):
+def _convert_data(rmq, log, cfg, queue, body, r_key):
 
-    """Function:  _process_queue
+    """Function:  _convert_data
 
     Description:  Private function to process message queue.
 
@@ -327,7 +306,7 @@ def _convert_data(rmq, log, cfg, queue, body, r_key, **kwargs):
         non_proc_msg(rmq, log, cfg, body, str(err), r_key)
 
 
-def _process_queue(queue, data, r_key, x_name, **kwargs):
+def _process_queue(queue, data, r_key, x_name):
 
     """Function:  _process_queue
 
@@ -356,8 +335,9 @@ def _process_queue(queue, data, r_key, x_name, **kwargs):
         indent = None
 
     if queue["dtg"]:
-        dtg = datetime.datetime.strftime(datetime.datetime.now(),
-                                         "%Y%m%d_%H%M%S")
+        rdtg = datetime.datetime.now()
+        dtg = datetime.datetime.strftime(rdtg, "%Y%m%d_%H%M%S") \
+            + "_" + str(rdtg.microsecond)
 
     elif queue["date"]:
         dtg = datetime.datetime.strftime(datetime.datetime.now(), "%Y%m%d")
@@ -375,7 +355,7 @@ def _process_queue(queue, data, r_key, x_name, **kwargs):
     gen_libs.write_file(fname=f_name, mode=queue["mode"], data=data)
 
 
-def monitor_queue(cfg, log, **kwargs):
+def monitor_queue(cfg, log):
 
     """Function:  monitor_queue
 
@@ -411,13 +391,8 @@ def monitor_queue(cfg, log, **kwargs):
     log.log_info("monitor_queue:  Initialize monitoring of queues...")
 
     for queue in cfg.queue_list:
-        rmq = rabbitmq_class.RabbitMQCon(
-            cfg.user, cfg.passwd, cfg.host, cfg.port,
-            exchange_name=cfg.exchange_name, exchange_type=cfg.exchange_type,
-            queue_name=queue["queue"], routing_key=queue["routing_key"],
-            x_durable=cfg.x_durable, q_durable=cfg.q_durable,
-            auto_delete=cfg.auto_delete)
-
+        rmq = rabbitmq_class.create_rmqcon(cfg, queue["queue"],
+                                           queue["routing_key"])
         log.log_info("Initializing:  Queue: %s, Routing Key: %s" %
                      (queue["queue"], queue["routing_key"]))
         connect_status, err_msg = rmq.create_connection()
@@ -434,14 +409,8 @@ def monitor_queue(cfg, log, **kwargs):
     log.log_info("monitor_queue:  Start monitoring queue...")
 
     # Connect to first queue as only one connection required.
-    rmq = rabbitmq_class.RabbitMQCon(
-        cfg.user, cfg.passwd, cfg.host, cfg.port,
-        exchange_name=cfg.exchange_name, exchange_type=cfg.exchange_type,
-        queue_name=cfg.queue_list[0]["queue"],
-        routing_key=cfg.queue_list[0]["routing_key"],
-        x_durable=cfg.x_durable, q_durable=cfg.q_durable,
-        auto_delete=cfg.auto_delete)
-
+    rmq = rabbitmq_class.create_rmqcon(cfg, cfg.queue_list[0]["queue"],
+                                       cfg.queue_list[0]["routing_key"])
     log.log_info("Connection info: %s->%s" % (cfg.host, cfg.exchange_name))
     connect_status, err_msg = rmq.create_connection()
 
@@ -460,7 +429,7 @@ def monitor_queue(cfg, log, **kwargs):
         log.log_err("Failed to connnect to RabbuitMQ -> Msg: %s" % (err_msg))
 
 
-def run_program(args_array, func_dict, **kwargs):
+def run_program(args_array, func_dict):
 
     """Function:  run_program
 
@@ -502,7 +471,7 @@ def run_program(args_array, func_dict, **kwargs):
 
             # Intersect args_array & func_dict to find which functions to call.
             for opt in set(args_array.keys()) & set(func_dict.keys()):
-                func_dict[opt](cfg, log, **kwargs)
+                func_dict[opt](cfg, log)
 
             del prog_lock
 
