@@ -43,9 +43,9 @@ class UnitTest(unittest.TestCase):
     Description:  Class which is a representation of a unit testing.
 
     Methods:
-        setUp -> Initialize testing environment.
-        test_run_program -> Test of test_run_program function.
-        tearDown -> Clean up of testing environment.
+        setUp
+        test_run_program
+        tearDown
 
     """
 
