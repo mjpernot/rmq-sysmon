@@ -99,9 +99,9 @@ class UnitTest(unittest.TestCase):
         self.cfg, status, msg = rmq_2_sysmon.validate_create_settings(self.cfg)
         t_msg = self.msg2 + self.cfg.queue_list[0]["directory"] + self.msg
         t_msg = t_msg + "\n" + self.msg5 \
-                + self.cfg.queue_list[0]["directory"] + self.msg3
+            + self.cfg.queue_list[0]["directory"] + self.msg3
         t_msg = t_msg + "\n" + self.msg5 \
-                + self.cfg.queue_list[0]["directory"] + self.msg4
+            + self.cfg.queue_list[0]["directory"] + self.msg4
 
         self.assertEqual((self.cfg.queue_list[0]["directory"], status, msg),
                          (self.sysmon_dir + "FALSE", False, t_msg))
