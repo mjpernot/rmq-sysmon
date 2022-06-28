@@ -5,6 +5,10 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 
 ## [2.1.1] - 2022-06-28
+- Upgrade python-lib to v2.9.2
+
+## Fixed
+- Upgraded python to v2.8.5 or better to fix daemon error.
 
 
 ## [2.1.0] - 2021-10-04
