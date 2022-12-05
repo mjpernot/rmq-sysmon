@@ -57,7 +57,6 @@ class UnitTest(unittest.TestCase):
         """
 
         self.args = {"-c": "config_file", "-d": "config_dir", "-M": True}
-        self.func_dict = {"-M": rmq_2_sysmon.monitor_queue}
 
     @mock.patch("rmq_2_sysmon.gen_libs.help_func")
     @mock.patch("rmq_2_sysmon.arg_parser.arg_parse2")
