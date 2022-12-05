@@ -6,13 +6,13 @@
 
 echo ""
 echo "Unit test:  rmq_2_sysmon.py"
-test/unit/rmq_2_sysmon/_convert_data.py
-test/unit/rmq_2_sysmon/_process_queue.py
-test/unit/rmq_2_sysmon/help_message.py
-test/unit/rmq_2_sysmon/validate_create_settings.py
-test/unit/rmq_2_sysmon/non_proc_msg.py
-test/unit/rmq_2_sysmon/process_msg.py
-test/unit/rmq_2_sysmon/monitor_queue.py
-test/unit/rmq_2_sysmon/run_program.py
-test/unit/rmq_2_sysmon/main.py
+/usr/bin/python test/unit/rmq_2_sysmon/_convert_data.py
+/usr/bin/python test/unit/rmq_2_sysmon/_process_queue.py
+/usr/bin/python test/unit/rmq_2_sysmon/help_message.py
+/usr/bin/python test/unit/rmq_2_sysmon/validate_create_settings.py
+/usr/bin/python test/unit/rmq_2_sysmon/non_proc_msg.py
+/usr/bin/python test/unit/rmq_2_sysmon/process_msg.py
+/usr/bin/python test/unit/rmq_2_sysmon/monitor_queue.py
+/usr/bin/python test/unit/rmq_2_sysmon/run_program.py
+/usr/bin/python test/unit/rmq_2_sysmon/main.py
 
