@@ -163,7 +163,7 @@ def validate_create_settings(cfg):
 
     else:
         err_msg = err_msg + "Message_Dir: %s is not an absolute path." \
-                  % (cfg.message_dir)
+            % (cfg.message_dir)
         status_flag = False
 
     if os.path.isabs(cfg.log_dir):
@@ -181,7 +181,7 @@ def validate_create_settings(cfg):
 
     else:
         err_msg = err_msg + "Log_Dir: %s is not an absolute path." \
-                  % (cfg.log_dir)
+            % (cfg.log_dir)
         status_flag = False
 
     for queue in cfg.queue_list:
