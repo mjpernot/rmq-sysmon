@@ -17,8 +17,6 @@
 import sys
 import os
 import unittest
-
-# Third-party
 import collections
 import mock
 

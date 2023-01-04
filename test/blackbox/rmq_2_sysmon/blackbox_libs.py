@@ -18,8 +18,6 @@ from __future__ import print_function
 # Standard
 import os
 import sys
-
-# Third-party
 import json
 
 # Local

@@ -19,8 +19,6 @@ from __future__ import print_function
 import os
 import sys
 
-# Third-party
-
 # Local
 sys.path.append(os.getcwd())
 import lib.gen_libs as gen_libs

@@ -18,8 +18,6 @@
 import sys
 import os
 import unittest
-
-# Third-party
 import mock
 
 # Local
