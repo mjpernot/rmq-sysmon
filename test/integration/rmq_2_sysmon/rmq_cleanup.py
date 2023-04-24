@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # Classification (U)
 
 """Program:  rmq_cleanup.py
@@ -13,12 +12,11 @@
 """
 
 # Libraries and Global Variables
+from __future__ import print_function
 
 # Standard
 import os
 import sys
-
-# Third-party
 import pika
 
 # Local

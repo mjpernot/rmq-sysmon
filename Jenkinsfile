@@ -9,10 +9,10 @@ pipeline {
         stage('Test') {
             steps {
                 dir ('lib') {
-                    git branch: "mod/292", credentialsId: "2cfb403c-be21-4fac-94d7-c8cd5c531feb", url: "https://gitlab.code.dicelab.net/JAC-IDM/python-lib.git"
+                    git branch: "mod/294", credentialsId: "2cfb403c-be21-4fac-94d7-c8cd5c531feb", url: "https://gitlab.code.dicelab.net/JAC-IDM/python-lib.git"
                 }
                 dir ('rabbit_lib') {
-                    git branch: "mod/212", credentialsId: "2cfb403c-be21-4fac-94d7-c8cd5c531feb", url: "https://gitlab.code.dicelab.net/JAC-IDM/rabbitmq-lib.git"
+                    git branch: "mod/221", credentialsId: "2cfb403c-be21-4fac-94d7-c8cd5c531feb", url: "https://gitlab.code.dicelab.net/JAC-IDM/rabbitmq-lib.git"
                 }
                 sh """
                 virtualenv test_env
@@ -20,17 +20,17 @@ pipeline {
                 pip2 install mock==2.0.0 --user
                 pip2 install pika==1.2.0 --user
                 pip2 install psutil==5.4.3 --user
-                ./test/unit/rmq_2_sysmon/_convert_data.py
-                ./test/unit/rmq_2_sysmon/_process_queue.py
-                ./test/unit/rmq_2_sysmon/help_message.py
-                ./test/unit/rmq_2_sysmon/process_msg.py
-                ./test/unit/rmq_2_sysmon/non_proc_msg.py
-                ./test/unit/rmq_2_sysmon/monitor_queue.py
-                ./test/unit/rmq_2_sysmon/validate_create_settings.py
-                ./test/unit/rmq_2_sysmon/run_program.py
-                ./test/unit/rmq_2_sysmon/main.py
-                ./test/unit/daemon_rmq_2_sysmon/is_active.py
-                ./test/unit/daemon_rmq_2_sysmon/main.py
+                /usr/bin/python ./test/unit/rmq_2_sysmon/_convert_data.py
+                /usr/bin/python ./test/unit/rmq_2_sysmon/_process_queue.py
+                /usr/bin/python ./test/unit/rmq_2_sysmon/help_message.py
+                /usr/bin/python ./test/unit/rmq_2_sysmon/process_msg.py
+                /usr/bin/python ./test/unit/rmq_2_sysmon/non_proc_msg.py
+                /usr/bin/python ./test/unit/rmq_2_sysmon/monitor_queue.py
+                /usr/bin/python ./test/unit/rmq_2_sysmon/validate_create_settings.py
+                /usr/bin/python ./test/unit/rmq_2_sysmon/run_program.py
+                /usr/bin/python ./test/unit/rmq_2_sysmon/main.py
+                /usr/bin/python ./test/unit/daemon_rmq_2_sysmon/is_active.py
+                /usr/bin/python ./test/unit/daemon_rmq_2_sysmon/main.py
                 deactivate
                 rm -rf test_env
                 """

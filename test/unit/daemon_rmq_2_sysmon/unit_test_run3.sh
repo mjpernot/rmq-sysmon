@@ -6,6 +6,6 @@
 
 echo ""
 echo "Unit test:  daemon_rmq_2_sysmon.py"
-/usr/bin/python test/unit/daemon_rmq_2_sysmon/is_active.py
-/usr/bin/python test/unit/daemon_rmq_2_sysmon/main.py
+/usr/bin/python3 test/unit/daemon_rmq_2_sysmon/is_active.py
+/usr/bin/python3 test/unit/daemon_rmq_2_sysmon/main.py
 

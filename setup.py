@@ -12,8 +12,6 @@
 import os
 import setuptools
 
-# Third-party
-
 # Local
 import version
 
@@ -47,7 +45,8 @@ setuptools.setup(
         "Operating System :: Linux :: Ubuntu",
         "Programming Language :: Python",
         "Programming Language :: Python :: 2.7",
+        "Programming Language :: Python :: 3.6",
         "Topic :: Database",
         "Topic :: Database :: RabbitMQ",
-        "Topic :: Database :: RabbitMQ :: 3.6.6",
-        "Topic :: Database :: RabbitMQ :: 3.8.2"])
+        "Topic :: Database :: RabbitMQ :: 3.6",
+        "Topic :: Database :: RabbitMQ :: 3.8"])
