@@ -26,13 +26,7 @@
 
 # Prerequisites:
   * List of Linux packages that need to be installed on the server.
-    - git
-    - python-pip
-    - python-devel
-
-  * Local class/library dependencies within the program structure.
-    - python-lib
-    - rabbitmq-lib
+    - python-devel (python3-devel for Python 3)
 
 
 # Installation:

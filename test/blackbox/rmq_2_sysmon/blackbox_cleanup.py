@@ -17,8 +17,6 @@
 # Standard
 import sys
 import os
-
-# Third-party
 import glob
 
 # Local

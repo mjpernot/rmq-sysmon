@@ -13,13 +13,12 @@
 """
 
 # Libraries and Global Variables
+from __future__ import print_function
 
 # Standard
 import os
 import sys
 import time
-
-# Third-party
 
 # Local
 sys.path.append(os.getcwd())
