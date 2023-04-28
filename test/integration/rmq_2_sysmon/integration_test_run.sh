@@ -6,10 +6,10 @@
 
 echo ""
 echo "Integration test:  rmq_2_sysmon.py"
-test/integration/rmq_2_sysmon/process_msg.py
-test/integration/rmq_2_sysmon/validate_create_settings.py
-test/integration/rmq_2_sysmon/non_proc_msg.py
-test/integration/rmq_2_sysmon/monitor_queue.py
-test/integration/rmq_2_sysmon/run_program.py
-test/integration/rmq_2_sysmon/main.py
+/usr/bin/python test/integration/rmq_2_sysmon/process_msg.py
+/usr/bin/python test/integration/rmq_2_sysmon/validate_create_settings.py
+/usr/bin/python test/integration/rmq_2_sysmon/non_proc_msg.py
+/usr/bin/python test/integration/rmq_2_sysmon/monitor_queue.py
+/usr/bin/python test/integration/rmq_2_sysmon/run_program.py
+/usr/bin/python test/integration/rmq_2_sysmon/main.py
 

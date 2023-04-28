@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # Classification (U)
 
 """Program:  run_program.py
@@ -17,13 +16,7 @@
 # Standard
 import sys
 import os
-
-if sys.version_info < (2, 7):
-    import unittest2 as unittest
-else:
-    import unittest
-
-# Third-party
+import unittest
 import mock
 
 # Local
@@ -71,7 +64,7 @@ class UnitTest(unittest.TestCase):
             self.test_path, self.cfg.queue_list[0]["directory"])
         self.connect_true = "Connected to RabbitMQ node"
         self.args_array = {"-M": True, "-c": "rabbitmq", "-d": "config"}
-        self.func_dict = {"-M": rmq_2_sysmon.monitor_queue}
+        self.func_names = {"-M": rmq_2_sysmon.monitor_queue}
 
     @mock.patch("rmq_2_sysmon.gen_libs.get_base_dir")
     @mock.patch("rmq_2_sysmon.gen_libs.load_module")
@@ -89,7 +82,7 @@ class UnitTest(unittest.TestCase):
         mock_consume.return_value = "RabbitMQ_Tag"
         mock_cfg.return_value = self.cfg
         mock_base.return_value = self.test_path
-        rmq_2_sysmon.run_program(self.args_array, self.func_dict)
+        rmq_2_sysmon.run_program(self.args_array, self.func_names)
 
         self.assertTrue(self.connect_true in open(self.cfg.log_file).read())
 

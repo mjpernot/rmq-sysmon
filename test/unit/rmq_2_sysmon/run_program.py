@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # Classification (U)
 
 """Program:  run_program.py
@@ -17,13 +16,7 @@
 # Standard
 import sys
 import os
-
-if sys.version_info < (2, 7):
-    import unittest2 as unittest
-else:
-    import unittest
-
-# Third-party
+import unittest
 import mock
 
 # Local
@@ -140,7 +133,7 @@ class UnitTest(unittest.TestCase):
         self.cfg = CfgTest()
         self.proglock = ProgramLock(["cmdline"], "FlavorID")
         self.args = {"-c": "config_file", "-d": "config_dir", "-M": True}
-        self.func_dict = {"-M": monitor_queue}
+        self.func_names = {"-M": monitor_queue}
 
     @mock.patch("rmq_2_sysmon.validate_create_settings")
     @mock.patch("rmq_2_sysmon.gen_libs.load_module")
@@ -161,7 +154,7 @@ class UnitTest(unittest.TestCase):
 
         with gen_libs.no_std_out():
             self.assertFalse(rmq_2_sysmon.run_program(self.args,
-                                                      self.func_dict))
+                                                      self.func_names))
 
     @mock.patch("rmq_2_sysmon.validate_create_settings")
     @mock.patch("rmq_2_sysmon.gen_libs.load_module")
@@ -184,7 +177,7 @@ class UnitTest(unittest.TestCase):
         # Remove to skip "for" loop.
         self.args.pop("-M")
 
-        self.assertFalse(rmq_2_sysmon.run_program(self.args, self.func_dict))
+        self.assertFalse(rmq_2_sysmon.run_program(self.args, self.func_names))
 
     @mock.patch("rmq_2_sysmon.monitor_queue")
     @mock.patch("rmq_2_sysmon.validate_create_settings")
@@ -207,7 +200,7 @@ class UnitTest(unittest.TestCase):
         mock_class.ProgramLock.return_value = self.proglock
         mock_func.return_value = True
 
-        self.assertFalse(rmq_2_sysmon.run_program(self.args, self.func_dict))
+        self.assertFalse(rmq_2_sysmon.run_program(self.args, self.func_names))
 
     @mock.patch("rmq_2_sysmon.gen_class.Logger")
     @mock.patch("rmq_2_sysmon.validate_create_settings")
@@ -230,7 +223,7 @@ class UnitTest(unittest.TestCase):
         mock_load.return_value = self.cfg
         mock_valid.return_value = (self.cfg, True, "")
 
-        self.assertFalse(rmq_2_sysmon.run_program(self.args, self.func_dict))
+        self.assertFalse(rmq_2_sysmon.run_program(self.args, self.func_names))
 
     def tearDown(self):
 
