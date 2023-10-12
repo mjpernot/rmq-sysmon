@@ -8,6 +8,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - Replaced the arg_parser code with gen_class.ArgParser code.
 
 ### Changed
+- main, run_program: Replaced the arg_parser code with gen_class.ArgParser code.
 - main, run_program: Removed gen_libs.get_inst call.
 - Documentation updates.
 

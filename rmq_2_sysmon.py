@@ -103,14 +103,12 @@ import json
 
 # Local
 try:
-    from .lib import arg_parser
     from .lib import gen_libs
     from .lib import gen_class
     from .rabbit_lib import rabbitmq_class
     from . import version
 
 except (ValueError, ImportError) as err:
-    import lib.arg_parser as arg_parser
     import lib.gen_libs as gen_libs
     import lib.gen_class as gen_class
     import rabbit_lib.rabbitmq_class as rabbitmq_class
@@ -437,7 +435,7 @@ def monitor_queue(cfg, log):
         log.log_err("Failed to connnect to RabbuitMQ -> Msg: %s" % (err_msg))
 
 
-def run_program(args_array, func_dict):
+def run_program(args, func_dict):
 
     """Function:  run_program
 
@@ -445,20 +443,19 @@ def run_program(args_array, func_dict):
         Set a program lock to prevent other instantiations from running.
 
     Arguments:
-        (input) args_array -> Dict of command line options and values
+        (input) args -> ArgParser class instance
         (input) func_dict -> Dict of function calls and associated options
 
     """
 
-    args_array = dict(args_array)
     func_dict = dict(func_dict)
-    cfg = gen_libs.load_module(args_array["-c"], args_array["-d"])
+    cfg = gen_libs.load_module(args.get_val("-c"), args.get_val("-d"))
     cfg, status_flag, err_msg = validate_create_settings(cfg)
 
     if status_flag:
-        log = gen_class.Logger(cfg.log_file, cfg.log_file, "INFO",
-                               "%(asctime)s %(levelname)s %(message)s",
-                               "%Y-%m-%dT%H:%M:%SZ")
+        log = gen_class.Logger(
+            cfg.log_file, cfg.log_file, "INFO",
+            "%(asctime)s %(levelname)s %(message)s", "%Y-%m-%dT%H:%M:%SZ")
         str_val = "=" * 80
         log.log_info("%s:%s Initialized" % (cfg.host, cfg.exchange_name))
         log.log_info("%s" % (str_val))
@@ -476,8 +473,8 @@ def run_program(args_array, func_dict):
             flavor_id = cfg.exchange_name
             prog_lock = gen_class.ProgramLock(sys.argv, flavor_id)
 
-            # Intersect args_array & func_dict to find which functions to call.
-            for opt in set(args_array.keys()) & set(func_dict.keys()):
+            # Intersect args_array & func_dict to find which functions to call
+            for opt in set(args.get_args_keys()) & set(func_dict.keys()):
                 func_dict[opt](cfg, log)
 
             del prog_lock
@@ -500,7 +497,7 @@ def main(**kwargs):
         line arguments and values.
 
     Variables:
-        dir_chk_list -> contains options which will be directories
+        dir_perms_chk -> contains directories and their octal permissions
         func_dict -> dictionary list for the function calls or other options
         opt_req_list -> contains options that are required for the program
         opt_val_list -> contains options which require values
@@ -513,18 +510,18 @@ def main(**kwargs):
     """
 
     sys.argv = list(kwargs.get("argv_list", sys.argv))
-    dir_chk_list = ["-d"]
+    dir_perms_chk = {"-d": 5}
     func_dict = {"-M": monitor_queue}
     opt_req_list = ["-c", "-d"]
     opt_val_list = ["-c", "-d"]
 
-    # Process argument list from command line.
-    args_array = arg_parser.arg_parse2(sys.argv, opt_val_list)
+    # Process argument list from command line
+    args = gen_class.ArgParser(sys.argv, opt_val=opt_val_list, do_parse=True)
 
-    if not gen_libs.help_func(args_array, __version__, help_message) \
-       and not arg_parser.arg_require(args_array, opt_req_list) \
-       and not arg_parser.arg_dir_chk_crt(args_array, dir_chk_list):
-        run_program(args_array, func_dict)
+    if not gen_libs.help_func(args, __version__, help_message)  \
+       and args.arg_require(opt_req=opt_req_list)               \
+       and args.arg_dir_chk(dir_perms_chk=dir_perms_chk):
+        run_program(args, func_dict)
 
 
 if __name__ == "__main__":

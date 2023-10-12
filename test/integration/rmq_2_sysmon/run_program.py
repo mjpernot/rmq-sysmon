@@ -29,6 +29,57 @@ import version
 __version__ = version.__version__
 
 
+class ArgParser(object):
+
+    """Class:  ArgParser
+
+    Description:  Class stub holder for gen_class.ArgParser class.
+
+    Methods:
+        __init__
+        get_args_keys
+        get_val
+
+    """
+
+    def __init__(self):
+
+        """Method:  __init__
+
+        Description:  Class initialization.
+
+        Arguments:
+
+        """
+
+        self.cmdline = None
+        self.args = dict()
+
+    def get_args_keys(self):
+
+        """Method:  get_args_keys
+
+        Description:  Method stub holder for gen_class.ArgParser.get_args_keys.
+
+        Arguments:
+
+        """
+
+        return list(self.args_array.keys())
+
+    def get_val(self, skey, def_val=None):
+
+        """Method:  get_val
+
+        Description:  Method stub holder for gen_class.ArgParser.get_val.
+
+        Arguments:
+
+        """
+
+        return self.args.get(skey, def_val)
+
+
 class UnitTest(unittest.TestCase):
 
     """Class:  UnitTest
@@ -63,7 +114,8 @@ class UnitTest(unittest.TestCase):
         self.cfg.queue_list[0]["directory"] = os.path.join(
             self.test_path, self.cfg.queue_list[0]["directory"])
         self.connect_true = "Connected to RabbitMQ node"
-        self.args_array = {"-M": True, "-c": "rabbitmq", "-d": "config"}
+        self.args = ArgParser()
+        self.args.args_array = {"-M": True, "-c": "rabbitmq", "-d": "config"}
         self.func_names = {"-M": rmq_2_sysmon.monitor_queue}
 
     @mock.patch("rmq_2_sysmon.gen_libs.get_base_dir")
@@ -82,7 +134,7 @@ class UnitTest(unittest.TestCase):
         mock_consume.return_value = "RabbitMQ_Tag"
         mock_cfg.return_value = self.cfg
         mock_base.return_value = self.test_path
-        rmq_2_sysmon.run_program(self.args_array, self.func_names)
+        rmq_2_sysmon.run_program(self.args, self.func_names)
 
         self.assertTrue(self.connect_true in open(self.cfg.log_file).read())
 
