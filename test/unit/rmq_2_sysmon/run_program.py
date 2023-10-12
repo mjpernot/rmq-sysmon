@@ -75,6 +75,86 @@ class ProgramLock(object):
         self.flavor = flavor
 
 
+class ArgParser(object):
+
+    """Class:  ArgParser
+
+    Description:  Class stub holder for gen_class.ArgParser class.
+
+    Methods:
+        __init__
+        get_args_keys
+        get_val
+
+    """
+
+    def __init__(self):
+
+        """Method:  __init__
+
+        Description:  Class initialization.
+
+        Arguments:
+
+        """
+
+        self.cmdline = None
+        self.args = dict()
+
+    def get_args_keys(self):
+
+        """Method:  get_args_keys
+
+        Description:  Method stub holder for gen_class.ArgParser.get_args_keys.
+
+        Arguments:
+
+        """
+
+        return list(self.args_array.keys())
+
+    def get_val(self, skey, def_val=None):
+
+        """Method:  get_val
+
+        Description:  Method stub holder for gen_class.ArgParser.get_val.
+
+        Arguments:
+
+        """
+
+        return self.args.get(skey, def_val)
+
+
+class CfgTest(object):
+
+    """Class:  CfgTest
+
+    Description:  Class which is a representation of a cfg module.
+
+    Methods:
+        __init__ -> Initialize configuration environment.
+
+    """
+
+    def __init__(self):
+
+        """Method:  __init__
+
+        Description:  Initialization instance of the CfgTest class.
+
+        Arguments:
+
+        """
+
+        self.host = "SERVER_NAME"
+        self.exchange_name = "EXCHANGE_NAME"
+        self.log_file = "LOG_FILE"
+        self.to_line = "TO_LINE"
+        self.queue_list = [
+            {"queue": "QUEUE_NAME", "routing_key": "ROUTING_KEY"}]
+
+
 class UnitTest(unittest.TestCase):
 
     """Class:  UnitTest
@@ -101,38 +181,11 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        class CfgTest(object):
-
-            """Class:  CfgTest
-
-            Description:  Class which is a representation of a cfg module.
-
-            Methods:
-                __init__ -> Initialize configuration environment.
-
-            """
-
-            def __init__(self):
-
-                """Method:  __init__
-
-                Description:  Initialization instance of the CfgTest class.
-
-                Arguments:
-
-                """
-
-                self.host = "SERVER_NAME"
-                self.exchange_name = "EXCHANGE_NAME"
-                self.log_file = "LOG_FILE"
-                self.to_line = "TO_LINE"
-                self.queue_list = [
-                    {"queue": "QUEUE_NAME",
-                     "routing_key": "ROUTING_KEY"}]
-
         self.cfg = CfgTest()
         self.proglock = ProgramLock(["cmdline"], "FlavorID")
-        self.args = {"-c": "config_file", "-d": "config_dir", "-M": True}
+        self.args = ArgParser()
+        self.args.args_array = {
+            "-c": "config_file", "-d": "config_dir", "-M": True}
         self.func_names = {"-M": monitor_queue}
 
     @mock.patch("rmq_2_sysmon.validate_create_settings")
@@ -153,8 +206,8 @@ class UnitTest(unittest.TestCase):
         mock_valid.return_value = (self.cfg, False, "Failed to load cfg")
 
         with gen_libs.no_std_out():
-            self.assertFalse(rmq_2_sysmon.run_program(self.args,
-                                                      self.func_names))
+            self.assertFalse(
+                rmq_2_sysmon.run_program(self.args, self.func_names))
 
     @mock.patch("rmq_2_sysmon.validate_create_settings")
     @mock.patch("rmq_2_sysmon.gen_libs.load_module")
@@ -175,7 +228,7 @@ class UnitTest(unittest.TestCase):
         mock_log.log_close.return_value = True
 
         # Remove to skip "for" loop.
-        self.args.pop("-M")
+        self.args.args_array.pop("-M")
 
         self.assertFalse(rmq_2_sysmon.run_program(self.args, self.func_names))
 

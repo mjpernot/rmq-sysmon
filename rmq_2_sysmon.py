@@ -103,14 +103,12 @@ import json
 
 # Local
 try:
-    from .lib import arg_parser
     from .lib import gen_libs
     from .lib import gen_class
     from .rabbit_lib import rabbitmq_class
     from . import version
 
 except (ValueError, ImportError) as err:
-    import lib.arg_parser as arg_parser
     import lib.gen_libs as gen_libs
     import lib.gen_class as gen_class
     import rabbit_lib.rabbitmq_class as rabbitmq_class
@@ -141,10 +139,10 @@ def validate_create_settings(cfg):
         settings.
 
     Arguments:
-        (input) cfg -> Configuration module name.
-        (output) cfg -> Configuration module handler.
-        (output) status_flag -> True|False - successfully validation/creation.
-        (output) err_msg -> Error message from checks.
+        (input) cfg -> Configuration module name
+        (output) cfg -> Configuration module handler
+        (output) status_flag -> True|False - successfully validation/creation
+        (output) err_msg -> Error message from checks
 
     """
 
@@ -200,12 +198,12 @@ def non_proc_msg(rmq, log, cfg, data, subj, r_key):
     Description:  Process non-processed messages.
 
     Arguments:
-        (input) rmq -> RabbitMQ class instance.
-        (input) log -> Log class instance.
-        (input) cfg -> Configuration settings module for the program.
-        (input) data -> Body of message that was not processed.
-        (input) subj -> Email subject line.
-        (input) r_key -> Routing key for message.
+        (input) rmq -> RabbitMQ class instance
+        (input) log -> Log class instance
+        (input) cfg -> Configuration settings module for the program
+        (input) data -> Body of message that was not processed
+        (input) subj -> Email subject line
+        (input) r_key -> Routing key for message
 
     """
 
@@ -243,11 +241,11 @@ def process_msg(rmq, log, cfg, method, body):
     Description:  Process message from RabbitMQ queue.
 
     Arguments:
-        (input) rmq -> RabbitMQ class instance.
-        (input) log -> Log class instance.
-        (input) cfg -> Configuration settings module for the program.
-        (input) method -> Delivery properties.
-        (input) body -> Message body.
+        (input) rmq -> RabbitMQ class instance
+        (input) log -> Log class instance
+        (input) cfg -> Configuration settings module for the program
+        (input) method -> Delivery properties
+        (input) body -> Message body
 
     """
 
@@ -277,12 +275,12 @@ def _convert_data(rmq, log, cfg, queue, body, r_key):
     Description:  Private function to process message queue.
 
     Arguments:
-        (input) rmq -> RabbitMQ class instance.
-        (input) log -> Log class instance.
-        (input) cfg -> Configuration settings module for the program.
-        (input) queue -> RabbitMQ queue.
-        (input) body -> Message body.
-        (input) r_key -> Routing key.
+        (input) rmq -> RabbitMQ class instance
+        (input) log -> Log class instance
+        (input) cfg -> Configuration settings module for the program
+        (input) queue -> RabbitMQ queue
+        (input) body -> Message body
+        (input) r_key -> Routing key
 
     """
 
@@ -321,10 +319,10 @@ def _process_queue(queue, data, r_key, x_name):
     Description:  Private function to process message queue.
 
     Arguments:
-        (input) queue -> RabbitMQ queue.
-        (input) data -> Converted message body.
-        (input) r_key -> Routing key.
-        (input) x_name -> Exchange name.
+        (input) queue -> RabbitMQ queue
+        (input) data -> Converted message body
+        (input) r_key -> Routing key
+        (input) x_name -> Exchange name
 
     """
 
@@ -370,8 +368,8 @@ def monitor_queue(cfg, log):
     Description:  Monitor RabbitMQ queue for messages.
 
     Arguments:
-        (input) cfg -> Configuration settings module for the program.
-        (input) log -> Log class instance.
+        (input) cfg -> Configuration settings module for the program
+        (input) log -> Log class instance
 
     """
 
@@ -382,10 +380,10 @@ def monitor_queue(cfg, log):
         Description:  Process message from RabbitMQ.
 
         Arguments:
-            (input) channel -> Channel properties.
-            (input) method -> Delivery properties.
-            (input) properties -> Properties of the message.
-            (input) body -> Message body.
+            (input) channel -> Channel properties
+            (input) method -> Delivery properties
+            (input) properties -> Properties of the message
+            (input) body -> Message body
 
         """
 
@@ -437,7 +435,7 @@ def monitor_queue(cfg, log):
         log.log_err("Failed to connnect to RabbuitMQ -> Msg: %s" % (err_msg))
 
 
-def run_program(args_array, func_dict):
+def run_program(args, func_dict):
 
     """Function:  run_program
 
@@ -445,21 +443,19 @@ def run_program(args_array, func_dict):
         Set a program lock to prevent other instantiations from running.
 
     Arguments:
-        (input) args_array -> Dict of command line options and values.
-        (input) func_dict -> Dict of function calls and associated options.
+        (input) args -> ArgParser class instance
+        (input) func_dict -> Dict of function calls and associated options
 
     """
 
-    cmdline = gen_libs.get_inst(sys)
-    args_array = dict(args_array)
     func_dict = dict(func_dict)
-    cfg = gen_libs.load_module(args_array["-c"], args_array["-d"])
+    cfg = gen_libs.load_module(args.get_val("-c"), args.get_val("-d"))
     cfg, status_flag, err_msg = validate_create_settings(cfg)
 
     if status_flag:
-        log = gen_class.Logger(cfg.log_file, cfg.log_file, "INFO",
-                               "%(asctime)s %(levelname)s %(message)s",
-                               "%Y-%m-%dT%H:%M:%SZ")
+        log = gen_class.Logger(
+            cfg.log_file, cfg.log_file, "INFO",
+            "%(asctime)s %(levelname)s %(message)s", "%Y-%m-%dT%H:%M:%SZ")
         str_val = "=" * 80
         log.log_info("%s:%s Initialized" % (cfg.host, cfg.exchange_name))
         log.log_info("%s" % (str_val))
@@ -475,10 +471,10 @@ def run_program(args_array, func_dict):
 
         try:
             flavor_id = cfg.exchange_name
-            prog_lock = gen_class.ProgramLock(cmdline.argv, flavor_id)
+            prog_lock = gen_class.ProgramLock(sys.argv, flavor_id)
 
-            # Intersect args_array & func_dict to find which functions to call.
-            for opt in set(args_array.keys()) & set(func_dict.keys()):
+            # Intersect args_array & func_dict to find which functions to call
+            for opt in set(args.get_args_keys()) & set(func_dict.keys()):
                 func_dict[opt](cfg, log)
 
             del prog_lock
@@ -501,32 +497,31 @@ def main(**kwargs):
         line arguments and values.
 
     Variables:
-        dir_chk_list -> contains options which will be directories.
-        func_dict -> dictionary list for the function calls or other options.
-        opt_req_list -> contains options that are required for the program.
-        opt_val_list -> contains options which require values.
+        dir_perms_chk -> contains directories and their octal permissions
+        func_dict -> dictionary list for the function calls or other options
+        opt_req_list -> contains options that are required for the program
+        opt_val_list -> contains options which require values
 
     Arguments:
-        (input) sys.argv -> Arguments from the command line.
+        (input) sys.argv -> Arguments from the command line
         (input) **kwargs:
-            argv_list -> List of arguments from another program.
+            argv_list -> List of arguments from another program
 
     """
 
-    cmdline = gen_libs.get_inst(sys)
-    cmdline.argv = list(kwargs.get("argv_list", cmdline.argv))
-    dir_chk_list = ["-d"]
+    sys.argv = list(kwargs.get("argv_list", sys.argv))
+    dir_perms_chk = {"-d": 5}
     func_dict = {"-M": monitor_queue}
     opt_req_list = ["-c", "-d"]
     opt_val_list = ["-c", "-d"]
 
-    # Process argument list from command line.
-    args_array = arg_parser.arg_parse2(cmdline.argv, opt_val_list)
+    # Process argument list from command line
+    args = gen_class.ArgParser(sys.argv, opt_val=opt_val_list, do_parse=True)
 
-    if not gen_libs.help_func(args_array, __version__, help_message) \
-       and not arg_parser.arg_require(args_array, opt_req_list) \
-       and not arg_parser.arg_dir_chk_crt(args_array, dir_chk_list):
-        run_program(args_array, func_dict)
+    if not gen_libs.help_func(args, __version__, help_message)  \
+       and args.arg_require(opt_req=opt_req_list)               \
+       and args.arg_dir_chk(dir_perms_chk=dir_perms_chk):
+        run_program(args, func_dict)
 
 
 if __name__ == "__main__":
