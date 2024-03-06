@@ -10,7 +10,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - Updated python-lib to v3.0.3
 
 ### Changed
-- main: Removed gen_libs.get_inst call and replaced arg_parser with gen_class.ArgParser class.
+- daemon_rmq_2_sysmon.main: Removed gen_libs.get_inst call and replaced arg_parser with gen_class.ArgParser class.
 - Set simplejson to 3.12.0 for Python 3.
 - Set chardet to 3.0.4 for Python 2.
 - Documentation updates.
