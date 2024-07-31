@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [2.2.2] - 2024-07-31
+- Set urllib3 to 1.26.19 for Python 2 for security reasons.
+- Updated rabbitmq-lib to v2.2.4
+
+
 ## [2.2.1] - 2024-03-06
 - Updated to work in Red Hat 8
 - Updated rabbitmq-lib to v2.2.3
