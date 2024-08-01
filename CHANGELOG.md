@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [2.3.0] - 2024-08-01
+- Added new type - File - allows attachment and filename in same message.
+
+### Changed
+- main: Removed parsing from gen_class.ArgParser call and called arg_parse2 as part of "if" statement.
+
+
 ## [2.2.2] - 2024-07-31
 - Set urllib3 to 1.26.19 for Python 2 for security reasons.
 - Updated rabbitmq-lib to v2.2.4
