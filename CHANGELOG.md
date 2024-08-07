@@ -6,9 +6,16 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 ## [2.3.0] - 2024-08-01
 - Added new type - File - allows attachment and filename in same message.
+- Updated rabbitmq-lib to v2.2.5
+- Updated simplejson==3.13.2
+- Updated requests==2.25.0
+- Added certifi==2019.11.28
+- Added idna==2.10
+- Removed email==4.0.3
 
 ### Changed
 - main: Removed parsing from gen_class.ArgParser call and called arg_parse2 as part of "if" statement.
+- Updates to requirements.txt.
 
 
 ## [2.2.2] - 2024-07-31
