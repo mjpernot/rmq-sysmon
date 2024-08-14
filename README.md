@@ -10,6 +10,9 @@
  * Prerequisites
  * Installation
  * Configuration
+ * System Service
+   - systemctl
+   - service
  * Running
  * Program Help Function
  * Testing
@@ -117,8 +120,9 @@ Make the appropriate changes to the RabbitMQ environment.
     - ext:  "NAME" - Extension name to the file name.  Default: "", nothing will be added to file name.
     - dtg:  True|False - Add a date and time group to the file name.  Format is: YYYYMMDD_YYMMSS.
     - date:  True|False - Add a date to the file name.  Format is: YYYYMMDD.
-    - stype:  "any"|"dict"|"list"|"str" - Format of the messages that are allowed in the message.
-      -> NOTE:  Any - Any format is allowed, Dict - Dictionary, List - List, Str - String.
+    - stype:  "any"|"dict"|"list"|"str|file" - Format of the messages that are allowed in the message.
+      -> NOTE 1:  Any - Any format is allowed, Dict - Dictionary, List - List, Str - String.
+      -> NOTE 2: File - is an attachment and filename inside a dictionary object.
     - flatten:  True|False - Flattens a dictionary format.  Only applicable to dictionary format.
   queue_list = [
       {"queue": "QUEUE_NAME",
@@ -155,6 +159,26 @@ vim rabbitmq.py
 chmod 600 rabbitmq.py
 ```
 
+
+# System Service
+
+### Systemctl
+(Optional)  Setup and enable program to be ran as a systemctl service.
+
+Modify the systemctl file to change the variables to reflect the environment setup.
+  * Change the working directory in rmq-sysmon.service file, if configured differently.
+    - WorkingDirectory=/opt/local/rmq-sysmon
+  * Change the RabbitMQ configuration file if using a different name.
+    - ExecStart=daemon_rmq_2_sysmon.py -a start -c rabbitmq -d ./config -M
+    - ExecStop=daemon_rmq_2_sysmon.py -a stop -c rabbitmq -d ./config -M
+
+```
+sudo cp {PYTHON_PROJECT}/rmq-sysmon/rmq-sysmon.service /etc/systemd/system
+sudo vim /etc/systemd/system/rmq-sysmon.service
+sudo enable rmq-sysmon.service
+```
+
+### Service
 (Optional)  Setup program to be ran as a service.
 
 Modify the service script to change the variables to reflect the environment setup.
@@ -179,41 +203,31 @@ sudo chown USER_NAME config/rabbitmq.py
 
 # Running
 
+### Running as a systemctl.
+
+```
+systemctl start rmq-sysmon.service
+systemctl stop rmq-sysmon.service
+```
+
 ### Running as a service.
-  * Starting the service.
 
 ```
 service rmq_2_sysmon start
-```
-
-  * Stopping the service.
-
-```
 service rmq_2_sysmon stop
 ```
 
 ### Running as a daemon.
-  * Starting the daemon.
 
 ```
 {Python_Project}/rmq-sysmon/daemon_rmq_2_sysmon.py -a start -c rabbitmq -d {Python_Project}/rmq-sysmon/config -M
-```
-
-  * Stopping the daemon.
-
-```
 {Python_Project}/rmq-sysmon/daemon_rmq_2_sysmon.py -a stop -c rabbitmq -d {Python_Project}/rmq-sysmon/config -M
 ```
 
 ### Running from the command line.
-  * Stating the program.
 
 ```
 {Python_Project}/rmq-sysmon/rmq_2_sysmon.py -c rabbitmq -d {Python_Project}/rmq-sysmon/config -M
-```
-
-  * Stopping the program.
-```
 <Ctrl-C>
 ```
 

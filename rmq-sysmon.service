@@ -1,0 +1,18 @@
+[Unit]
+Description=RabbitMQ to Sysmon
+After=rabbitmq-server.service
+
+[Service]
+Type=simple
+User=root
+
+WorkingDirectory=/opt/local/rmq-sysmon
+ExecStart=daemon_rmq_2_sysmon.py -a start -c rabbitmq -d ./config -M
+ExecStop=daemon_rmq_2_sysmon.py -a stop -c rabbitmq -d ./config -M
+
+# optional items below
+Restart=always or Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

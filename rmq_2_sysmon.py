@@ -83,6 +83,9 @@
         Daemon:
             daemon_rmq_2_sysmon.py -a start -c rabbitmq -d /path/config -M
 
+        Systemctl:
+            systemctl start rmq-sysmon.service
+
         Service:
             service rmq_2_sysmon start
 
@@ -221,6 +224,7 @@ def non_proc_msg(rmq, log, cfg, data, subj, r_key):
     if cfg.to_line:
         log.log_info("Sending email to: %s..." % (cfg.to_line))
         email = gen_class.Mail(cfg.to_line, subj, frm_line)
+        email.add_2_msg("Routing Key: %s" % (r_key))
         email.add_2_msg(data)
         email.send_mail()
 
@@ -278,7 +282,7 @@ def _convert_data(rmq, log, cfg, queue, body, r_key):
         (input) rmq -> RabbitMQ class instance
         (input) log -> Log class instance
         (input) cfg -> Configuration settings module for the program
-        (input) queue -> RabbitMQ queue
+        (input) queue -> RabbitMQ configuration queue_list
         (input) body -> Message body
         (input) r_key -> Routing key
 
@@ -287,10 +291,15 @@ def _convert_data(rmq, log, cfg, queue, body, r_key):
     try:
         data = ast.literal_eval(body)
 
-        if queue["stype"] == "any" \
-           or (queue["stype"] == "dict" and isinstance(data, dict)) \
-           or (queue["stype"] == "list" and isinstance(data, list)) \
-           or (queue["stype"] == "str" and isinstance(data, str)):
+        if queue["stype"] == "file" and isinstance(data, dict):
+            f_name = os.path.join(queue["directory"], data["AFilename"])
+            gen_libs.write_file(
+                fname=f_name, mode=queue["mode"], data=data["File"])
+
+        elif queue["stype"] == "any" \
+             or (queue["stype"] == "dict" and isinstance(data, dict)) \
+             or (queue["stype"] == "list" and isinstance(data, list)) \
+             or (queue["stype"] == "str" and isinstance(data, str)):
 
             _process_queue(queue, data, r_key, cfg.exchange_name)
 
@@ -319,7 +328,7 @@ def _process_queue(queue, data, r_key, x_name):
     Description:  Private function to process message queue.
 
     Arguments:
-        (input) queue -> RabbitMQ queue
+        (input) queue -> RabbitMQ configuration queue_list
         (input) data -> Converted message body
         (input) r_key -> Routing key
         (input) x_name -> Exchange name
@@ -451,10 +460,11 @@ def run_program(args, func_dict):
     func_dict = dict(func_dict)
     cfg = gen_libs.load_module(args.get_val("-c"), args.get_val("-d"))
     cfg, status_flag, err_msg = validate_create_settings(cfg)
+    date = "." + datetime.datetime.strftime(datetime.datetime.now(), "%Y%m%d")
 
     if status_flag:
         log = gen_class.Logger(
-            cfg.log_file, cfg.log_file, "INFO",
+            cfg.log_file, cfg.log_file + date, "INFO",
             "%(asctime)s %(levelname)s %(message)s", "%Y-%m-%dT%H:%M:%SZ")
         str_val = "=" * 80
         log.log_info("%s:%s Initialized" % (cfg.host, cfg.exchange_name))
