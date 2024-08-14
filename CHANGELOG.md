@@ -4,6 +4,24 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [2.3.0] - 2024-08-01
+- Added new stype - file - allows attachment and filename in same message.
+- Updated rabbitmq-lib to v2.2.5
+- Updated simplejson==3.13.2
+- Updated requests==2.25.0
+- Added certifi==2019.11.28
+- Added idna==2.10
+- Added systemctl file for rmq-sysmon daemon.
+
+### Changed
+- non_proc_msg: Added Routing Key information to email body.
+- run_program: Added date format to the log file name.
+- \_convert_data: Added check for stype of file for attachment and associated filename.
+- main: Removed parsing from gen_class.ArgParser call and called arg_parse2 as part of "if" statement.
+- Updates to requirements.txt.
+- Documentation updates.
+
+
 ## [2.2.2] - 2024-07-31
 - Set urllib3 to 1.26.19 for Python 2 for security reasons.
 - Updated rabbitmq-lib to v2.2.4

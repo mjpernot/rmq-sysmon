@@ -27,6 +27,77 @@ import version
 __version__ = version.__version__
 
 
+class MethodTest(object):
+
+    """Class:  MethodTest
+
+    Description:  Class which is a representation of a method module.
+
+    Methods:
+        __init__ -> Initialize configuration environment.
+
+    """
+
+    def __init__(self):
+
+        """Method:  __init__
+
+        Description:  Initialization instance of the CfgTest class.
+
+        Arguments:
+
+        """
+
+        self.routing_key = "ROUTING_KEY"
+
+
+class CfgTest(object):
+
+    """Class:  CfgTest
+
+    Description:  Class which is a representation of a cfg module.
+
+    Methods:
+        __init__ -> Initialize configuration environment.
+
+    """
+
+    def __init__(self):
+
+        """Method:  __init__
+
+        Description:  Initialization instance of the CfgTest class.
+
+        Arguments:
+
+        """
+
+        self.host = "HOSTNAME"
+        self.exchange_name = "rmq_2_isse_unit_test"
+        self.to_line = None
+        self.port = 5672
+        self.exchange_type = "direct"
+        self.x_durable = True
+        self.q_durable = True
+        self.auto_delete = False
+        self.message_dir = "message_dir"
+        self.log_dir = "logs"
+        self.log_file = "rmq_2_isse.log"
+        self.queue_list = [
+            {"queue": "rmq_2_isse_unit_test",
+             "routing_key": "ROUTING_KEY",
+             "directory": "/SYSMON_DIR_PATH",
+             "prename": "Pre-filename",
+             "postname": "Post-filename",
+             "key": "Server",
+             "mode": "a",
+             "ext": "",
+             "dtg": False,
+             "date": False,
+             "stype": "dict",
+             "flatten": True}]
+
+
 class UnitTest(unittest.TestCase):
 
     """Class:  UnitTest
@@ -35,6 +106,8 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp
+        test_is_file
+        test_is_not_file
         test_default_name
         test_no_postname
         test_postname
@@ -75,75 +148,6 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        class MethodTest(object):
-
-            """Class:  MethodTest
-
-            Description:  Class which is a representation of a method module.
-
-            Methods:
-                __init__ -> Initialize configuration environment.
-
-            """
-
-            def __init__(self):
-
-                """Method:  __init__
-
-                Description:  Initialization instance of the CfgTest class.
-
-                Arguments:
-
-                """
-
-                self.routing_key = "ROUTING_KEY"
-
-        class CfgTest(object):
-
-            """Class:  CfgTest
-
-            Description:  Class which is a representation of a cfg module.
-
-            Methods:
-                __init__ -> Initialize configuration environment.
-
-            """
-
-            def __init__(self):
-
-                """Method:  __init__
-
-                Description:  Initialization instance of the CfgTest class.
-
-                Arguments:
-
-                """
-
-                self.host = "HOSTNAME"
-                self.exchange_name = "rmq_2_isse_unit_test"
-                self.to_line = None
-                self.port = 5672
-                self.exchange_type = "direct"
-                self.x_durable = True
-                self.q_durable = True
-                self.auto_delete = False
-                self.message_dir = "message_dir"
-                self.log_dir = "logs"
-                self.log_file = "rmq_2_isse.log"
-                self.queue_list = [
-                    {"queue": "rmq_2_isse_unit_test",
-                     "routing_key": "ROUTING_KEY",
-                     "directory": "/SYSMON_DIR_PATH",
-                     "prename": "Pre-filename",
-                     "postname": "Post-filename",
-                     "key": "Server",
-                     "mode": "a",
-                     "ext": "",
-                     "dtg": False,
-                     "date": False,
-                     "stype": "dict",
-                     "flatten": True}]
-
         self.cfg = CfgTest()
         self.cfg2 = CfgTest()
         self.cfg2.queue_list[0]["stype"] = "list"
@@ -171,16 +175,61 @@ class UnitTest(unittest.TestCase):
         self.cfg12.queue_list[0]["prename"] = ""
         self.cfg13 = CfgTest()
         self.cfg13.queue_list[0]["routing_key"] = "NO_ROUTING_KEY"
+        self.cfg14 = CfgTest()
+        self.cfg14.queue_list[0]["stype"] = "file"
         self.base_dir = "/BASE_DIR_PATH"
         self.method = MethodTest()
         self.body = {"Server": "SERVER_NAME.domain.name"}
         self.body2 = {"Non-Key": "Non-Value"}
         self.body3 = "This a string"
+        self.body4 = {"AFilename": "Attachment_Filename", "File": "Attachment"}
         self.rawbody = '{"Server": "SERVER_NAME.domain.name"}'
         self.rawbody2 = '{"Non-Key": "Non-Value"}'
         self.rawbody3 = '"This a string"'
         self.rawbody4 = '["This", "a", "string"]'
         self.rmq = "RabbitMQ Instance"
+
+    @mock.patch("rmq_2_sysmon.gen_libs.write_file",
+                mock.Mock(return_value=True))
+    @mock.patch("rmq_2_sysmon.gen_class.Logger")
+    @mock.patch("rmq_2_sysmon.ast.literal_eval")
+    def test_is_file(self, mock_json, mock_log):
+
+        """Function:  test_is_file
+
+        Description:  Test if the body is a dictionary for stype of file.
+
+        Arguments:
+
+        """
+
+        mock_json.return_value = self.body
+        mock_log.return_value = True
+
+        self.assertFalse(rmq_2_sysmon._convert_data(
+            self.rmq, mock_log, self.cfg, self.cfg.queue_list[0],
+            self.body4, self.cfg.queue_list[0]["key"]))
+
+    @mock.patch("rmq_2_sysmon.gen_class.Logger")
+    @mock.patch("rmq_2_sysmon.non_proc_msg")
+    @mock.patch("rmq_2_sysmon.ast.literal_eval")
+    def test_is_not_file(self, mock_json, mock_msg, mock_log):
+
+        """Function:  test_is_not_file
+
+        Description:  Test if the body is not a dictionary for stype of file.
+
+        Arguments:
+
+        """
+
+        mock_json.return_value = ["Key", "Value"]
+        mock_msg.return_value = True
+        mock_log.return_value = True
+
+        self.assertFalse(rmq_2_sysmon._convert_data(
+            self.rmq, mock_log, self.cfg, self.cfg.queue_list[0],
+            self.body4, self.cfg.queue_list[0]["key"]))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
                 mock.Mock(return_value=True))
