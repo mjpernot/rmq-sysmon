@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [2.3.1] - 2024-08-15
+
+### Fixed
+- \_convert_data:  Base64 decode the data before writing to a file.
+
+
 ## [2.3.0] - 2024-08-01
 - Added new stype - file - allows attachment and filename in same message.
 - Updated rabbitmq-lib to v2.2.5
