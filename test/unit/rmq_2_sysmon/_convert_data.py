@@ -191,6 +191,9 @@ class UnitTest(unittest.TestCase):
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
                 mock.Mock(return_value=True))
+    @mock.patch("rmq_2_sysmon.base64.decode", mock.Mock(return_value=True))
+    @mock.patch("rmq_2_sysmon.io.open", mock.Mock(return_value=True))
+    @mock.patch("rmq_2_sysmon.gen_libs.rm_file", mock.Mock(return_value=True))
     @mock.patch("rmq_2_sysmon.gen_class.Logger")
     @mock.patch("rmq_2_sysmon.ast.literal_eval")
     def test_is_file(self, mock_json, mock_log):
@@ -203,12 +206,12 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_json.return_value = self.body
+        mock_json.return_value = self.body4
         mock_log.return_value = True
 
         self.assertFalse(rmq_2_sysmon._convert_data(
-            self.rmq, mock_log, self.cfg, self.cfg.queue_list[0],
-            self.body4, self.cfg.queue_list[0]["key"]))
+            self.rmq, mock_log, self.cfg, self.cfg14.queue_list[0],
+            self.body4, self.cfg14.queue_list[0]["key"]))
 
     @mock.patch("rmq_2_sysmon.gen_class.Logger")
     @mock.patch("rmq_2_sysmon.non_proc_msg")
