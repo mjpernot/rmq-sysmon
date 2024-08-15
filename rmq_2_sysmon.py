@@ -103,6 +103,8 @@ import getpass
 import datetime
 import ast
 import json
+import base64
+import io
 
 # Local
 try:
@@ -293,8 +295,14 @@ def _convert_data(rmq, log, cfg, queue, body, r_key):
 
         if queue["stype"] == "file" and isinstance(data, dict):
             f_name = os.path.join(queue["directory"], data["AFilename"])
-            gen_libs.write_file(
-                fname=f_name, mode=queue["mode"], data=data["File"])
+            rdtg = datetime.datetime.now()
+            dtg = datetime.datetime.strftime(rdtg, "%Y%m%d_%H%M%S")
+            t_name = data["AFilename"] + dtg
+            t_dir = os.path.join("/", "tmp")
+            t_file = os.path.join(t_dir, t_name)
+            gen_libs.write_file(fname=t_file, mode='w', data=data['File'])
+            base64.decode(io.open(t_file, 'rb'), io.open(f_name, 'wb'))
+            gen_libs.rm_file(t_file)
 
         elif queue["stype"] == "any" \
              or (queue["stype"] == "dict" and isinstance(data, dict)) \
