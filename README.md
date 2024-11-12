@@ -254,7 +254,7 @@ Install the project using the procedures in the Installation section.
 ```
 cd {Python_Project}/rmq-sysmon
 test/unit/rmq_2_sysmon/unit_test_run.sh
-test/unit/daemon_rmq_2_sysmon/unit_test_run.sh
+test/unit/daemon_rmq_2_sysmon/unit_test_run3.sh
 ```
 
 ### Code coverage:
@@ -308,7 +308,7 @@ chmod 600 rabbitmq.py
 
 ```
 cd {Python_Project}/rmq-sysmon
-test/integration/rmq_2_sysmon/integration_test_run.sh
+test/integration/rmq_2_sysmon/integration_test_run3.sh
 ```
 
 ### Code coverage:
