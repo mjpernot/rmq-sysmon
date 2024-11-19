@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [2.3.4] - 2024-11-19
+- Updated python-lib to v3.0.8
+- Updated rabbitmq-lib to v2.2.8
+
+### Fixed
+- Set chardet==3.0.4 for Python 3.
+
+
 ## [2.3.3] - 2024-11-12
 - Updated chardet==4.0.0 for Python 3.
 - Added distro==1.9.0 for Python 3.
