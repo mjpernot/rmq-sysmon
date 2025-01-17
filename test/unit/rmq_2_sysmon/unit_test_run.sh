@@ -6,8 +6,8 @@
 
 echo ""
 echo "Unit test:  rmq_2_sysmon.py"
-/usr/bin/python test/unit/rmq_2_sysmon/_convert_data.py
-/usr/bin/python test/unit/rmq_2_sysmon/_process_queue.py
+/usr/bin/python test/unit/rmq_2_sysmon/convert_data.py
+/usr/bin/python test/unit/rmq_2_sysmon/process_queue.py
 /usr/bin/python test/unit/rmq_2_sysmon/help_message.py
 /usr/bin/python test/unit/rmq_2_sysmon/validate_create_settings.py
 /usr/bin/python test/unit/rmq_2_sysmon/non_proc_msg.py

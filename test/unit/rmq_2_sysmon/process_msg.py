@@ -21,10 +21,81 @@ import mock
 
 # Local
 sys.path.append(os.getcwd())
-import rmq_2_sysmon
-import version
+import rmq_2_sysmon                             # pylint:disable=E0401,C0413
+import version                                  # pylint:disable=E0401,C0413
 
 __version__ = version.__version__
+
+
+class MethodTest():                                     # pylint:disable=R0903
+
+    """Class:  MethodTest
+
+    Description:  Class which is a representation of a method module.
+
+    Methods:
+        __init__
+
+    """
+
+    def __init__(self):
+
+        """Method:  __init__
+
+        Description:  Initialization instance of the CfgTest class.
+
+        Arguments:
+
+        """
+
+        self.routing_key = "ROUTING_KEY"
+
+
+class CfgTest():                                        # pylint:disable=R0903
+
+    """Class:  CfgTest
+
+    Description:  Class which is a representation of a cfg module.
+
+    Methods:
+        __init__
+
+    """
+
+    def __init__(self):
+
+        """Method:  __init__
+
+        Description:  Initialization instance of the CfgTest class.
+
+        Arguments:
+
+        """
+
+        self.host = "HOSTNAME"
+        self.exchange_name = "rmq_2_isse_unit_test"
+        self.to_line = None
+        self.port = 5672
+        self.exchange_type = "direct"
+        self.x_durable = True
+        self.q_durable = True
+        self.auto_delete = False
+        self.message_dir = "message_dir"
+        self.log_dir = "logs"
+        self.log_file = "rmq_2_isse.log"
+        self.queue_list = [
+            {"queue": "rmq_2_isse_unit_test",
+             "routing_key": "ROUTING_KEY",
+             "directory": "/SYSMON_DIR_PATH",
+             "prename": "Pre-filename",
+             "postname": "Post-filename",
+             "key": "Server",
+             "mode": "a",
+             "ext": "",
+             "dtg": False,
+             "date": False,
+             "stype": "dict",
+             "flatten": True}]
 
 
 class UnitTest(unittest.TestCase):
@@ -75,75 +146,6 @@ class UnitTest(unittest.TestCase):
         Arguments:
 
         """
-
-        class MethodTest(object):
-
-            """Class:  MethodTest
-
-            Description:  Class which is a representation of a method module.
-
-            Methods:
-                __init__ -> Initialize configuration environment.
-
-            """
-
-            def __init__(self):
-
-                """Method:  __init__
-
-                Description:  Initialization instance of the CfgTest class.
-
-                Arguments:
-
-                """
-
-                self.routing_key = "ROUTING_KEY"
-
-        class CfgTest(object):
-
-            """Class:  CfgTest
-
-            Description:  Class which is a representation of a cfg module.
-
-            Methods:
-                __init__ -> Initialize configuration environment.
-
-            """
-
-            def __init__(self):
-
-                """Method:  __init__
-
-                Description:  Initialization instance of the CfgTest class.
-
-                Arguments:
-
-                """
-
-                self.host = "HOSTNAME"
-                self.exchange_name = "rmq_2_isse_unit_test"
-                self.to_line = None
-                self.port = 5672
-                self.exchange_type = "direct"
-                self.x_durable = True
-                self.q_durable = True
-                self.auto_delete = False
-                self.message_dir = "message_dir"
-                self.log_dir = "logs"
-                self.log_file = "rmq_2_isse.log"
-                self.queue_list = [
-                    {"queue": "rmq_2_isse_unit_test",
-                     "routing_key": "ROUTING_KEY",
-                     "directory": "/SYSMON_DIR_PATH",
-                     "prename": "Pre-filename",
-                     "postname": "Post-filename",
-                     "key": "Server",
-                     "mode": "a",
-                     "ext": "",
-                     "dtg": False,
-                     "date": False,
-                     "stype": "dict",
-                     "flatten": True}]
 
         self.cfg = CfgTest()
         self.cfg2 = CfgTest()

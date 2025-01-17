@@ -130,9 +130,9 @@ Make the appropriate changes to the RabbitMQ environment.
 ### Systemctl
 
 Modify the systemctl file to change the variables to reflect the environment setup.
-  * Change the working directory in rmq-sysmon.service file, if configured differently.
-    - WorkingDirectory=/opt/local/rmq-sysmon
+  * Change the working or program directory in rmq-sysmon.service file, if installed differently.
   * Change the RabbitMQ configuration file if using a different name.
+    - WorkingDirectory=/opt/local/rmq-sysmon
     - ExecStart=/opt/local/rmq-sysmon/daemon_rmq_2_sysmon.py -a start -c rabbitmq -d /opt/local/rmq-sysmon/config -M
     - ExecStop=/opt/local/rmq-sysmon/daemon_rmq_2_sysmon.py -a stop -c rabbitmq -d /opt/local/rmq-sysmon/config -M
 

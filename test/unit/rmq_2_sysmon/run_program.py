@@ -21,9 +21,9 @@ import mock
 
 # Local
 sys.path.append(os.getcwd())
-import rmq_2_sysmon
-import lib.gen_libs as gen_libs
-import version
+import rmq_2_sysmon                             # pylint:disable=E0401,C0413
+import lib.gen_libs as gen_libs             # pylint:disable=E0401,C0413,R0402
+import version                                  # pylint:disable=E0401,C0413
 
 __version__ = version.__version__
 
@@ -48,7 +48,7 @@ def monitor_queue(cfg, log):
     return status
 
 
-class ProgramLock(object):
+class ProgramLock():                                    # pylint:disable=R0903
 
     """Class:  ProgramLock
 
@@ -75,7 +75,7 @@ class ProgramLock(object):
         self.flavor = flavor
 
 
-class ArgParser(object):
+class ArgParser():
 
     """Class:  ArgParser
 
@@ -99,7 +99,7 @@ class ArgParser(object):
         """
 
         self.cmdline = None
-        self.args = dict()
+        self.args = {}
 
     def get_args_keys(self):
 
@@ -126,14 +126,14 @@ class ArgParser(object):
         return self.args.get(skey, def_val)
 
 
-class CfgTest(object):
+class CfgTest():                                        # pylint:disable=R0903
 
     """Class:  CfgTest
 
     Description:  Class which is a representation of a cfg module.
 
     Methods:
-        __init__ -> Initialize configuration environment.
+        __init__
 
     """
 

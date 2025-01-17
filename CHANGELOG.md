@@ -14,8 +14,23 @@ Breaking Changes
 - Updated python-lib==4.0.0
 - Updated rabbitmq-lib==2.3.0
 
+### Added
+- process_queue: Process the message queue.
+- convert_data: Convert data from message queue.
+
+### Fixed
+- rmq_2_sysmon.process_msg: Converted message body to string as Python 3 returns it as a byte string.
+
 ### Changed
+- rmq_2_sysmon.process_msg: Changed \_convert_data call to convert_data call.
+- rmq_2_sysmon: Converted strings to f-strings.
+- daemon_rmq_2_sysmon: Converted strings to f-strings.
+- daemon_rmq_2_sysmon: Added "encoding" argument to open() command and set the "mode" to read to open() command.
 - Documentation updates.
+
+### Removed
+- \_convert_data function.
+- \_process_queue function.
 
 
 ## [2.3.4] - 2024-11-19

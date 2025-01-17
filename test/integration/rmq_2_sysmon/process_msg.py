@@ -21,13 +21,37 @@ import mock
 
 # Local
 sys.path.append(os.getcwd())
-import rmq_2_sysmon
-import rabbit_lib.rabbitmq_class as rabbitmq_class
-import lib.gen_libs as gen_libs
-import lib.gen_class as gen_class
-import version
+import rmq_2_sysmon                             # pylint:disable=E0401,C0413
+import rabbit_lib.rabbitmq_class as rmqcls  # pylint:disable=E0401,C0413,R0402
+import lib.gen_libs as gen_libs             # pylint:disable=E0401,C0413,R0402
+import lib.gen_class as gen_class           # pylint:disable=E0401,C0413,R0402
+import version                                  # pylint:disable=E0401,C0413
 
 __version__ = version.__version__
+
+
+class MethodTest():                                     # pylint:disable=R0903
+
+    """Class:  MethodTest
+
+    Description:  Class which is a representation of a method module.
+
+    Methods:
+        __init__
+
+    """
+
+    def __init__(self):
+
+        """Method:  __init__
+
+        Description:  Initialization instance of the CfgTest class.
+
+        Arguments:
+
+        """
+
+        self.routing_key = "intr-test"
 
 
 class UnitTest(unittest.TestCase):
@@ -54,29 +78,6 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        class MethodTest(object):
-
-            """Class:  MethodTest
-
-            Description:  Class which is a representation of a method module.
-
-            Methods:
-                __init__
-
-            """
-
-            def __init__(self):
-
-                """Method:  __init__
-
-                Description:  Initialization instance of the CfgTest class.
-
-                Arguments:
-
-                """
-
-                self.routing_key = "intr-test"
-
         self.method = MethodTest()
         self.base_dir = "test/integration/rmq_2_sysmon"
         self.test_path = os.path.join(os.getcwd(), self.base_dir)
@@ -91,7 +92,7 @@ class UnitTest(unittest.TestCase):
         self.log = gen_class.Logger(
             self.cfg.log_file, self.cfg.log_file, "INFO",
             "%(asctime)s %(levelname)s %(message)s", "%Y-%m-%dT%H:%M:%SZ")
-        self.rmq = rabbitmq_class.RabbitMQCon(
+        self.rmq = rmqcls.RabbitMQCon(
             self.cfg.user, self.cfg.japd, self.cfg.host, self.cfg.port,
             exchange_name=self.cfg.exchange_name,
             exchange_type=self.cfg.exchange_type,
@@ -123,7 +124,9 @@ class UnitTest(unittest.TestCase):
                                  self.body2)
         self.log.log_close()
 
-        self.assertTrue(self.non_proc_msg in open(self.cfg.log_file).read())
+        self.assertTrue(
+            self.non_proc_msg in open(                  # pylint:disable=R1732
+                self.cfg.log_file, encoding="UTF-8").read())
 
     def test_body_dict_true(self):
 
@@ -135,13 +138,14 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        rmq_2_sysmon.process_msg(self.rmq, self.log, self.cfg, self.method,
-                                 self.body)
+        rmq_2_sysmon.process_msg(
+            self.rmq, self.log, self.cfg, self.method, self.body)
         self.log.log_close()
 
         self.assertTrue(
-            self.log_chk in open(
-                self.cfg.log_file).read() and os.path.isfile(self.sysmon_file))
+            self.log_chk in open(                       # pylint:disable=R1732
+                self.cfg.log_file, encoding="UTF-8").read()
+            and os.path.isfile(self.sysmon_file))
 
     def tearDown(self):
 
