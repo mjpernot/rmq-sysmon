@@ -86,14 +86,9 @@
         Systemctl:
             systemctl start rmq-sysmon.service
 
-        Service:
-            service rmq_2_sysmon start
-
 """
 
 # Libraries and Global Variables
-from __future__ import print_function
-from __future__ import absolute_import
 
 # Standard
 import sys
@@ -102,9 +97,13 @@ import socket
 import getpass
 import datetime
 import ast
-import json
 import base64
 import io
+
+try:
+    import simplejson as json
+except ImportError:
+    import json
 
 # Local
 try:
@@ -114,9 +113,9 @@ try:
     from . import version
 
 except (ValueError, ImportError) as err:
-    import lib.gen_libs as gen_libs
-    import lib.gen_class as gen_class
-    import rabbit_lib.rabbitmq_class as rabbitmq_class
+    import lib.gen_libs as gen_libs                     # pylint:disable=R0402
+    import lib.gen_class as gen_class                   # pylint:disable=R0402
+    import rabbit_lib.rabbitmq_class as rabbitmq_class  # pylint:disable=R0402
     import version
 
 __version__ = version.__version__
@@ -155,21 +154,21 @@ def validate_create_settings(cfg):
     status_flag = True
 
     if os.path.isabs(cfg.message_dir):
-        status, msg = gen_libs.chk_crt_dir(cfg.message_dir, write=True,
-                                           read=True, no_print=True)
+        status, msg = gen_libs.chk_crt_dir(
+            cfg.message_dir, write=True, read=True, no_print=True)
 
         if not status:
             err_msg = err_msg + msg
             status_flag = False
 
     else:
-        err_msg = err_msg + "Message_Dir: %s is not an absolute path." \
-            % (cfg.message_dir)
+        err_msg = err_msg + \
+                  f"Message_Dir: {cfg.message_dir} is not an absolute path."
         status_flag = False
 
     if os.path.isabs(cfg.log_dir):
-        status, msg = gen_libs.chk_crt_dir(cfg.log_dir, write=True, read=True,
-                                           no_print=True)
+        status, msg = gen_libs.chk_crt_dir(
+            cfg.log_dir, write=True, read=True, no_print=True)
 
         if status:
             base_name, ext_name = os.path.splitext(cfg.log_file)
@@ -181,13 +180,12 @@ def validate_create_settings(cfg):
             status_flag = False
 
     else:
-        err_msg = err_msg + "Log_Dir: %s is not an absolute path." \
-            % (cfg.log_dir)
+        err_msg = err_msg + f"Log_Dir: {cfg.log_dir} is not an absolute path."
         status_flag = False
 
     for queue in cfg.queue_list:
-        status, msg = gen_libs.chk_crt_dir(queue["directory"], write=True,
-                                           read=True, no_print=True)
+        status, msg = gen_libs.chk_crt_dir(
+            queue["directory"], write=True, read=True, no_print=True)
 
         if not status:
             err_msg = err_msg + msg
@@ -196,7 +194,7 @@ def validate_create_settings(cfg):
     return cfg, status_flag, err_msg
 
 
-def non_proc_msg(rmq, log, cfg, data, subj, r_key):
+def non_proc_msg(rmq, log, cfg, data, subj, r_key):     # pylint:disable=R0913
 
     """Function:  non_proc_msg
 
@@ -213,8 +211,7 @@ def non_proc_msg(rmq, log, cfg, data, subj, r_key):
     """
 
     log.log_info(
-        "non_proc_msg:  Processing failed message from Routing Key: %s" %
-        (r_key))
+        f"non_proc_msg:  Processing failed message from Routing Key: {r_key}")
     frm_line = getpass.getuser() + "@" + socket.gethostname()
     rdtg = datetime.datetime.now()
     dtg = datetime.datetime.strftime(
@@ -224,19 +221,19 @@ def non_proc_msg(rmq, log, cfg, data, subj, r_key):
     subj = "rmq_2_sysmon: " + subj
 
     if cfg.to_line:
-        log.log_info("Sending email to: %s..." % (cfg.to_line))
+        log.log_info(f"Sending email to: {cfg.to_line}...")
         email = gen_class.Mail(cfg.to_line, subj, frm_line)
-        email.add_2_msg("Routing Key: %s" % (r_key))
+        email.add_2_msg(f"Routing Key: {r_key}")
         email.add_2_msg(data)
         email.send_mail()
 
     else:
         log.log_warn("No email being sent as TO line is empty.")
 
-    log.log_err("RabbitMQ message was not processed due to: %s" % (subj))
-    log.log_info("Saving message to: %s" % (f_path))
-    gen_libs.write_file(f_path, data="Exchange: %s, Routing Key: %s"
-                        % (rmq.exchange, r_key))
+    log.log_err(f"RabbitMQ message was not processed due to: {subj}")
+    log.log_info(f"Saving message to: {f_path}")
+    gen_libs.write_file(
+        f_path, data=f"Exchange: {rmq.exchange}, Routing Key: {r_key}")
     gen_libs.write_file(f_path, data=data)
 
 
@@ -255,10 +252,14 @@ def process_msg(rmq, log, cfg, method, body):
 
     """
 
+    if not isinstance(body, str):
+        # Python 3 returns a byte string instead of a string
+        body = str(body, encoding="UTF-8")
+
     r_key = method.routing_key
     queue = None
     log.log_info(
-        "process_msg:  Processing message body from Routing Key: %s" % (r_key))
+        f"process_msg:  Processing message body from Routing Key: {r_key}")
 
     for item in cfg.queue_list:
 
@@ -268,17 +269,17 @@ def process_msg(rmq, log, cfg, method, body):
 
     if queue:
 
-        _convert_data(rmq, log, cfg, queue, body, r_key)
+        convert_data(rmq, log, cfg, queue, body, r_key)
 
     else:
         non_proc_msg(rmq, log, cfg, body, "No queue detected", r_key)
 
 
-def _convert_data(rmq, log, cfg, queue, body, r_key):
+def convert_data(rmq, log, cfg, queue, body, r_key):   # pylint:disable=R0913
 
-    """Function:  _convert_data
+    """Function:  convert_data
 
-    Description:  Private function to process message queue.
+    Description:  Convert data from message queue.
 
     Arguments:
         (input) rmq -> RabbitMQ class instance
@@ -300,19 +301,21 @@ def _convert_data(rmq, log, cfg, queue, body, r_key):
             t_name = data["AFilename"] + dtg
             t_dir = os.path.join("/", "tmp")
             t_file = os.path.join(t_dir, t_name)
-            gen_libs.write_file(fname=t_file, mode='w', data=data['File'])
-            base64.decode(io.open(t_file, 'rb'), io.open(f_name, 'wb'))
+            gen_libs.write_file(fname=t_file, mode="w", data=data["File"])
+            base64.decode(
+                io.open(t_file, mode="rb"),             # pylint:disable=R1732
+                io.open(f_name, "wb"))                  # pylint:disable=R1732
             gen_libs.rm_file(t_file)
 
-        elif queue["stype"] == "any" \
-             or (queue["stype"] == "dict" and isinstance(data, dict)) \
-             or (queue["stype"] == "list" and isinstance(data, list)) \
-             or (queue["stype"] == "str" and isinstance(data, str)):
+        elif queue["stype"] == "any" or (
+                queue["stype"] == "dict" and isinstance(data, dict)) or (
+                queue["stype"] == "list" and isinstance(data, list)) or (
+                queue["stype"] == "str" and isinstance(data, str)):
 
-            _process_queue(queue, data, r_key, cfg.exchange_name)
+            process_queue(queue, data, r_key, cfg.exchange_name)
 
         else:
-            msg = "Incorrect type detected: %s" % (type(data))
+            msg = f"Incorrect type detected: {type(data)}"
             non_proc_msg(rmq, log, cfg, body, msg, r_key)
 
     except (SyntaxError) as err:
@@ -320,7 +323,7 @@ def _convert_data(rmq, log, cfg, queue, body, r_key):
         if isinstance(body, str) and (queue["stype"] == "any" or
                                       queue["stype"] == "str"):
 
-            _process_queue(queue, body, r_key, cfg.exchange_name)
+            process_queue(queue, body, r_key, cfg.exchange_name)
 
         else:
             non_proc_msg(rmq, log, cfg, body, str(err), r_key)
@@ -329,11 +332,11 @@ def _convert_data(rmq, log, cfg, queue, body, r_key):
         non_proc_msg(rmq, log, cfg, body, str(err), r_key)
 
 
-def _process_queue(queue, data, r_key, x_name):
+def process_queue(queue, data, r_key, x_name):
 
-    """Function:  _process_queue
+    """Function:  process_queue
 
-    Description:  Private function to process message queue.
+    Description:  Process message queue.
 
     Arguments:
         (input) queue -> RabbitMQ configuration queue_list
@@ -390,7 +393,7 @@ def monitor_queue(cfg, log):
 
     """
 
-    def callback(channel, method, properties, body):
+    def callback(channel, method, properties, body):    # pylint:disable=W0613
 
         """Function:  callback
 
@@ -404,37 +407,37 @@ def monitor_queue(cfg, log):
 
         """
 
-        log.log_info("callback:  Processing message with Routing Key: %s" %
-                     (method.routing_key))
+        log.log_info(f"callback:  Processing message with Routing Key:"
+                     f" {method.routing_key}")
         process_msg(rmq, log, cfg, method, body)
-        log.log_info("Deleting message with Routing Key: %s" %
-                     (method.routing_key))
+        log.log_info(
+            f"Deleting message with Routing Key: {method.routing_key}")
         rmq.ack(method.delivery_tag)
 
     log.log_info("monitor_queue:  Initialize monitoring of queues...")
 
     for queue in cfg.queue_list:
-        rmq = rabbitmq_class.create_rmqcon(cfg, queue["queue"],
-                                           queue["routing_key"])
-        log.log_info("Initializing:  Queue: %s, Routing Key: %s" %
-                     (queue["queue"], queue["routing_key"]))
+        rmq = rabbitmq_class.create_rmqcon(
+            cfg, queue["queue"], queue["routing_key"])
+        log.log_info(f'Initializing:  Queue: {queue["queue"]},'
+                     f' Routing Key: {queue["routing_key"]}')
         connect_status, err_msg = rmq.create_connection()
 
         if connect_status and rmq.channel.is_open:
-            log.log_info("Initialized RabbitMQ node: %s" % (queue["queue"]))
+            log.log_info(f'Initialized RabbitMQ node: {queue["queue"]}')
 
         else:
-            log.log_err("Initialization failed RabbuitMQ: %s -> Msg: %s" %
-                        (queue["queue"], err_msg))
+            log.log_err(f'Initialization failed RabbuitMQ: {queue["queue"]}'
+                        f' -> Msg: {err_msg}')
 
         rmq.drop_connection()
 
     log.log_info("monitor_queue:  Start monitoring queue...")
 
     # Connect to first queue as only one connection required.
-    rmq = rabbitmq_class.create_rmqcon(cfg, cfg.queue_list[0]["queue"],
-                                       cfg.queue_list[0]["routing_key"])
-    log.log_info("Connection info: %s->%s" % (cfg.host, cfg.exchange_name))
+    rmq = rabbitmq_class.create_rmqcon(
+        cfg, cfg.queue_list[0]["queue"], cfg.queue_list[0]["routing_key"])
+    log.log_info(f"Connection info: {cfg.host}->{cfg.exchange_name}")
     connect_status, err_msg = rmq.create_connection()
 
     if connect_status and rmq.channel.is_open:
@@ -442,14 +445,14 @@ def monitor_queue(cfg, log):
 
         # Setup the RabbitMQ Consume callback on multiple queues.
         for queue in cfg.queue_list:
-            log.log_info("Monitoring RabbitMQ Queue: %s, Routing Key: %s" %
-                         (queue["queue"], queue["routing_key"]))
+            log.log_info(f'Monitoring RabbitMQ Queue: {queue["queue"]},'
+                         f'Routing Key: {queue["routing_key"]}')
             rmq.consume(callback, queue=queue["queue"])
 
         rmq.start_loop()
 
     else:
-        log.log_err("Failed to connnect to RabbuitMQ -> Msg: %s" % (err_msg))
+        log.log_err(f"Failed to connnect to RabbuitMQ -> Msg: {err_msg}")
 
 
 def run_program(args, func_dict):
@@ -475,17 +478,17 @@ def run_program(args, func_dict):
             cfg.log_file, cfg.log_file + date, "INFO",
             "%(asctime)s %(levelname)s %(message)s", "%Y-%m-%dT%H:%M:%SZ")
         str_val = "=" * 80
-        log.log_info("%s:%s Initialized" % (cfg.host, cfg.exchange_name))
-        log.log_info("%s" % (str_val))
-        log.log_info("Exchange Name:  %s" % (cfg.exchange_name))
+        log.log_info(f"{cfg.host}:{cfg.exchange_name} Initialized")
+        log.log_info(f"{str_val}")
+        log.log_info(f"Exchange Name:  {cfg.exchange_name}")
         log.log_info("Queue Configuration:")
 
         for queue in cfg.queue_list:
-            log.log_info("\tQueue Name:  %s, Routing Key: %s" %
-                         (queue["queue"], queue["routing_key"]))
+            log.log_info(f'\tQueue Name:  {queue["queue"]},'
+                         f' Routing Key: {queue["routing_key"]}')
 
-        log.log_info("To Email:  %s" % (cfg.to_line))
-        log.log_info("%s" % (str_val))
+        log.log_info(f"To Email:  {cfg.to_line}")
+        log.log_info(f"{str_val}")
 
         try:
             flavor_id = cfg.exchange_name
@@ -498,7 +501,7 @@ def run_program(args, func_dict):
             del prog_lock
 
         except gen_class.SingleInstanceException:
-            log.log_warn("rmq_2_sysmon lock in place for: %s" % (flavor_id))
+            log.log_warn(f"rmq_2_sysmon lock in place for: {flavor_id}")
 
         log.log_close()
 

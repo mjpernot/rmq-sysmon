@@ -1,11 +1,11 @@
 # Classification (U)
 
-"""Program:  _convert_data.py
+"""Program:  convert_data.py
 
-    Description:  Unit testing of _convert_data in rmq_2_sysmon.py.
+    Description:  Unit testing of convert_data in rmq_2_sysmon.py.
 
     Usage:
-        test/unit/rmq_2_sysmon/_convert_data.py
+        test/unit/rmq_2_sysmon/convert_data.py
 
     Arguments:
 
@@ -21,20 +21,20 @@ import mock
 
 # Local
 sys.path.append(os.getcwd())
-import rmq_2_sysmon
-import version
+import rmq_2_sysmon                             # pylint:disable=E0401,C0413
+import version                                  # pylint:disable=E0401,C0413
 
 __version__ = version.__version__
 
 
-class MethodTest(object):
+class MethodTest():                                     # pylint:disable=R0903
 
     """Class:  MethodTest
 
     Description:  Class which is a representation of a method module.
 
     Methods:
-        __init__ -> Initialize configuration environment.
+        __init__
 
     """
 
@@ -51,14 +51,14 @@ class MethodTest(object):
         self.routing_key = "ROUTING_KEY"
 
 
-class CfgTest(object):
+class CfgTest():                                        # pylint:disable=R0903
 
     """Class:  CfgTest
 
     Description:  Class which is a representation of a cfg module.
 
     Methods:
-        __init__ -> Initialize configuration environment.
+        __init__
 
     """
 
@@ -209,7 +209,7 @@ class UnitTest(unittest.TestCase):
         mock_json.return_value = self.body4
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon._convert_data(
+        self.assertFalse(rmq_2_sysmon.convert_data(
             self.rmq, mock_log, self.cfg, self.cfg14.queue_list[0],
             self.body4, self.cfg14.queue_list[0]["key"]))
 
@@ -230,7 +230,7 @@ class UnitTest(unittest.TestCase):
         mock_msg.return_value = True
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon._convert_data(
+        self.assertFalse(rmq_2_sysmon.convert_data(
             self.rmq, mock_log, self.cfg, self.cfg.queue_list[0],
             self.body4, self.cfg.queue_list[0]["key"]))
 
@@ -251,7 +251,7 @@ class UnitTest(unittest.TestCase):
         mock_msg.return_value = True
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon._convert_data(
+        self.assertFalse(rmq_2_sysmon.convert_data(
             self.rmq, mock_log, self.cfg12, self.cfg12.queue_list[0],
             self.rawbody, self.cfg12.queue_list[0]["key"]))
 
@@ -272,7 +272,7 @@ class UnitTest(unittest.TestCase):
         mock_msg.return_value = True
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon._convert_data(
+        self.assertFalse(rmq_2_sysmon.convert_data(
             self.rmq, mock_log, self.cfg11, self.cfg11.queue_list[0],
             self.rawbody, self.cfg11.queue_list[0]["key"]))
 
@@ -293,7 +293,7 @@ class UnitTest(unittest.TestCase):
         mock_msg.return_value = True
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon._convert_data(
+        self.assertFalse(rmq_2_sysmon.convert_data(
             self.rmq, mock_log, self.cfg, self.cfg.queue_list[0],
             self.rawbody, self.cfg.queue_list[0]["key"]))
 
@@ -314,7 +314,7 @@ class UnitTest(unittest.TestCase):
         mock_msg.return_value = True
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon._convert_data(
+        self.assertFalse(rmq_2_sysmon.convert_data(
             self.rmq, mock_log, self.cfg10, self.cfg10.queue_list[0],
             self.rawbody, self.cfg10.queue_list[0]["key"]))
 
@@ -335,7 +335,7 @@ class UnitTest(unittest.TestCase):
         mock_msg.return_value = True
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon._convert_data(
+        self.assertFalse(rmq_2_sysmon.convert_data(
             self.rmq, mock_log, self.cfg, self.cfg.queue_list[0],
             self.rawbody, self.cfg.queue_list[0]["key"]))
 
@@ -356,7 +356,7 @@ class UnitTest(unittest.TestCase):
         mock_msg.return_value = True
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon._convert_data(
+        self.assertFalse(rmq_2_sysmon.convert_data(
             self.rmq, mock_log, self.cfg9, self.cfg9.queue_list[0],
             self.rawbody, self.cfg9.queue_list[0]["key"]))
 
@@ -377,7 +377,7 @@ class UnitTest(unittest.TestCase):
         mock_msg.return_value = True
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon._convert_data(
+        self.assertFalse(rmq_2_sysmon.convert_data(
             self.rmq, mock_log, self.cfg, self.cfg.queue_list[0],
             self.rawbody, self.cfg.queue_list[0]["key"]))
 
@@ -398,7 +398,7 @@ class UnitTest(unittest.TestCase):
         mock_msg.return_value = True
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon._convert_data(
+        self.assertFalse(rmq_2_sysmon.convert_data(
             self.rmq, mock_log, self.cfg8, self.cfg8.queue_list[0],
             self.rawbody, self.cfg8.queue_list[0]["key"]))
 
@@ -419,7 +419,7 @@ class UnitTest(unittest.TestCase):
         mock_msg.return_value = True
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon._convert_data(
+        self.assertFalse(rmq_2_sysmon.convert_data(
             self.rmq, mock_log, self.cfg, self.cfg.queue_list[0],
             self.rawbody, self.cfg.queue_list[0]["key"]))
 
@@ -440,7 +440,7 @@ class UnitTest(unittest.TestCase):
         mock_msg.return_value = True
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon._convert_data(
+        self.assertFalse(rmq_2_sysmon.convert_data(
             self.rmq, mock_log, self.cfg7, self.cfg7.queue_list[0],
             self.rawbody, self.cfg7.queue_list[0]["key"]))
 
@@ -461,7 +461,7 @@ class UnitTest(unittest.TestCase):
         mock_msg.return_value = True
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon._convert_data(
+        self.assertFalse(rmq_2_sysmon.convert_data(
             self.rmq, mock_log, self.cfg, self.cfg.queue_list[0],
             self.rawbody, self.cfg.queue_list[0]["key"]))
 
@@ -482,7 +482,7 @@ class UnitTest(unittest.TestCase):
         mock_msg.return_value = True
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon._convert_data(
+        self.assertFalse(rmq_2_sysmon.convert_data(
             self.rmq, mock_log, self.cfg6, self.cfg6.queue_list[0],
             self.rawbody, self.cfg6.queue_list[0]["key"]))
 
@@ -503,7 +503,7 @@ class UnitTest(unittest.TestCase):
         mock_msg.return_value = True
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon._convert_data(
+        self.assertFalse(rmq_2_sysmon.convert_data(
             self.rmq, mock_log, self.cfg, self.cfg.queue_list[0],
             self.rawbody, self.cfg.queue_list[0]["key"]))
 
@@ -524,7 +524,7 @@ class UnitTest(unittest.TestCase):
         mock_msg.return_value = True
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon._convert_data(
+        self.assertFalse(rmq_2_sysmon.convert_data(
             self.rmq, mock_log, self.cfg5, self.cfg5.queue_list[0],
             self.rawbody, self.cfg5.queue_list[0]["key"]))
 
@@ -545,7 +545,7 @@ class UnitTest(unittest.TestCase):
         mock_msg.return_value = True
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon._convert_data(
+        self.assertFalse(rmq_2_sysmon.convert_data(
             self.rmq, mock_log, self.cfg, self.cfg.queue_list[0],
             self.rawbody2, self.cfg.queue_list[0]["key"]))
 
@@ -566,7 +566,7 @@ class UnitTest(unittest.TestCase):
         mock_msg.return_value = True
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon._convert_data(
+        self.assertFalse(rmq_2_sysmon.convert_data(
             self.rmq, mock_log, self.cfg4, self.cfg4.queue_list[0],
             self.rawbody3, self.cfg4.queue_list[0]["key"]))
 
@@ -587,7 +587,7 @@ class UnitTest(unittest.TestCase):
         mock_msg.return_value = True
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon._convert_data(
+        self.assertFalse(rmq_2_sysmon.convert_data(
             self.rmq, mock_log, self.cfg3, self.cfg3.queue_list[0],
             self.rawbody3, self.cfg3.queue_list[0]["key"]))
 
@@ -608,7 +608,7 @@ class UnitTest(unittest.TestCase):
         mock_msg.return_value = True
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon._convert_data(
+        self.assertFalse(rmq_2_sysmon.convert_data(
             self.rmq, mock_log, self.cfg2, self.cfg2.queue_list[0],
             self.rawbody4, self.cfg2.queue_list[0]["key"]))
 
@@ -627,7 +627,7 @@ class UnitTest(unittest.TestCase):
         mock_msg.return_value = True
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon._convert_data(
+        self.assertFalse(rmq_2_sysmon.convert_data(
             self.rmq, mock_log, self.cfg, self.cfg.queue_list[0],
             self.rawbody3, self.cfg.queue_list[0]["key"]))
 
@@ -648,7 +648,7 @@ class UnitTest(unittest.TestCase):
         mock_msg.return_value = True
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon._convert_data(
+        self.assertFalse(rmq_2_sysmon.convert_data(
             self.rmq, mock_log, self.cfg, self.cfg.queue_list[0],
             self.rawbody2, self.cfg.queue_list[0]["key"]))
 
@@ -669,7 +669,7 @@ class UnitTest(unittest.TestCase):
         mock_msg.return_value = True
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon._convert_data(
+        self.assertFalse(rmq_2_sysmon.convert_data(
             self.rmq, mock_log, self.cfg3, self.cfg3.queue_list[0],
             self.body3, self.cfg3.queue_list[0]["key"]))
 
@@ -688,7 +688,7 @@ class UnitTest(unittest.TestCase):
         mock_msg.return_value = True
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon._convert_data(
+        self.assertFalse(rmq_2_sysmon.convert_data(
             self.rmq, mock_log, self.cfg, self.cfg.queue_list[0],
             self.body3, self.cfg.queue_list[0]["key"]))
 
@@ -707,7 +707,7 @@ class UnitTest(unittest.TestCase):
         mock_msg.return_value = True
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon._convert_data(
+        self.assertFalse(rmq_2_sysmon.convert_data(
             self.rmq, mock_log, self.cfg, self.cfg.queue_list[0],
             self.body2, self.cfg.queue_list[0]["key"]))
 
@@ -730,7 +730,7 @@ class UnitTest(unittest.TestCase):
         mock_log.return_value = True
         mock_msg.return_value = True
 
-        self.assertFalse(rmq_2_sysmon._convert_data(
+        self.assertFalse(rmq_2_sysmon.convert_data(
             self.rmq, mock_log, self.cfg, self.cfg.queue_list[0],
             self.body2, self.cfg.queue_list[0]["key"]))
 
@@ -753,7 +753,7 @@ class UnitTest(unittest.TestCase):
         mock_log.return_value = True
         mock_msg.return_value = True
 
-        self.assertFalse(rmq_2_sysmon._convert_data(
+        self.assertFalse(rmq_2_sysmon.convert_data(
             self.rmq, mock_log, self.cfg, self.cfg.queue_list[0],
             self.body, self.cfg.queue_list[0]["key"]))
 
@@ -774,7 +774,7 @@ class UnitTest(unittest.TestCase):
         mock_json.return_value = self.body
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon._convert_data(
+        self.assertFalse(rmq_2_sysmon.convert_data(
             self.rmq, mock_log, self.cfg, self.cfg.queue_list[0],
             self.body, self.cfg.queue_list[0]["key"]))
 
@@ -795,7 +795,7 @@ class UnitTest(unittest.TestCase):
         mock_json.return_value = self.body
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon._convert_data(
+        self.assertFalse(rmq_2_sysmon.convert_data(
             self.rmq, mock_log, self.cfg, self.cfg.queue_list[0],
             self.body, self.cfg.queue_list[0]["key"]))
 
@@ -816,7 +816,7 @@ class UnitTest(unittest.TestCase):
         mock_msg.return_value = True
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon._convert_data(
+        self.assertFalse(rmq_2_sysmon.convert_data(
             self.rmq, mock_log, self.cfg, self.cfg.queue_list[0],
             self.body, self.cfg.queue_list[0]["key"]))
 

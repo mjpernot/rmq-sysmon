@@ -21,11 +21,11 @@ import mock
 
 # Local
 sys.path.append(os.getcwd())
-import rmq_2_sysmon
-import rmq_cleanup
-import lib.gen_libs as gen_libs
-import lib.gen_class as gen_class
-import version
+import rmq_cleanup                              # pylint:disable=E0401,C0413
+import rmq_2_sysmon                             # pylint:disable=E0401,C0413
+import lib.gen_libs as gen_libs             # pylint:disable=E0401,C0413,R0402
+import lib.gen_class as gen_class           # pylint:disable=E0401,C0413,R0402
+import version                                  # pylint:disable=E0401,C0413
 
 __version__ = version.__version__
 
@@ -82,7 +82,9 @@ class UnitTest(unittest.TestCase):
         rmq_2_sysmon.monitor_queue(self.cfg, self.log)
         self.log.log_close()
 
-        self.assertTrue(self.connect_true in open(self.cfg.log_file).read())
+        self.assertIn(
+            self.connect_true, open(                    # pylint:disable=R1732
+                self.cfg.log_file, encoding="UTF-8").read())
 
     def tearDown(self):
 

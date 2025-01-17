@@ -4,6 +4,35 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [3.0.0] - 2025-01-17
+Breaking Changes
+
+- Removed Python 2.7 code.
+- Removed CentOS service information.
+- Updated urllib3==1.26.20
+- Added certifi==2024.12.14
+- Updated python-lib==4.0.0
+- Updated rabbitmq-lib==2.3.0
+
+### Added
+- process_queue: Process the message queue.
+- convert_data: Convert data from message queue.
+
+### Fixed
+- rmq_2_sysmon.process_msg: Converted message body to string as Python 3 returns it as a byte string.
+
+### Changed
+- rmq_2_sysmon.process_msg: Changed \_convert_data call to convert_data call.
+- rmq_2_sysmon: Converted strings to f-strings.
+- daemon_rmq_2_sysmon: Converted strings to f-strings.
+- daemon_rmq_2_sysmon: Added "encoding" argument to open() command and set the "mode" to read to open() command.
+- Documentation updates.
+
+### Removed
+- \_convert_data function.
+- \_process_queue function.
+
+
 ## [2.3.4] - 2024-11-19
 - Updated python-lib to v3.0.8
 - Updated rabbitmq-lib to v2.2.8

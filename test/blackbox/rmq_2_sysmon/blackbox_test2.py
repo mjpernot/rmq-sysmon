@@ -13,7 +13,6 @@
 """
 
 # Libraries and Global Variables
-from __future__ import print_function
 
 # Standard
 import os
@@ -22,9 +21,9 @@ import time
 
 # Local
 sys.path.append(os.getcwd())
-import lib.gen_libs as gen_libs
-import blackbox_libs
-import version
+import blackbox_libs                            # pylint:disable=E0401,C0413
+import lib.gen_libs as gen_libs             # pylint:disable=E0401,C0413,R0402
+import version                                  # pylint:disable=E0401,C0413
 
 __version__ = version.__version__
 
@@ -44,14 +43,14 @@ def test_1(sysmon_dir):
     f_name = "SERVER_NAME"
     time.sleep(1)
     status, err_msg = \
-        blackbox_libs.file_test(os.path.join(sysmon_dir,
-                                             f_name + "_pkgs.json"))
+        blackbox_libs.file_test(
+            os.path.join(sysmon_dir, f_name + "_pkgs.json"))
 
     if status:
         print("\tTest successful\n")
 
     else:
-        print("Error Message:  %s" % (err_msg))
+        print(f"Error Message:  {err_msg}")
         print("\tTest failed\n")
 
     os.remove(os.path.join(sysmon_dir, f_name + "_pkgs.json"))

@@ -7,12 +7,13 @@ Type=simple
 User=root
 
 WorkingDirectory=/opt/local/rmq-sysmon
-ExecStart=daemon_rmq_2_sysmon.py -a start -c rabbitmq -d ./config -M
-ExecStop=daemon_rmq_2_sysmon.py -a stop -c rabbitmq -d ./config -M
+ExecStart=/opt/local/rmq-sysmon/daemon_rmq_2_sysmon.py -a start -c rabbitmq -d /opt/local/rmq-sysmon/config -M
+ExecStop=/opt/local/rmq-sysmon/daemon_rmq_2_sysmon.py -a stop -c rabbitmq -d /opt/local/rmq-sysmon/config -M
 
 # optional items below
-Restart=always or Restart=on-failure
+Restart=on-failure
 RestartSec=10
+RemainAfterExit=yes
 
 [Install]
 WantedBy=multi-user.target
