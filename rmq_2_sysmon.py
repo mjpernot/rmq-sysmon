@@ -252,8 +252,9 @@ def process_msg(rmq, log, cfg, method, body):
 
     """
 
-    # Python 3 returns a byte string instead of a string
-    body = str(body, encoding="UTF-8")
+    if not isinstance(body, str):
+        # Python 3 returns a byte string instead of a string
+        body = str(body, encoding="UTF-8")
 
     r_key = method.routing_key
     queue = None

@@ -128,7 +128,6 @@ class UnitTest(unittest.TestCase):
         test_dict_convert_pass
         test_convert_fails_type_pass
         test_str_convert_fails
-        test_dict_convert_fails
         test_key_not_in_dict
         test_create_json_fail
         test_create_json
@@ -179,10 +178,10 @@ class UnitTest(unittest.TestCase):
         self.body = {"Server": "SERVER_NAME.domain.name"}
         self.body2 = {"Non-Key": "Non-Value"}
         self.body3 = "This a string"
-        self.rawbody = '{"Server": "SERVER_NAME.domain.name"}'
-        self.rawbody2 = '{"Non-Key": "Non-Value"}'
-        self.rawbody3 = '"This a string"'
-        self.rawbody4 = '["This", "a", "string"]'
+        self.rawbody = b'{"Server": "SERVER_NAME.domain.name"}'
+        self.rawbody2 = b'{"Non-Key": "Non-Value"}'
+        self.rawbody3 = b'"This a string"'
+        self.rawbody4 = b'["This", "a", "string"]'
         self.rmq = "RabbitMQ Instance"
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
@@ -638,26 +637,9 @@ class UnitTest(unittest.TestCase):
         mock_msg.return_value = True
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon.process_msg(self.rmq, mock_log, self.cfg,
-                                                  self.method, self.body3))
-
-    @mock.patch("rmq_2_sysmon.gen_class.Logger")
-    @mock.patch("rmq_2_sysmon.non_proc_msg")
-    def test_dict_convert_fails(self, mock_msg, mock_log):
-
-        """Function:  test_dict_convert_fails
-
-        Description:  Test with ast.literal_eval fails for dict.
-
-        Arguments:
-
-        """
-
-        mock_msg.return_value = True
-        mock_log.return_value = True
-
-        self.assertFalse(rmq_2_sysmon.process_msg(self.rmq, mock_log, self.cfg,
-                                                  self.method, self.body2))
+        self.assertFalse(
+            rmq_2_sysmon.process_msg(
+                self.rmq, mock_log, self.cfg, self.method, self.body3))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
                 mock.Mock(return_value=True))
@@ -678,8 +660,9 @@ class UnitTest(unittest.TestCase):
         mock_log.return_value = True
         mock_msg.return_value = True
 
-        self.assertFalse(rmq_2_sysmon.process_msg(self.rmq, mock_log, self.cfg,
-                                                  self.method, self.body2))
+        self.assertFalse(
+            rmq_2_sysmon.process_msg(
+                self.rmq, mock_log, self.cfg, self.method, self.rawbody2))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
                 mock.Mock(return_value=True))
@@ -700,8 +683,9 @@ class UnitTest(unittest.TestCase):
         mock_log.return_value = True
         mock_msg.return_value = True
 
-        self.assertFalse(rmq_2_sysmon.process_msg(self.rmq, mock_log, self.cfg,
-                                                  self.method, self.body))
+        self.assertFalse(
+            rmq_2_sysmon.process_msg(
+                self.rmq, mock_log, self.cfg, self.method, self.rawbody3))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
                 mock.Mock(return_value=True))
@@ -720,8 +704,9 @@ class UnitTest(unittest.TestCase):
         mock_json.return_value = self.body
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon.process_msg(self.rmq, mock_log, self.cfg,
-                                                  self.method, self.body))
+        self.assertFalse(
+            rmq_2_sysmon.process_msg(
+                self.rmq, mock_log, self.cfg, self.method, self.rawbody))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
                 mock.Mock(return_value=True))
@@ -740,8 +725,9 @@ class UnitTest(unittest.TestCase):
         mock_json.return_value = self.body
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon.process_msg(self.rmq, mock_log, self.cfg,
-                                                  self.method, self.body))
+        self.assertFalse(
+            rmq_2_sysmon.process_msg(
+                self.rmq, mock_log, self.cfg, self.method, self.rawbody2))
 
     @mock.patch("rmq_2_sysmon.gen_class.Logger")
     @mock.patch("rmq_2_sysmon.non_proc_msg")
@@ -760,8 +746,9 @@ class UnitTest(unittest.TestCase):
         mock_msg.return_value = True
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon.process_msg(self.rmq, mock_log, self.cfg,
-                                                  self.method, self.body))
+        self.assertFalse(
+            rmq_2_sysmon.process_msg(
+                self.rmq, mock_log, self.cfg, self.method, self.rawbody3))
 
 
 if __name__ == "__main__":
