@@ -96,8 +96,8 @@ class UnitTest(unittest.TestCase):
         self.test_file = gen_libs.dir_file_match(self.cfg.message_dir,
                                                  self.rmq.exchange)[0]
 
-        self.assertTrue(
-            self.line in open(                          # pylint:disable=R1732
+        self.assertIn(
+            self.line, open(                            # pylint:disable=R1732
                 os.path.join(self.cfg.message_dir, self.test_file),
                 encoding="UTF-8").read())
 

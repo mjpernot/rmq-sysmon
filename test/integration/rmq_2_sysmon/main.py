@@ -84,8 +84,8 @@ class UnitTest(unittest.TestCase):
         mock_base.return_value = self.test_path
         rmq_2_sysmon.main(argv_list=self.argv_list)
 
-        self.assertTrue(
-            self.connect_true in open(                  # pylint:disable=R1732
+        self.assertIn(
+            self.connect_true, open(                    # pylint:disable=R1732
                 self.cfg.log_file, encoding="UTF-8").read())
 
     def tearDown(self):

@@ -124,8 +124,8 @@ class UnitTest(unittest.TestCase):
                                  self.body2)
         self.log.log_close()
 
-        self.assertTrue(
-            self.non_proc_msg in open(                  # pylint:disable=R1732
+        self.assertIn(
+            self.non_proc_msg, open(                    # pylint:disable=R1732
                 self.cfg.log_file, encoding="UTF-8").read())
 
     def test_body_dict_true(self):

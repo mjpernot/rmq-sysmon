@@ -82,8 +82,8 @@ class UnitTest(unittest.TestCase):
         rmq_2_sysmon.monitor_queue(self.cfg, self.log)
         self.log.log_close()
 
-        self.assertTrue(
-            self.connect_true in open(                  # pylint:disable=R1732
+        self.assertIn(
+            self.connect_true, open(                    # pylint:disable=R1732
                 self.cfg.log_file, encoding="UTF-8").read())
 
     def tearDown(self):
