@@ -22,8 +22,8 @@ import mock
 
 # Local
 sys.path.append(os.getcwd())
-import daemon_rmq_2_sysmon
-import version
+import daemon_rmq_2_sysmon                      # pylint:disable=E0401,C0413
+import version                                  # pylint:disable=E0401,C0413
 
 __version__ = version.__version__
 

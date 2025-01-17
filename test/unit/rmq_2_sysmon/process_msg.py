@@ -21,10 +21,81 @@ import mock
 
 # Local
 sys.path.append(os.getcwd())
-import rmq_2_sysmon
-import version
+import rmq_2_sysmon                             # pylint:disable=E0401,C0413
+import version                                  # pylint:disable=E0401,C0413
 
 __version__ = version.__version__
+
+
+class MethodTest():                                     # pylint:disable=R0903
+
+    """Class:  MethodTest
+
+    Description:  Class which is a representation of a method module.
+
+    Methods:
+        __init__
+
+    """
+
+    def __init__(self):
+
+        """Method:  __init__
+
+        Description:  Initialization instance of the CfgTest class.
+
+        Arguments:
+
+        """
+
+        self.routing_key = "ROUTING_KEY"
+
+
+class CfgTest():                                        # pylint:disable=R0903
+
+    """Class:  CfgTest
+
+    Description:  Class which is a representation of a cfg module.
+
+    Methods:
+        __init__
+
+    """
+
+    def __init__(self):
+
+        """Method:  __init__
+
+        Description:  Initialization instance of the CfgTest class.
+
+        Arguments:
+
+        """
+
+        self.host = "HOSTNAME"
+        self.exchange_name = "rmq_2_isse_unit_test"
+        self.to_line = None
+        self.port = 5672
+        self.exchange_type = "direct"
+        self.x_durable = True
+        self.q_durable = True
+        self.auto_delete = False
+        self.message_dir = "message_dir"
+        self.log_dir = "logs"
+        self.log_file = "rmq_2_isse.log"
+        self.queue_list = [
+            {"queue": "rmq_2_isse_unit_test",
+             "routing_key": "ROUTING_KEY",
+             "directory": "/SYSMON_DIR_PATH",
+             "prename": "Pre-filename",
+             "postname": "Post-filename",
+             "key": "Server",
+             "mode": "a",
+             "ext": "",
+             "dtg": False,
+             "date": False,
+             "stype": "dict",
+             "flatten": True}]
 
 
 class UnitTest(unittest.TestCase):
@@ -57,7 +128,6 @@ class UnitTest(unittest.TestCase):
         test_dict_convert_pass
         test_convert_fails_type_pass
         test_str_convert_fails
-        test_dict_convert_fails
         test_key_not_in_dict
         test_create_json_fail
         test_create_json
@@ -75,75 +145,6 @@ class UnitTest(unittest.TestCase):
         Arguments:
 
         """
-
-        class MethodTest(object):
-
-            """Class:  MethodTest
-
-            Description:  Class which is a representation of a method module.
-
-            Methods:
-                __init__ -> Initialize configuration environment.
-
-            """
-
-            def __init__(self):
-
-                """Method:  __init__
-
-                Description:  Initialization instance of the CfgTest class.
-
-                Arguments:
-
-                """
-
-                self.routing_key = "ROUTING_KEY"
-
-        class CfgTest(object):
-
-            """Class:  CfgTest
-
-            Description:  Class which is a representation of a cfg module.
-
-            Methods:
-                __init__ -> Initialize configuration environment.
-
-            """
-
-            def __init__(self):
-
-                """Method:  __init__
-
-                Description:  Initialization instance of the CfgTest class.
-
-                Arguments:
-
-                """
-
-                self.host = "HOSTNAME"
-                self.exchange_name = "rmq_2_isse_unit_test"
-                self.to_line = None
-                self.port = 5672
-                self.exchange_type = "direct"
-                self.x_durable = True
-                self.q_durable = True
-                self.auto_delete = False
-                self.message_dir = "message_dir"
-                self.log_dir = "logs"
-                self.log_file = "rmq_2_isse.log"
-                self.queue_list = [
-                    {"queue": "rmq_2_isse_unit_test",
-                     "routing_key": "ROUTING_KEY",
-                     "directory": "/SYSMON_DIR_PATH",
-                     "prename": "Pre-filename",
-                     "postname": "Post-filename",
-                     "key": "Server",
-                     "mode": "a",
-                     "ext": "",
-                     "dtg": False,
-                     "date": False,
-                     "stype": "dict",
-                     "flatten": True}]
 
         self.cfg = CfgTest()
         self.cfg2 = CfgTest()
@@ -177,10 +178,10 @@ class UnitTest(unittest.TestCase):
         self.body = {"Server": "SERVER_NAME.domain.name"}
         self.body2 = {"Non-Key": "Non-Value"}
         self.body3 = "This a string"
-        self.rawbody = '{"Server": "SERVER_NAME.domain.name"}'
-        self.rawbody2 = '{"Non-Key": "Non-Value"}'
-        self.rawbody3 = '"This a string"'
-        self.rawbody4 = '["This", "a", "string"]'
+        self.rawbody = b'{"Server": "SERVER_NAME.domain.name"}'
+        self.rawbody2 = b'{"Non-Key": "Non-Value"}'
+        self.rawbody3 = b'"This a string"'
+        self.rawbody4 = b'["This", "a", "string"]'
         self.rmq = "RabbitMQ Instance"
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
@@ -636,26 +637,9 @@ class UnitTest(unittest.TestCase):
         mock_msg.return_value = True
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon.process_msg(self.rmq, mock_log, self.cfg,
-                                                  self.method, self.body3))
-
-    @mock.patch("rmq_2_sysmon.gen_class.Logger")
-    @mock.patch("rmq_2_sysmon.non_proc_msg")
-    def test_dict_convert_fails(self, mock_msg, mock_log):
-
-        """Function:  test_dict_convert_fails
-
-        Description:  Test with ast.literal_eval fails for dict.
-
-        Arguments:
-
-        """
-
-        mock_msg.return_value = True
-        mock_log.return_value = True
-
-        self.assertFalse(rmq_2_sysmon.process_msg(self.rmq, mock_log, self.cfg,
-                                                  self.method, self.body2))
+        self.assertFalse(
+            rmq_2_sysmon.process_msg(
+                self.rmq, mock_log, self.cfg, self.method, self.body3))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
                 mock.Mock(return_value=True))
@@ -676,8 +660,9 @@ class UnitTest(unittest.TestCase):
         mock_log.return_value = True
         mock_msg.return_value = True
 
-        self.assertFalse(rmq_2_sysmon.process_msg(self.rmq, mock_log, self.cfg,
-                                                  self.method, self.body2))
+        self.assertFalse(
+            rmq_2_sysmon.process_msg(
+                self.rmq, mock_log, self.cfg, self.method, self.rawbody2))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
                 mock.Mock(return_value=True))
@@ -698,8 +683,9 @@ class UnitTest(unittest.TestCase):
         mock_log.return_value = True
         mock_msg.return_value = True
 
-        self.assertFalse(rmq_2_sysmon.process_msg(self.rmq, mock_log, self.cfg,
-                                                  self.method, self.body))
+        self.assertFalse(
+            rmq_2_sysmon.process_msg(
+                self.rmq, mock_log, self.cfg, self.method, self.rawbody3))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
                 mock.Mock(return_value=True))
@@ -718,8 +704,9 @@ class UnitTest(unittest.TestCase):
         mock_json.return_value = self.body
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon.process_msg(self.rmq, mock_log, self.cfg,
-                                                  self.method, self.body))
+        self.assertFalse(
+            rmq_2_sysmon.process_msg(
+                self.rmq, mock_log, self.cfg, self.method, self.rawbody))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
                 mock.Mock(return_value=True))
@@ -738,8 +725,9 @@ class UnitTest(unittest.TestCase):
         mock_json.return_value = self.body
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon.process_msg(self.rmq, mock_log, self.cfg,
-                                                  self.method, self.body))
+        self.assertFalse(
+            rmq_2_sysmon.process_msg(
+                self.rmq, mock_log, self.cfg, self.method, self.rawbody2))
 
     @mock.patch("rmq_2_sysmon.gen_class.Logger")
     @mock.patch("rmq_2_sysmon.non_proc_msg")
@@ -758,8 +746,9 @@ class UnitTest(unittest.TestCase):
         mock_msg.return_value = True
         mock_log.return_value = True
 
-        self.assertFalse(rmq_2_sysmon.process_msg(self.rmq, mock_log, self.cfg,
-                                                  self.method, self.body))
+        self.assertFalse(
+            rmq_2_sysmon.process_msg(
+                self.rmq, mock_log, self.cfg, self.method, self.rawbody3))
 
 
 if __name__ == "__main__":

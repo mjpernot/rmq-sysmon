@@ -13,7 +13,6 @@
 """
 
 # Libraries and Global Variables
-from __future__ import print_function
 
 # Standard
 import os
@@ -22,13 +21,13 @@ import json
 
 # Local
 sys.path.append(os.getcwd())
-import rabbit_lib.rabbitmq_class as rabbitmq_class
-import version
+import rabbit_lib.rabbitmq_class as rmq_cls  # pylint:disable=E0401,C0413,R0402
+import version                                  # pylint:disable=E0401,C0413
 
 __version__ = version.__version__
 
 
-def create_rq_pub(cfg, **kwargs):
+def create_rq_pub(cfg):
 
     """Function:  create_rq_pub
 
@@ -40,7 +39,7 @@ def create_rq_pub(cfg, **kwargs):
 
     """
 
-    rmq = rabbitmq_class.RabbitMQPub(
+    rmq = rmq_cls.RabbitMQPub(
         cfg.user, cfg.japd, cfg.host, cfg.port,
         exchange_name=cfg.exchange_name, exchange_type=cfg.exchange_type,
         queue_name=cfg.queue_list[0]["queue"],
@@ -52,13 +51,12 @@ def create_rq_pub(cfg, **kwargs):
     if connect_status and rmq.channel.is_open:
         return rmq
 
-    else:
-        print("Error:  Failed to connect to RabbitMQ as Publisher.")
-        print("Error Message: %s" % (err_msg))
-        return None
+    print("Error:  Failed to connect to RabbitMQ as Publisher.")
+    print(f"Error Message: {err_msg}")
+    return None
 
 
-def file_test(f_name, **kwargs):
+def file_test(f_name):
 
     """Function:  file_test
 
@@ -75,23 +73,23 @@ def file_test(f_name, **kwargs):
     err_msg = None
 
     if os.path.isfile(f_name):
-        with open(f_name, "r") as f_hldr:
+        with open(f_name, mode="r", encoding="UTF-8") as f_hldr:
             body = f_hldr.read()
 
         data = json.loads(body)
 
         if not isinstance(data, dict):
-            err_msg = "\tError:  %s is not in dictionary format." % (f_name)
+            err_msg = f"\tError:  {f_name} is not in dictionary format."
             status = False
 
     else:
-        err_msg = "\tError:  %s is not present" % (f_name)
+        err_msg = f"\tError:  {f_name} is not present"
         status = False
 
     return status, err_msg
 
 
-def publish_msg(rmq, f_name, **kwargs):
+def publish_msg(rmq, f_name):
 
     """Function:  publish_msg
 
@@ -108,7 +106,7 @@ def publish_msg(rmq, f_name, **kwargs):
     status = True
     err_msg = None
 
-    with open(f_name, "r") as f_hldr:
+    with open(f_name, mode="r", encoding="UTF-8") as f_hldr:
         body = f_hldr.read()
 
     if not rmq.publish_msg(body):

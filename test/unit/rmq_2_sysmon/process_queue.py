@@ -1,11 +1,11 @@
 # Classification (U)
 
-"""Program:  _process_queue.py
+"""Program:  process_queue.py
 
-    Description:  Unit testing of _process_queue in rmq_2_sysmon.py.
+    Description:  Unit testing of process_queue in rmq_2_sysmon.py.
 
     Usage:
-        test/unit/rmq_2_sysmon/_process_queue.py
+        test/unit/rmq_2_sysmon/process_queue.py
 
     Arguments:
 
@@ -21,8 +21,8 @@ import mock
 
 # Local
 sys.path.append(os.getcwd())
-import rmq_2_sysmon
-import version
+import rmq_2_sysmon                             # pylint:disable=E0401,C0413
+import version                                  # pylint:disable=E0401,C0413
 
 __version__ = version.__version__
 
@@ -130,7 +130,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.assertFalse(rmq_2_sysmon._process_queue(
+        self.assertFalse(rmq_2_sysmon.process_queue(
             self.queue12, self.body, self.r_key, self.x_name))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
@@ -145,7 +145,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.assertFalse(rmq_2_sysmon._process_queue(
+        self.assertFalse(rmq_2_sysmon.process_queue(
             self.queue11, self.body, self.r_key, self.x_name))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
@@ -160,7 +160,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.assertFalse(rmq_2_sysmon._process_queue(
+        self.assertFalse(rmq_2_sysmon.process_queue(
             self.queue, self.body, self.r_key, self.x_name))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
@@ -175,7 +175,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.assertFalse(rmq_2_sysmon._process_queue(
+        self.assertFalse(rmq_2_sysmon.process_queue(
             self.queue10, self.body, self.r_key, self.x_name))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
@@ -190,7 +190,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.assertFalse(rmq_2_sysmon._process_queue(
+        self.assertFalse(rmq_2_sysmon.process_queue(
             self.queue, self.body, self.r_key, self.x_name))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
@@ -205,7 +205,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.assertFalse(rmq_2_sysmon._process_queue(
+        self.assertFalse(rmq_2_sysmon.process_queue(
             self.queue9, self.body, self.r_key, self.x_name))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
@@ -220,7 +220,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.assertFalse(rmq_2_sysmon._process_queue(
+        self.assertFalse(rmq_2_sysmon.process_queue(
             self.queue, self.body, self.r_key, self.x_name))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
@@ -235,7 +235,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.assertFalse(rmq_2_sysmon._process_queue(
+        self.assertFalse(rmq_2_sysmon.process_queue(
             self.queue8, self.body, self.r_key, self.x_name))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
@@ -250,7 +250,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.assertFalse(rmq_2_sysmon._process_queue(
+        self.assertFalse(rmq_2_sysmon.process_queue(
             self.queue, self.body, self.r_key, self.x_name))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
@@ -265,7 +265,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.assertFalse(rmq_2_sysmon._process_queue(
+        self.assertFalse(rmq_2_sysmon.process_queue(
             self.queue7, self.body, self.r_key, self.x_name))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
@@ -280,7 +280,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.assertFalse(rmq_2_sysmon._process_queue(
+        self.assertFalse(rmq_2_sysmon.process_queue(
             self.queue, self.body, self.r_key, self.x_name))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
@@ -295,7 +295,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.assertFalse(rmq_2_sysmon._process_queue(
+        self.assertFalse(rmq_2_sysmon.process_queue(
             self.queue6, self.body, self.r_key, self.x_name))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
@@ -310,7 +310,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.assertFalse(rmq_2_sysmon._process_queue(
+        self.assertFalse(rmq_2_sysmon.process_queue(
             self.queue, self.body, self.r_key, self.x_name))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
@@ -325,7 +325,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.assertFalse(rmq_2_sysmon._process_queue(
+        self.assertFalse(rmq_2_sysmon.process_queue(
             self.queue5, self.body, self.r_key, self.x_name))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
@@ -340,7 +340,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.assertFalse(rmq_2_sysmon._process_queue(
+        self.assertFalse(rmq_2_sysmon.process_queue(
             self.queue, self.body2, self.r_key, self.x_name))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
@@ -355,7 +355,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.assertFalse(rmq_2_sysmon._process_queue(
+        self.assertFalse(rmq_2_sysmon.process_queue(
             self.queue4, self.body3, self.r_key, self.x_name))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
@@ -370,7 +370,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.assertFalse(rmq_2_sysmon._process_queue(
+        self.assertFalse(rmq_2_sysmon.process_queue(
             self.queue3, self.body3, self.r_key, self.x_name))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
@@ -385,7 +385,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.assertFalse(rmq_2_sysmon._process_queue(
+        self.assertFalse(rmq_2_sysmon.process_queue(
             self.queue2, self.body4, self.r_key, self.x_name))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
@@ -400,7 +400,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.assertFalse(rmq_2_sysmon._process_queue(
+        self.assertFalse(rmq_2_sysmon.process_queue(
             self.queue, self.body2, self.r_key, self.x_name))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
@@ -415,7 +415,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.assertFalse(rmq_2_sysmon._process_queue(
+        self.assertFalse(rmq_2_sysmon.process_queue(
             self.queue, self.body, self.r_key, self.x_name))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
@@ -430,7 +430,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.assertFalse(rmq_2_sysmon._process_queue(
+        self.assertFalse(rmq_2_sysmon.process_queue(
             self.queue, self.body, self.r_key, self.x_name))
 
     @mock.patch("rmq_2_sysmon.gen_libs.write_file",
@@ -445,7 +445,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.assertFalse(rmq_2_sysmon._process_queue(
+        self.assertFalse(rmq_2_sysmon.process_queue(
             self.queue, self.body, self.r_key, self.x_name))
 
 

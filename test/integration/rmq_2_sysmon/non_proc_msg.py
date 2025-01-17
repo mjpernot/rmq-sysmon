@@ -21,11 +21,11 @@ import mock
 
 # Local
 sys.path.append(os.getcwd())
-import rmq_2_sysmon
-import rabbit_lib.rabbitmq_class as rabbitmq_class
-import lib.gen_libs as gen_libs
-import lib.gen_class as gen_class
-import version
+import rmq_2_sysmon                             # pylint:disable=E0401,C0413
+import rabbit_lib.rabbitmq_class as rmqcls  # pylint:disable=E0401,C0413,R0402
+import lib.gen_libs as gen_libs             # pylint:disable=E0401,C0413,R0402
+import lib.gen_class as gen_class           # pylint:disable=E0401,C0413,R0402
+import version                                  # pylint:disable=E0401,C0413
 
 __version__ = version.__version__
 
@@ -64,7 +64,7 @@ class UnitTest(unittest.TestCase):
         self.log = gen_class.Logger(
             self.cfg.log_file, self.cfg.log_file, "INFO",
             "%(asctime)s %(levelname)s %(message)s", "%Y-%m-%dT%H:%M:%SZ")
-        self.rmq = rabbitmq_class.RabbitMQCon(
+        self.rmq = rmqcls.RabbitMQCon(
             self.cfg.user, self.cfg.japd, self.cfg.host, self.cfg.port,
             exchange_name=self.cfg.exchange_name,
             exchange_type=self.cfg.exchange_type,
@@ -96,8 +96,10 @@ class UnitTest(unittest.TestCase):
         self.test_file = gen_libs.dir_file_match(self.cfg.message_dir,
                                                  self.rmq.exchange)[0]
 
-        self.assertTrue(self.line in open(os.path.join(self.cfg.message_dir,
-                                                       self.test_file)).read())
+        self.assertIn(
+            self.line, open(                            # pylint:disable=R1732
+                os.path.join(self.cfg.message_dir, self.test_file),
+                encoding="UTF-8").read())
 
     def tearDown(self):
 

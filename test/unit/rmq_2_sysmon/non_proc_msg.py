@@ -21,10 +21,36 @@ import mock
 
 # Local
 sys.path.append(os.getcwd())
-import rmq_2_sysmon
-import version
+import rmq_2_sysmon                             # pylint:disable=E0401,C0413
+import version                                  # pylint:disable=E0401,C0413
 
 __version__ = version.__version__
+
+
+class CfgTest():                                        # pylint:disable=R0903
+
+    """Class:  CfgTest
+
+    Description:  Class which is a representation of a cfg module.
+
+    Methods:
+        __init__
+
+    """
+
+    def __init__(self):
+
+        """Method:  __init__
+
+        Description:  Initialization instance of the CfgTest class.
+
+        Arguments:
+
+        """
+
+        self.exchange = "test_exchange"
+        self.to_line = ""
+        self.message_dir = "message_dir"
 
 
 class UnitTest(unittest.TestCase):
@@ -50,31 +76,6 @@ class UnitTest(unittest.TestCase):
         Arguments:
 
         """
-
-        class CfgTest(object):
-
-            """Class:  CfgTest
-
-            Description:  Class which is a representation of a cfg module.
-
-            Methods:
-                __init__ -> Initialize configuration environment.
-
-            """
-
-            def __init__(self):
-
-                """Method:  __init__
-
-                Description:  Initialization instance of the CfgTest class.
-
-                Arguments:
-
-                """
-
-                self.exchange = "test_exchange"
-                self.to_line = ""
-                self.message_dir = "message_dir"
 
         self.cfg = CfgTest()
         self.r_key = "Routing Key"

@@ -13,7 +13,6 @@
 """
 
 # Libraries and Global Variables
-from __future__ import print_function
 
 # Standard
 import os
@@ -23,9 +22,9 @@ import glob
 
 # Local
 sys.path.append(os.getcwd())
-import lib.gen_libs as gen_libs
-import blackbox_libs
-import version
+import blackbox_libs                            # pylint:disable=E0401,C0413
+import lib.gen_libs as gen_libs             # pylint:disable=E0401,C0413,R0402
+import version                                  # pylint:disable=E0401,C0413
 
 __version__ = version.__version__
 
@@ -58,7 +57,7 @@ def test_1(rmq, file_path, message_dir, log_dir):
                                          add_path=True)[0]
 
         for item in glob.glob(os.path.join(log_dir, f_filter2)):
-            with open(item, "r") as f_hldr:
+            with open(item, mode="r", encoding="UTF-8") as f_hldr:
                 msg_body = f_hldr.read()
 
         if os.path.isfile(f_file) and msg in msg_body:
@@ -69,7 +68,7 @@ def test_1(rmq, file_path, message_dir, log_dir):
             print("\tTest failed\n")
 
     else:
-        print("Error Message:  %s" % (err_msg))
+        print(f"Error Message:  {err_msg}")
         print("Error:  Failed to publish message to RabbitMQ\n")
 
 

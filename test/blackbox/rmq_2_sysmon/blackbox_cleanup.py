@@ -21,7 +21,7 @@ import glob
 
 # Local
 sys.path.append(os.getcwd())
-import version
+import version                                  # pylint:disable=E0401,C0413
 
 __version__ = version.__version__
 

@@ -21,20 +21,20 @@ import mock
 
 # Local
 sys.path.append(os.getcwd())
-import rmq_2_sysmon
-import version
+import rmq_2_sysmon                             # pylint:disable=E0401,C0413
+import version                                  # pylint:disable=E0401,C0413
 
 __version__ = version.__version__
 
 
-class CfgTest(object):
+class CfgTest():                                        # pylint:disable=R0903
 
     """Class:  CfgTest
 
     Description:  Class which is a representation of a cfg module.
 
     Methods:
-        __init__ -> Initialize configuration environment.
+        __init__
 
     """
 
@@ -116,11 +116,10 @@ class UnitTest(unittest.TestCase):
         self.log_name = \
             base_name + "_" + self.cfg.exchange_name + ext_name
         self.bad_log_dir = "data/logs"
-        self.err_msg = "Log_Dir: %s is not an absolute path." \
-                       % (self.bad_log_dir)
+        self.err_msg = f"Log_Dir: {self.bad_log_dir} is not an absolute path."
         self.bad_message_dir = "data/message_dir"
-        self.err_msg2 = "Message_Dir: %s is not an absolute path." \
-                        % (self.bad_message_dir)
+        self.err_msg2 = \
+            f"Message_Dir: {self.bad_message_dir} is not an absolute path."
 
     @mock.patch("rmq_2_sysmon.gen_libs.chk_crt_dir")
     def test_message_dir_not_abs_path(self, mock_lib):
