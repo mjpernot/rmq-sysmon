@@ -188,8 +188,8 @@ Install the project using the procedures in the Installation section.
 
 ```
 test/unit/rmq_2_sysmon/unit_test_run.sh
-test/unit/daemon_rmq_2_sysmon/unit_test_run.sh
 test/unit/rmq_2_sysmon/code_coverage.sh
+test/unit/daemon_rmq_2_sysmon/unit_test_run.sh
 test/unit/daemon_rmq_2_sysmon/code_coverage.sh
 ```
 
